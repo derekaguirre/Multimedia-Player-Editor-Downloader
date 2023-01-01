@@ -3,10 +3,10 @@ import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 
-// import Navbar from "../components/nav-bar/Navbar";
-
-
 import SongPage from "../components/main-page/song-page";
+import NavBar from "../components/nav-bar/Navbar";
+
+
 
 function Animated() {
     const location = useLocation();
@@ -26,7 +26,7 @@ export default function AppRouter(){
         <div className = "AppRouter">
             <>
             <Router>
-                {/* <Navbar /> */}
+                <NavBar />
                 <Animated/>
             </Router>
             </>
