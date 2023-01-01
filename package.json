@@ -1,0 +1,23 @@
+{
+  "name": "music-player",
+  "version": "1.0.0",
+  "description": "Personal music player project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derekaguirre/Music-Player.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/derekaguirre/Music-Player/issues"
+  },
+  "homepage": "https://github.com/derekaguirre/Music-Player#readme",
+  "keywords": [],
+  "dependencies": {
+    "axios": "^1.2.2"
+  }
+}
