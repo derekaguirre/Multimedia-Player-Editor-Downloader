@@ -3,3 +3,12 @@ body{
     background-repeat: no-repeat;
     height: 100vh;
 }
+.PlaylistDropdown{
+    display:flex;
+}
+.NavSection{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}

@@ -2,9 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-
 import SongPage from "../components/main-page/song-page";
-import NavBar from "../components/nav-bar/Navbar";
 
 
 
@@ -25,7 +23,6 @@ export default function AppRouter(){
         <div className = "AppRouter">
             <>
             <Router>
-                <NavBar />
                 <Animated/>
             </Router>
             </>

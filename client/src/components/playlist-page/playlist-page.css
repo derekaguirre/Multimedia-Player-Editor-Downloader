@@ -1,0 +1,10 @@
+.accordion-button, .list-group-item, .accordion-button:not(.collapsed), .accordion-body, .accordion-item{
+    color: #ffffff;
+    background-color: #212529;
+    border-color: #212529;
+    box-shadow: inset 0 1px 0 rgb(0 0 0 / 13%);
+}
+
+.list-group-item{
+    border-color: #ffffff;
+}
