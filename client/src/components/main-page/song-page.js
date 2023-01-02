@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 // import PlaylistSection from "../playlist-page/playlist-page";
 import NavBar from "../nav-bar/Navbar";
-import PlaylistSection from "../playlist-page/playlist-page";
+import PlayList from "../playlist-page/offcanvas-playlist";
 import "./song-page.css";
 
 function SongPage() {
@@ -9,7 +9,7 @@ function SongPage() {
     <>
       <div className="PlaylistDropdown">
         <div className="PlaylistSection">
-          <PlaylistSection />
+          <PlayList />
         </div>
         <container className="NavSection">
           <NavBar />
