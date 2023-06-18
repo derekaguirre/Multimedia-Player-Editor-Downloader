@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AnimatePresence } from "framer-motion";
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import SongPage from "../components/main-page/song-page";
+import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
+import SongPage from "../components/main-page/main-page";
 
 
 

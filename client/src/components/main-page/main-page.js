@@ -7,14 +7,15 @@ import "./song-page.css";
 function SongPage() {
   return (
     <>
+
+    {/* NavBar for all the pages */}
       <div className="PlaylistDropdown">
-        <div className="PlaylistSection">
-          <PlayList />
-        </div>
         <container className="NavSection">
           <NavBar />
         </container>
       </div>
+
+      {/* Song List*/}
       {/* <Button variant="primary">Primary</Button>{" "}
       <Button variant="secondary">Secondary</Button>{" "}
       <Button variant="success">Success</Button>{" "}
