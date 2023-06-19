@@ -1,26 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
+import InputField from "./components/InputField";
+// import MusicList from "./components/MusicList";
+import FileTest from "./components/FileTest";
 import logo from "./logo.svg";
 
-function App() {
+const App: React.FC = () => {
+  const [searchIn, setSearchIn] = useState<string | number>("");
+
+  console.log(searchIn);
   return (
+    // Components called here
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <span className="heading">Music Player</span>
+      <InputField searchIn={searchIn} setSearchIn={setSearchIn} />
+      <FileTest/>
     </div>
   );
-}
+};
 
 export default App;
