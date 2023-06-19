@@ -15,6 +15,7 @@ const App: React.FC = () => {
       <span className="heading">Music Player</span>
       <InputField searchIn={searchIn} setSearchIn={setSearchIn} />
       <FileTest/>
+      hello.
     </div>
   );
 };
