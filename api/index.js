@@ -1,8 +1,9 @@
 // Importing module
 // run with nodemon index.js
-const fs = require('fs');
-const axios = require('axios');
-const FormData = require('form-data');
+
+// const fs = require('fs');
+// const axios = require('axios');
+// const FormData = require('form-data');
 
 const express = require("express");
 
