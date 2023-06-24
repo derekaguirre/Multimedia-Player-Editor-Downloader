@@ -10,6 +10,50 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors());
+const mongoose = require('mongoose');
+
+
+//API START
+
+//DB SECTION -----------------------------------
+// Connect to MongoDB
+const databaseUrl = 'mongodb://localhost:27017/mydatabase';
+mongoose.connect(databaseUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected successfully to MongoDB');
+    
+    // Perform database operations here
+    
+  })
+  .catch(err => {
+    console.error('Error occurred while connecting to MongoDB:', err);
+  });
+
+
+
+  const Schema = mongoose.Schema;
+
+  const userSchema = new Schema({
+    name: String,
+    age: Number
+  });
+  
+  const User = mongoose.model('User', userSchema);
+//using schema 
+  const newUser = new User({
+    name: 'John',
+    age: 25
+  });
+  
+  newUser.save()
+    .then(() => {
+      console.log('User created successfully');
+    })
+    .catch(err => {
+      console.error('Error occurred while creating user:', err);
+    });
+
+//------------------------------------
 
 //Temporary Non-Functional API
 //Future implementation will need file reading
@@ -19,7 +63,7 @@ app.post("/upload", (req, res) => {
   setTimeout(() => {
     console.log("file uploaded");
     return res.status(200).json({ result: true, msg: "file uploaded" });
-  }, 3000);
+  }, 4000);
 });
 
 app.delete("/upload", (req, res) => {
