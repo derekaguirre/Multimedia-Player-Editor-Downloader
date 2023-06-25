@@ -1,0 +1,14 @@
+GET http://localhost:4000/files
+
+###
+POST http://localhost:4000/files/new
+Content-Type: application/json
+
+{
+    "text": "fileName"
+}
+
+
+###
+DELETE http://localhost:4000/files/delete/64982881fa8af58b896df6f3
+
