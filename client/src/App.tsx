@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
-import FolderSelector from "./components/FolderSelector";
+import FilePicker from "./components/FilePicker";
 import InputField from "./components/InputField";
-import { default as SongList } from "./components/SongList";
+import SongList from "./components/SongList";
 
 const App: React.FC = () => {
   const [searchIn, setSearchIn] = useState<string | number>("");
@@ -13,7 +13,7 @@ const App: React.FC = () => {
     <div className="App">
       <span className="heading">Music Player</span>
       <InputField searchIn={searchIn} setSearchIn={setSearchIn} />
-      <FolderSelector/>
+      <FilePicker/>
       <SongList />
     </div>
   );

@@ -19,6 +19,7 @@
     "nodemon": "^2.0.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-fs": "^0.0.0",
     "react-scripts": "5.0.1",
     "sass": "^1.63.4",
@@ -26,7 +27,6 @@
     "wait-on": "^7.0.1",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://localhost:5000",
   "scripts": {
     "start-web": "react-scripts start",
     "build-web": "set PUBLIC_URL=./&&react-scripts build",

@@ -1,44 +1,36 @@
 import React, { useEffect, useState } from "react";
 
-const SongList = () => {
-  const [files, setFiles] = useState<{ fileName: string; timestamp: string }[]>(
-    []
-  );
-
-  const API_BASE = "http://localhost:4000"; // Define the API base URL
+const SongPlaylist = () => {
+  const [songs, setSongs] = useState([]);
 
   useEffect(() => {
-    const getFiles = async () => {
-      try {
-        const response = await fetch(API_BASE + "/files");
-        const data = await response.json();
-        setFiles(data);
-      } catch (err) {
-        console.error("Error: ", err);
-      }
-    };
-
-    getFiles();
+    // Fetch the list of songs from the server or any other data source
+    fetchSongs();
   }, []);
 
+  const fetchSongs = async () => {
+    try {
+      // Make an API request to fetch the songs from the server
+      const response = await fetch("http://localhost:4000/files/");
+      const data = await response.json();
+      setSongs(data);
+    } catch (error) {
+      console.error("Error fetching songs:", error);
+    }
+  };
+
+  //antd
+  //react-player
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>File Name</th>
-          <th>Timestamp</th>
-        </tr>
-      </thead>
-      <tbody>
-        {files.map((file, index) => (
-          <tr key={index}>
-            <td>{file.fileName}</td>
-            <td>{file.timestamp}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <h2>Song Playlist</h2>
+      <ul>
+        {/* {songs.map((song) => (
+          <li key={song.id}>{song.title}</li>
+        ))} */}
+      </ul>
+    </div>
   );
 };
 
-export default SongList;
+export default SongPlaylist;
