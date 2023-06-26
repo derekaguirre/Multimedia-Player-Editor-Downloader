@@ -11,13 +11,17 @@ const createWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   };
   Object.assign(options, store.get("winBounds"));
   
   // Define the window object with the predefined options and run the first page
   const mainWindow = new BrowserWindow(options);
-  mainWindow.loadFile("index.html");
+  // mainWindow.loadFile("index.html");
+  mainWindow.loadURL(`file://${path.join(__dirname, "index.html")}`);
+
 
     // When closing, save the location and size of the window
     mainWindow.on("close", () => {
