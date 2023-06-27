@@ -16,7 +16,7 @@ interface FileObject {
   duration?: number; // New property for storing duration
   artist?: string; // New property for storing artist
   album?: string; // New property for storing album
-  albumCover?: string; // New property for storing album cover
+  albumCover?: ImageBitmap; // New property for storing album cover
 }
 
 const FilePicker: React.FC = () => {

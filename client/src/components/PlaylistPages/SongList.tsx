@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player/lazy";
+import ReactPlayer from "react-player/";
 
 const API_URL = "http://localhost:4000";
 
@@ -15,9 +15,9 @@ interface FileObject {
 
 
 const PlaylistPage = () => {
-  const [playlist, setPlaylist] = useState<FileObject[]>([]);
+  //Set up the states for retrieving and playing songs
+  const [songs, setSongs] = useState<FileObject[]>([]);
   const [playingFile, setPlayingFile] = useState<string | null>(null);
-
 
   useEffect(() => {
     fetchPlaylistData();
@@ -25,19 +25,17 @@ const PlaylistPage = () => {
 
   const fetchPlaylistData = async () => {
     try {
-      const response = await axios.get(`${API_URL}/files`); // Replace with your API endpoint
-      setPlaylist(response.data);
+      const response: AxiosResponse<FileObject[]> = await axios.get(`${API_URL}/files`);
+      setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
   };
 
-  //might only just need the path
+  //Pass the formatted file path through here
   const handlePlay = (file: string) => {
     console.log("Can file play? ", ReactPlayer.canPlay(file));
     console.log("Attempting to play: ", file);
-    // Logic to handle the play action for the selected file
-    // const fileTmp = `\'${file}\'`
     setPlayingFile(file);
   };
 
@@ -47,21 +45,23 @@ const PlaylistPage = () => {
     <div>
       <h1>Playlist</h1>
       <div className ="filePlayer">
-      {playingFile && (<ReactPlayer url={playingFile} playing={true} controls={true}width="100%"height="100px"/>)}
+        {playingFile && (<ReactPlayer url={playingFile} playing={true} controls={true} width="100%"height="100px"/>)}
       </div>
-      
-      <div className = "playlistTable">
+
+      <div className= "playlistTable" data-scroll="0">
         <table>
           <thead>
-            <th>FileID</th>
-            <th>File Name</th>
-            <th>File Path</th>
-            <th>File Size</th>
-            <th>File Type</th>
-            <th></th>
+            <tr>
+              <th>FileID</th>
+              <th>File Name</th>
+              <th>File Path</th>
+              <th>File Size</th>
+              <th>File Type</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
-            {playlist.map((file) => (
+            {songs.map((file) => (
               <tr key={file._id}>
                 <td>{file._id} </td>
                 <td>{file.fileNameOriginal}</td>
@@ -69,7 +69,7 @@ const PlaylistPage = () => {
                 <td>{file.fileSize}</td>
                 <td>{file.fileType}</td>
                 <td id="playButtonEntry">
-                  <button onClick={() => handlePlay(`${API_URL}/uploads/${file.fileNameFormatted}`)}>
+                  <button onClick={() => handlePlay(`${API_URL}/uploads/${file.fileNameFormatted}`) }>
                     Play
                   </button>
                 </td>
@@ -78,8 +78,6 @@ const PlaylistPage = () => {
           </tbody>
         </table>
       </div>
-
-      
     </div>
   );
 };
