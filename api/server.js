@@ -72,8 +72,9 @@ app.post('/files/new-metadata', async (req, res) => {
   try {
     // Create an array of file metadata documents
     const fileMetadataArray = metadataArray.map((metadata) => ({
-      fileName: metadata.fileName,
-      filePath: uploadDirectory+"\\"+metadata.fileName,
+      fileNameOriginal: metadata.fileNameOriginal,
+      fileNameFormatted: metadata.fileNameFormatted,
+      filePath: uploadDirectory+"\\"+metadata.fileNameOriginal,
       fileSize: metadata.fileSize,
       fileType: metadata.fileType,
     }));
@@ -101,6 +102,7 @@ app.delete('/files/delete/:id', async (req, res) => {
 
 //----------------MULTER IMPLEMENTATION------------------
 
+
 // Create the upload directory if it doesn't exist
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
@@ -125,4 +127,8 @@ app.post('/files/new', upload.array('uploadedFiles'), function(req, res) {
   // console.log("filenameServer**: ",fileName);
   res.end();
 });
+
+//Allows serving files from the uploads folder
+app.use('/uploads', express.static('uploads'));
+
 //--------------------------------------------------

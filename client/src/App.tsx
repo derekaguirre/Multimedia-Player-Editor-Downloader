@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
-import FilePicker from "./components/FilePicker";
-import InputField from "./components/InputField";
-import SongList from "./components/SongList";
+import FilePicker from "./components/PlaylistPages/FilePicker";
+import InputField from "./components/PlaylistPages/InputField";
+import SongList from "./components/PlaylistPages/SongList";
 
 const App: React.FC = () => {
   const [searchIn, setSearchIn] = useState<string | number>("");

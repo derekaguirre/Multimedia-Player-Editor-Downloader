@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 const fileSchema = new mongoose.Schema({
-    fileName: {
+    fileNameOriginal: {
+      type: String,
+      required: true,
+    },
+    fileNameFormatted: {
       type: String,
       required: true,
     },

@@ -1,15 +1,22 @@
 import axios from "axios";
+import { parseFile } from "music-metadata";
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { inspect } from "util";
 
 const API_URL = "http://localhost:4000";
 
 interface FileObject {
   _id: string;
-  fileName: string;
+  fileNameOriginal: string;
+  fileNameFormatted: string;
   filePath: string;
   fileSize: number;
   fileType: string;
+  duration?: number; // New property for storing duration
+  artist?: string; // New property for storing artist
+  album?: string; // New property for storing album
+  albumCover?: string; // New property for storing album cover
 }
 
 const FilePicker: React.FC = () => {
@@ -28,10 +35,18 @@ const FilePicker: React.FC = () => {
     }
   };
 
+  //string replace for the name
+  const nameFormatter = (str: string) => {
+    str = str.replace(/ /g, "%20");
+    str = str.replace(",", "%2C");
+    return str;
+  };
+  //Adds the metadata of a song into the database
   const uploadFileMetadata = async (fileData: File[]) => {
     try {
       const metadataArray = fileData.map((file) => ({
-        fileName: file.name,
+        fileNameOriginal: file.name,
+        fileNameFormatted: nameFormatter(file.name),
         filePath: file.webkitRelativePath,
         fileSize: file.size,
         fileType: file.type,
@@ -87,8 +102,6 @@ const FilePicker: React.FC = () => {
         />
         <p>Drag and drop files here or click to select files</p>
       </div>
-
-      
     </div>
   );
 };
