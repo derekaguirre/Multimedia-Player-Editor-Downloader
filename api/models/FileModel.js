@@ -1,12 +1,4 @@
 const mongoose = require('mongoose');
-/*
-
- <td>{file.fileName}</td>
-              <td>{file.filePath}</td>
-              <td>{file.fileSize}</td>
-              <td>{file.fileType}</td>
-
-*/
 
 const fileSchema = new mongoose.Schema({
     fileName: {
@@ -15,7 +7,7 @@ const fileSchema = new mongoose.Schema({
     },
     filePath: {
       type: String,
-      required: true,
+      required: false,
     },
     fileSize: {
       type: Number,
@@ -23,7 +15,7 @@ const fileSchema = new mongoose.Schema({
     },
     fileType: {
       type: String,
-      required: true,
+      required: false,
     },
     _id: {
       type: mongoose.Schema.Types.ObjectId,

@@ -28,25 +28,37 @@ const FilePicker: React.FC = () => {
     }
   };
 
-  const onDrop = async (acceptedFiles: File[]) => {
-    const formData = new FormData();
-
-    acceptedFiles.forEach((file) => {
-      formData.append("uploadedFiles", file);
-      formData.append("fileName", file.name);
-      formData.append("filePath", file.webkitRelativePath);
-      formData.append("fileSize", file.size.toString());
-      formData.append("fileType", file.type);
-    });
-
-    console.log("Form Data:", formData.get("uploadedFiles"));
-    console.log("filePath:", formData.get("filePath"));
-
+  const uploadFileMetadata = async (fileData: File[]) => {
     try {
+      const metadataArray = fileData.map((file) => ({
+        fileName: file.name,
+        filePath: file.webkitRelativePath,
+        fileSize: file.size,
+        fileType: file.type,
+      }));
+
+      console.log("METADATA", metadataArray);
+      await axios.post(`${API_URL}/files/new-metadata`, { metadataArray });
+      console.log("File metadata stored successfully!");
+    } catch (error) {
+      console.error("Error storing file metadata:", error);
+    }
+  };
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    try {
+      // Upload file metadata
+      uploadFileMetadata(acceptedFiles);
+
+      const formData = new FormData();
+      acceptedFiles.forEach((file) => {
+        formData.append("uploadedFiles", file);
+      });
+
       const response = await axios.post(`${API_URL}/files/new`, formData);
       console.log("Files uploaded successfully!");
-      console.log("Response:", response.data); // Print the response from the server
-      fetchFiles(); // Refresh the file list after successful upload
+      console.log("Response:", response.data);
+      fetchFiles();
     } catch (error) {
       console.error("Error uploading files:", error);
     }
@@ -61,18 +73,22 @@ const FilePicker: React.FC = () => {
   });
 
   return (
-    <div
-      {...getRootProps()}
-      className={`dropzone ${isDragActive ? "active" : ""}`}
-    >
-      <input
-        type="file"
-        name="uploadedFiles"
-        multiple
-        id="file"
-        {...getInputProps()}
-      />
-      <p>Drag and drop files here or click to select files</p>
+    <div>
+      <div
+        {...getRootProps()}
+        className={`dropzone ${isDragActive ? "active" : ""}`}
+      >
+        <input
+          type="file"
+          name="uploadedFiles"
+          multiple
+          id="file"
+          {...getInputProps()}
+        />
+        <p>Drag and drop files here or click to select files</p>
+      </div>
+
+      
     </div>
   );
 };
