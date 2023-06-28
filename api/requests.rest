@@ -1,11 +1,35 @@
-GET http://localhost:4000/files
+GET http://localhost:4000/playlist/649bf827e9e3a5fa5a1e3112/songs
 
 ###
-POST http://localhost:4000/files/new
+POST http://localhost:4000/files/new-metadata
 Content-Type: application/json
 
 {
-    "fileName": "name1",
+    "fileName": "name1 ",
+    "fileNameFormatted": "name1%20",
+    "filePath": "path1",
+    "fileSize": 1,
+    "fileType": "type1"
+}
+
+### New Playlist
+POST http://localhost:4000/files/new-playlist
+Content-Type: application/json
+
+{
+  "name": "TestPlaylist",
+  "songs": [
+   
+  ]
+}
+
+### New songs in a playlist
+POST http://localhost:4000/playlist/649be399f45552c9394a52f3/add-songs/
+Content-Type: application/json
+
+{
+    "fileName": "name1 ",
+    "fileNameFormatted": "name1%20",
     "filePath": "path1",
     "fileSize": 1,
     "fileType": "type1"

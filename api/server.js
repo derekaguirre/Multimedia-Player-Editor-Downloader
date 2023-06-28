@@ -50,23 +50,50 @@ mongoose.connect(databaseUrl, { useNewUrlParser: true, useUnifiedTopology: true 
 app.listen(4000, () => {
   console.log("The application is listening on port " + 4000);
 });
+
+
+
 //-------------------------------------------------------------------------
 
 //API START
 //-------------------MONGO IMPLEMENTATIONS----------------------------------
 //Import model file(s)
-const FileModel = require('./models/FileModel');
+// const SongModel = require('./models/SongSchema');
+const PlaylistModel = require('./models/PlaylistSchema');
+const Playlist = require("./models/PlaylistSchema");
+// const ObjectId = mongoose.Types.ObjectId;
 
+// fileNameOriginal: metadata.fileNameOriginal,
+//       fileNameFormatted: metadata.fileNameFormatted,
+//       fileSize: metadata.fileSize,
+//       fileType: metadata.fileType,
+//       filePath: `${uploadDirectory}\\${metadata.fileNameOriginal}`,
 //Retrieve a list of all the files
-app.get('/files', async( req, res) => {
-  const files = await FileModel.find();
+// Get all songs in a playlist
+app.get('/playlist/:id/songs', async (req, res) => {
+  try {
+    const playlistId = req.params.id;
+    console.log("CHECKING GET", playlistId);
+    // Find the playlist by ID
+    const playlist = await PlaylistModel.findById(playlistId);
+    if (!playlist) {
+      return res.status(404).json({ error: 'Playlist not found' });
+    }
 
-  res.json(files);
-})
+    // Return the songs in the playlist
+    res.status(200).json(playlist.songs);
+    // console.log("CHECKING BODY", playlist.songs);
+
+  } catch (error) {
+    console.error('Error getting songs from playlist:', error);
+    res.status(500).json({ error: 'Failed to get songs from playlist' });
+  }
+});
+
 
 //Stores file metadata using mongodb
 app.post('/files/new-metadata', async (req, res) => {
-  const { metadataArray } = req.body; // Destructure the correct property
+  const { metadataArray } = req.body;
   console.log("SERVER BODY", metadataArray);
   
   try {
@@ -74,13 +101,13 @@ app.post('/files/new-metadata', async (req, res) => {
     const fileMetadataArray = metadataArray.map((metadata) => ({
       fileNameOriginal: metadata.fileNameOriginal,
       fileNameFormatted: metadata.fileNameFormatted,
-      filePath: uploadDirectory+"\\"+metadata.fileNameOriginal,
       fileSize: metadata.fileSize,
       fileType: metadata.fileType,
+      filePath: uploadDirectory+"\\"+metadata.fileNameOriginal,
     }));
 
     // Insert the file metadata documents into the database
-    await FileModel.insertMany(fileMetadataArray);
+    await SongModel.insertMany(fileMetadataArray);
 
     // Send a response
     res.status(200).send("File names stored successfully");
@@ -90,14 +117,95 @@ app.post('/files/new-metadata', async (req, res) => {
   }
 });
 
+app.post('/files/new-playlist', async (req, res) => {
+  try {
+    const playlistData = req.body;
+    const playlist = await PlaylistModel.create(playlistData);
+    res.status(201).json(playlist);
+  } catch (error) {
+    console.error('Error creating playlist:', error);
+    res.status(500).json({ error: 'Failed to create playlist' });
+  }
+});
+
+
+// Add Songs to specific playlist with a given id
+app.post('/playlist/:id/add-songs', async (req, res) => {
+  try {
+    const playlistId = req.params.id;
+    const metadataArray = req.body.metadataArray;
+    console.log("PLAYLIST ID", playlistId);
+    console.log("SERVER BODY", metadataArray);
+
+
+    // Find the playlist by ID
+    const playlist = await PlaylistModel.findById(playlistId);
+    if (!playlist) {
+      return res.status(404).json({ error: 'Playlist not found' });
+    }
+
+    // Create an array of all the metadata in the body
+    const fileMetadataArray = metadataArray.map((metadata) => ({
+      fileNameOriginal: metadata.fileNameOriginal,
+      fileNameFormatted: metadata.fileNameFormatted,
+      fileSize: metadata.fileSize,
+      fileType: metadata.fileType,
+      filePath: `${uploadDirectory}\\${metadata.fileNameOriginal}`,
+    }));
+
+    // Add the song documents to the playlist's songs array
+    playlist.songs.push(...fileMetadataArray);
+
+    // Save the updated playlist
+    await playlist.save();
+
+    res.status(200).json(playlist);
+  } catch (error) {
+    console.error('Error adding songs to playlist:', error);
+    res.status(500).json({ error: 'Failed to add songs to playlist' });
+  }
+});
+
+
+
+
 //Delete specific project by id
 app.delete('/files/delete/:id', async (req, res) => {
-	const result = await FileModel.findByIdAndDelete(req.params.id);
+	const result = await SongModel.findByIdAndDelete(req.params.id);
 	res.json({result});
 });
 
+
+//---------------------node-id3--------------------------------
+
+// const NodeID3 = require('node-id3');
+// const Playlist = require("./models/PlaylistSchema");
+
+// const filePath = 'E:\\GitHub Projects\\Multimedia Player-Editor-Downloader\\api\\uploads\\Coloring.mp3';
+
+// // Read the metadata from the MP3 file
+// const tags = NodeID3.read(filePath);
+
+// // Extract desired metadata properties
+// const title = tags.title;
+// const artist = tags.artist;
+// const album = tags.album;
+// const genre = tags.genre;
+
+// console.log('Title:', title);
+// console.log('Artist:', artist);
+// console.log('Album:', album);
+// console.log('Genre:', genre);
+
+//-------------------------------------------------------------------------------
+
+
+
 //FURTHER API documentation for future implementation: https://expressjs.com/en/api.html#routing-methods
 //------------------------------------------------------------------------------
+
+
+
 
 
 //----------------MULTER IMPLEMENTATION------------------
