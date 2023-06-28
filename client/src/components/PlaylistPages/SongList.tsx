@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from "axios";
+import { parseFile } from 'music-metadata';
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
+
+
 
 const API_URL = "http://localhost:4000";
 
@@ -31,7 +34,9 @@ const PlaylistPage: React.FC = () => {
 
   const fetchPlaylistData = async () => {
     try {
+      console.log("GET request happening at SongsList L37")
       const response: AxiosResponse<FileObject[]> = await axios.get(
+        
         `${API_URL}/files`
       );
       setSongs(response.data);
