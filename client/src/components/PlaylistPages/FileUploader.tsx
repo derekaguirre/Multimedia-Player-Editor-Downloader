@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import './FileUploader.scss';
 
 
 const API_URL = "http://localhost:4000";
@@ -77,7 +78,7 @@ const FileUploader: React.FC = () => {
       <div {...getRootProps()} className={`dropzone ${isDragActive ? "active" : ""}`}>
         {/* prettier-ignore */}
         <input type="file" name="uploadedFiles" multiple id="file" {...getInputProps()}/>
-        <p>Drag and drop files here or click to select files</p>
+        <h2>Drag and drop files here or click to select files</h2>
       </div>
     </div>
   );
