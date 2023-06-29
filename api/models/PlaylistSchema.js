@@ -1,37 +1,80 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const playListSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: false,
+    required: true,
   },
   songs: [
     {
       fileNameOriginal: {
         type: String,
-        required: false,
       },
       fileNameFormatted: {
         type: String,
-        required: false,
-      },
-      filePath: {
-        type: String,
-        required: false,
       },
       fileSize: {
         type: Number,
-        required: false,
       },
       fileType: {
         type: String,
-        required: false,
       },
+      filePath: {
+        type: String,
+      },
+      title: {
+        type: String,
+      },
+      isVisible: {
+        type: Boolean,
+        default: true,
+      },
+      isLiked: {
+        type: Boolean,
+        default: false,
+      },
+      artist: {
+        type: String,
+      },
+      album: {
+        type: String,
+      },
+      genre: {
+        type: String,
+      },
+      image: [
+        {
+          mime: {
+            type: String,
+          },
+          imageType: [
+            {
+              imageId: {
+                type: Number,
+              },
+              imageName: {
+                type: String,
+              },
+            },
+          ],
+          imageDescription: {
+            type: String,
+          },
+          imageBuffer: {
+            type: Buffer,
+          },
+          _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            auto: true,
+          },
+        },
+      ],
+
       _id: {
         type: mongoose.Schema.Types.ObjectId,
         auto: true,
       },
-    }
+    },
   ],
   _id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +82,6 @@ const playListSchema = new mongoose.Schema({
   },
 });
 
-const Playlist = mongoose.model('Playlist', playListSchema);
+const Playlist = mongoose.model("Playlist", playListSchema);
 
 module.exports = Playlist;
