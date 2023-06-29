@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const date = new Date();
 
 const playListSchema = new mongoose.Schema({
   name: {
@@ -22,8 +23,8 @@ const playListSchema = new mongoose.Schema({
       filePath: {
         type: String,
       },
-      title: {
-        type: String,
+      dateAdded: {
+        type: Date,
       },
       isVisible: {
         type: Boolean,
@@ -32,6 +33,9 @@ const playListSchema = new mongoose.Schema({
       isLiked: {
         type: Boolean,
         default: false,
+      },
+      title: {
+        type: String,
       },
       artist: {
         type: String,
@@ -69,7 +73,6 @@ const playListSchema = new mongoose.Schema({
           },
         },
       ],
-
       _id: {
         type: mongoose.Schema.Types.ObjectId,
         auto: true,

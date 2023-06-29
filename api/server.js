@@ -196,14 +196,13 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
       const filePath = `${uploadDirectory}\\${metadata.fileNameOriginal}`;
       const tags = NodeID3.read(filePath);
       // console.log("IMAGE BEFORE PROCESSING", tags.image.type.name);
-
       const imageDataArr = {
         mime: tags.image.mime || " ",
         imageType: {
           imageId: tags.image.type.id || 0,
           imageName: tags.image.type.name || " ",
         },
-        description: tags.image.description || " ",
+        imageDescription: tags.image.description || " ",
         imageBuffer: tags.image.imageBuffer || Buffer.alloc(0),
       };
       //Create the song object with extracted metadata
@@ -213,6 +212,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         fileSize: metadata.fileSize,
         fileType: metadata.fileType,
         filePath: filePath,
+        dateAdded: new Date(),
         isVisible: true,
         isLiked: false,
         title: tags.title || "",
