@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 
 
 const API_URL = "http://localhost:4000";
-const playlistId = "649c052856b16c8ca7227c35";
+const playlistId = "649d19aeb03e964fd85d6740";
 
 interface FileObject {
   _id: string;
@@ -47,15 +47,17 @@ const FileUploader: React.FC = () => {
         fileType: file.type,
       }));
 
+
+      // Post the file (make a copy) to the uploads folder in the api
+      await axios.post(`${API_URL}/playlist/new-file`, fileObj);
+      console.log("File(s) uploaded successfully!");
+
       //Post the metadata to mongo
-      console.log("METADATA", metadataArray);
-      //USING HARDCODED PLAYLIST IDs: 649bf827e9e3a5fa5a1e3112
+      console.log("METADATA FROM FRONT END", metadataArray);
       await axios.post(`${API_URL}/playlist/${playlistId}/add-songs`, { metadataArray });
       console.log("File metadata stored successfully!");
 
-      // Post the file (make a copy) to the uploads folder in the api
-      const response = await axios.post(`${API_URL}/files/new`, fileObj);
-      console.log("File(s) uploaded successfully!");
+      
     } catch (error) {
       console.error("Error uploading files:", error);
     }
