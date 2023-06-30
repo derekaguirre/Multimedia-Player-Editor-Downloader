@@ -1,0 +1,47 @@
+$playlistTableHeight: 400px;
+
+.playlistTable {
+  height: $playlistTableHeight;
+  width: 100vw; // Use viewport width instead of 100%
+  box-sizing: border-box;
+  overflow: auto;
+  border-collapse: collapse;
+
+  table {
+    width: 100%; // Use relative width
+    border: none;
+    border-collapse: collapse;
+
+    th {
+      font-weight: bold;
+      text-align: left;
+    }
+
+    td {
+      padding: 8px;
+      text-align: left;
+      color: #aba5a5;
+      border: none;
+    }
+  }
+
+  thead {
+    padding: 8px;
+    position: sticky;
+    top: 0;
+    background-color: rgba(242, 242, 242, 0.8);
+
+    th {
+      font-weight: bold;
+      text-align: left;
+    }
+  }
+
+  tbody {
+    tr {
+      &:hover {
+        background-color: rgba(42, 42, 42, 0.8);
+      }
+    }
+  }
+}

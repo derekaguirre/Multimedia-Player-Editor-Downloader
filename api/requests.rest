@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ### New songs in a playlist
-POST http://localhost:4000/playlist/649be399f45552c9394a52f3/add-songs/
+POST http://localhost:4000/playlist/649d7447e7a0d197e0bb6d3c/add-songs/
 Content-Type: application/json
 
 {

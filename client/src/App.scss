@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+.App {
+  display: flex;
+}
+
+.sidebar-toggle-button {
+  position: absolute;
+  padding: 15px;
+  top: 20px; //location of the button
+  left: 200px; 
+  z-index: 2;
+}
+
+.hidden {
+  display: none;
+}

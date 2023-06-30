@@ -6,7 +6,7 @@ interface Props{
     setSearchIn: React.Dispatch<React.SetStateAction<string | number>>;
 }
 
-const InputField: React.FC<Props> = ({searchIn, setSearchIn}: Props) => {
+const SearchBar: React.FC<Props> = ({searchIn, setSearchIn}: Props) => {
   return (
     <form className="input" >
       <input className="input__box" type="input"
@@ -18,4 +18,4 @@ const InputField: React.FC<Props> = ({searchIn, setSearchIn}: Props) => {
   );
 };
 
-export default InputField;
+export default SearchBar;

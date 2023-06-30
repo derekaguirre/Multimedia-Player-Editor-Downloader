@@ -1,0 +1,118 @@
+* {
+    // margin: 0;
+    // padding: 0;
+    // box-sizing: 0;
+    // background-color: magenta;
+}
+html, body{
+    // width: 100%;
+    // height: 100%;
+}
+
+.sidebar {
+    //Needed but this is what's empty
+    width: 100px;
+    //This makes the black come back on the list
+    height: 100vh;
+    // height: 100%;
+    overflow-x: hidden;
+    position: sticky;
+    //disable highlighting
+    user-select: none;
+
+
+    background-color: #000000;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+    min-width: 100px;
+    max-width: 400px;
+    flex-shrink: 0;
+    top: 0;
+    left: 0;
+
+    &.open {
+        transform: translateX(0);
+    }
+
+    &.closed {
+        transform: translateX(-100%);
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        display: flex;
+        justify-content: flex-end;
+        padding: 15px;
+        border: solid;
+        border-radius: 10px;
+        border-color: black;
+        &:hover {
+            cursor: pointer;
+            background-color: rgb(179, 170, 159);
+        }
+    }
+
+    // .resizable-content {
+    //     width: 100%;
+    //     height: 100%;
+    //     overflow: auto;
+    //     /* Add additional styling for the resizable content if needed */
+    // }
+}
+
+.resizer {
+    // actual size will be 1px but it can be selected up to 10px away
+    width: 10px;
+    top: 0;
+    right: 0;
+    cursor: col-resize;
+    height: 100%;
+    position: absolute;
+    background-color: limegreen;
+    &:hover {
+        background-color: rgba(114, 114, 114, 0.8);
+    }
+}
+
+.header {
+    padding: 22px 11px;
+    background-color: lightgrey;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.header h3 {
+    color: indigo;
+}
+.playlist-items li {
+    color: white;
+}
+.playlist-items ul {
+    padding: 11px 0px;
+    list-style: none;
+}
+
+ul li {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+ul li:hover {
+    background-color: rgb(150, 142, 132);
+}
+
+
+.sidebar-closed {
+  // Styles for the closed state div
+}
+
+.open-button {
+  // Styles for the button
+}

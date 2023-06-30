@@ -247,10 +247,12 @@ app.delete("/files/delete/:id", async (req, res) => {
 //FURTHER API documentation for future implementation: https://expressjs.com/en/api.html#routing-methods
 //------------------------------------------------------------------------------
 
-//When adding a song, prevent duplicates
 //Like a song
 //Hide a song
 //Detele a song in a playlist
+//Adding an image to a playlist
+//Playlist description changing
+//Change playlist name
 //Update/set song metadata
 //Update file name
 //Get a picture MAYBE

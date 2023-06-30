@@ -5,7 +5,7 @@ import './FileUploader.scss';
 
 
 const API_URL = "http://localhost:4000";
-const playlistId = "649d5278681cd4a4ad3a1645";
+const playlistId = "649d7447e7a0d197e0bb6d3c";
 
 interface FileObject {
   _id: string;

@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from "axios";
-import { MouseEvent } from "react";
-
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-import ContextMenu from "./ContextMenu/ContextMenu";
+
+import ContextMenu from "../context-menu/ContextMenu";
+// import SearchBar from "../search-bar/SearchBar";
+import "./MusicTable.scss";
 
 const API_URL = "http://localhost:4000";
-const playlistId = "649d5278681cd4a4ad3a1645";
+const playlistId = "649d7447e7a0d197e0bb6d3c";
 
 //Defining all the information stored in DB for reference
 interface ImageTypeObject {
@@ -145,7 +146,7 @@ const PlaylistPage: React.FC = () => {
           handleContextMenu(e);
         }}
       >
-        <table>
+        <table style = {{width: '100%' }}>
           <thead>
             {/* prettier-ignore */}
             <tr>
