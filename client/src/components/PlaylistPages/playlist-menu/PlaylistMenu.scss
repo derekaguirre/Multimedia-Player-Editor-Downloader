@@ -11,7 +11,7 @@ html, body{
 
 .sidebar {
     //Needed but this is what's empty
-    width: 100px;
+    width: 0;
     //This makes the black come back on the list
     height: 100vh;
     // height: 100%;
@@ -22,21 +22,25 @@ html, body{
 
 
     background-color: #000000;
-    transition: transform 0.3s ease;
-    transform: translateX(-100%);
-    min-width: 100px;
+    transition: width 0.3s ease;
+    transform: translatX(-100%);
+    min-width: 0px;
     max-width: 400px;
     flex-shrink: 0;
     top: 0;
     left: 0;
 
     &.open {
-        transform: translateX(0);
-    }
-
-    &.closed {
-        transform: translateX(-100%);
-    }
+        width: 400px;
+      }
+    
+      &.closed {
+        width: 0;
+        padding: 0;
+        margin: 0;
+        visibility: hidden;
+        overflow: hidden;
+      }
 
     .close-button {
         position: absolute;

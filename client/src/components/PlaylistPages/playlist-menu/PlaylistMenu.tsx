@@ -11,17 +11,25 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState(false);
 
+  const hideSidebar = () => {
+    if (sidebarRef.current) {
+      sidebarRef.current.style.width = "0";
+    }
+  };
+
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`} ref={sidebarRef}>
       <Resizer
         sidebarRef={sidebarRef}
         isResizing={isResizing}
         setIsResizing={setIsResizing}
+        hideSidebar={hideSidebar} // Pass the hideSidebar function
       />
+
       <div className="header">
         <h3>Playlist Menu</h3>
       </div>
-      <div className="close-button" onClick={toggleSidebar}>
+      <div className="close-button" onClick={hideSidebar}>
         X
       </div>
       <div className="playlist-items">
