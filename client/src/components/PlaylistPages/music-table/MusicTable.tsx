@@ -121,11 +121,17 @@ const PlaylistPage: React.FC = () => {
     const {pageX, pageY} = e
     setContextMenu({show: true, x: pageX, y: pageY})
   }
-  const contextMenuClose = () => setContextMenu(initialContextMenu)
+  const contextMenuClose = () => setContextMenu(initialContextMenu);
 
   return (
     <div>
-      {contextMenu.show && <ContextMenu x = {contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>}
+      {contextMenu.show && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          closeContextMenu={contextMenuClose}
+        />
+      )}
 
       <h1>Playlist</h1>
       <div className="filePlayer">
@@ -146,30 +152,16 @@ const PlaylistPage: React.FC = () => {
           handleContextMenu(e);
         }}
       >
-        <table style = {{width: '100%' }}>
+        <table style={{ width: "100%" }}>
           <thead>
             {/* prettier-ignore */}
             <tr>
-              <th onClick={() => handleSort("_id")}>
-                FileID{" "}
-                <SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/>
-              </th>
-              <th onClick={() => handleSort("fileNameOriginal")}>
-                File Name{" "}
-                <SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/>
-              </th>
-              <th onClick={() => handleSort("filePath")}>
-                File Path{" "}
-                <SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/>
-              </th>
-              <th onClick={() => handleSort("fileSize")}>
-                File Size{" "}
-                <SortArrow order={sortColumn === "fileSize" ? sortDirection : undefined}/>
-              </th>
-              <th onClick={() => handleSort("fileType")}>
-                File Type{" "}
-                <SortArrow order={sortColumn === "fileType" ? sortDirection : undefined}/>
-              </th>
+              <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th>
+              <th onClick={() => handleSort("fileNameOriginal")}>File Name{" "}<SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/></th>
+              <th onClick={() => handleSort("title")}>Title{" "}<SortArrow order={sortColumn === "title" ? sortDirection : undefined}/></th>
+              <th onClick={() => handleSort("artist")}>Artist{" "}<SortArrow order={sortColumn === "artist" ? sortDirection : undefined}/></th>
+              <th onClick={() => handleSort("album")}>Album{" "}<SortArrow order={sortColumn === "album" ? sortDirection : undefined}/></th>
+              <th onClick={() => handleSort("filePath")}>filePath{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th>
               <th></th>
             </tr>
           </thead>
@@ -179,9 +171,10 @@ const PlaylistPage: React.FC = () => {
                 <tr key={file._id}>
                   <td>{file._id}</td>
                   <td>{file.fileNameOriginal}</td>
+                  <td>{file.title}</td>
+                  <td>{file.artist}</td>
+                  <td>{file.album}</td>
                   <td>{file.filePath}</td>
-                  <td>{file.fileSize}</td>
-                  <td>{file.fileType}</td>
                   <td id="playButtonEntry">
                     {/* prettier-ignore */}
                     <button onClick={() => handlePlay(`${API_URL}/uploads/${file.fileNameFormatted}` ) }>
