@@ -236,7 +236,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
   }
 });
 
-//Delete specific project by id
+//Delete specific playlist by id
 app.delete("/files/delete/:id", async (req, res) => {
   const result = await SongModel.findByIdAndDelete(req.params.id);
   res.json({ result });
@@ -249,7 +249,7 @@ app.delete("/files/delete/:id", async (req, res) => {
 
 //Like a song
 //Hide a song
-//Detele a song in a playlist
+//Delete a song in a playlist
 //Adding an image to a playlist
 //Playlist description changing
 //Change playlist name

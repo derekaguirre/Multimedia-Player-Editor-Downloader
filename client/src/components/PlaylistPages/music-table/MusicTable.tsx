@@ -48,6 +48,11 @@ const initialContextMenu = {
   y: 0,
 };
 
+//Migrate fetch to own file and invoke at:
+// startup
+// playlist selection
+// adding songs
+
 const PlaylistPage: React.FC = () => {
   //Local states
   const [songs, setSongs] = useState<SongObject[]>([]);
