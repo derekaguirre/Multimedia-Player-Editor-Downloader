@@ -51,7 +51,7 @@ const App: React.FC = () => {
             Open Sidebar in App
           </button>
         )}
-        <AppRouter />
+        <PlaylistMain />
       </div>
       </div>
       
