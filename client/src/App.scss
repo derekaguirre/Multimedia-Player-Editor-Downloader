@@ -2,17 +2,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 
 .App {
+  // border: 4px solid #d5b918;
+  // overflow: auto; // Hide any content that overflows horizontally
+  max-width: 100%; // Limit the maximum width to 100% of the parent container
+  flex-grow: 1; // Allow the content container to grow and fill the available space
+  width: 100vw;
   display: flex;
+  flex-direction: row;
+  flex-grow: 1;
 }
 
 .sidebar-toggle-button {
-  position: absolute;
+  position: relative;
   padding: 15px;
   top: 20px; //location of the button
-  left: 200px; 
+  left: 200px;
   z-index: 2;
 }
 
 .hidden {
   display: none;
+}
+
+.sidebar-container{
+  // border: 4px solid #31bdd2;
 }

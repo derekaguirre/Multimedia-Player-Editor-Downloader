@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
-import PlaylistMenu from "./components/PlaylistPages/playlist-menu/PlaylistMenu";
+import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
+import Sidebar from "./components/side-bar/Sidebar";
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -31,7 +32,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <div className="sidebar-container">
-        <PlaylistMenu isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       </div>
       <div className="content-container">
         {/* prettier-ignore */}

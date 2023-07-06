@@ -129,7 +129,7 @@ const PlaylistPage: React.FC = () => {
   const contextMenuClose = () => setContextMenu(initialContextMenu);
 
   return (
-    <div>
+    <div className="tableElementContainer">
       {contextMenu.show && (
         <ContextMenu
           x={contextMenu.x}
@@ -138,7 +138,6 @@ const PlaylistPage: React.FC = () => {
         />
       )}
 
-      <h1>Playlist</h1>
       <div className="filePlayer">
         {playingFile && (
           <ReactPlayer
@@ -161,31 +160,31 @@ const PlaylistPage: React.FC = () => {
           <thead>
             {/* prettier-ignore */}
             <tr>
+              <th></th>
               <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("fileNameOriginal")}>File Name{" "}<SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("title")}>Title{" "}<SortArrow order={sortColumn === "title" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("artist")}>Artist{" "}<SortArrow order={sortColumn === "artist" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("album")}>Album{" "}<SortArrow order={sortColumn === "album" ? sortDirection : undefined}/></th>
-              <th onClick={() => handleSort("filePath")}>filePath{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th>
-              <th></th>
+              <th onClick={() => handleSort("filePath")}>File Path{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th>
             </tr>
           </thead>
           <tbody>
             {songs && songs.length > 0 ? (
               songs.map((file) => (
                 <tr key={file._id}>
-                  <td>{file._id}</td>
-                  <td>{file.fileNameOriginal}</td>
-                  <td>{file.title}</td>
-                  <td>{file.artist}</td>
-                  <td>{file.album}</td>
-                  <td>{file.filePath}</td>
                   <td id="playButtonEntry">
                     {/* prettier-ignore */}
                     <button onClick={() => handlePlay(`${API_URL}/uploads/${file.fileNameFormatted}` ) }>
                       Play
                     </button>
                   </td>
+                  <td>{file._id}</td>
+                  <td>{file.fileNameOriginal}</td>
+                  <td>{file.title}</td>
+                  <td>{file.artist}</td>
+                  <td>{file.album}</td>
+                  <td>{file.filePath}</td>
                 </tr>
               ))
             ) : (

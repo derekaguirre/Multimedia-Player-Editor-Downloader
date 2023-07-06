@@ -1,15 +1,6 @@
-* {
-    // margin: 0;
-    // padding: 0;
-    // box-sizing: 0;
-    // background-color: magenta;
-}
-html, body{
-    // width: 100%;
-    // height: 100%;
-}
 
 .sidebar {
+    // border: 4px solid #b73da9;
     //Needed but this is what's empty
     width: 0;
     //This makes the black come back on the list
@@ -20,8 +11,7 @@ html, body{
     //disable highlighting
     user-select: none;
 
-
-    background-color: #000000;
+    background-color: #481c1c;
     transition: width 0.3s ease;
     transform: translatX(-100%);
     min-width: 0px;
@@ -32,15 +22,15 @@ html, body{
 
     &.open {
         width: 400px;
-      }
-    
-      &.closed {
+    }
+
+    &.closed {
         width: 0;
         padding: 0;
         margin: 0;
         visibility: hidden;
         overflow: hidden;
-      }
+    }
 
     .close-button {
         position: absolute;
@@ -74,7 +64,7 @@ html, body{
     cursor: col-resize;
     height: 100%;
     position: absolute;
-    background-color: limegreen;
+    background-color: rgb(85, 85, 85);
     &:hover {
         background-color: rgba(114, 114, 114, 0.8);
     }
@@ -106,17 +96,18 @@ ul li {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    & li:hover {
+        background-color: rgb(150, 142, 132);
+    }
 }
 
-ul li:hover {
-    background-color: rgb(150, 142, 132);
-}
 
 
 .sidebar-closed {
-  // Styles for the closed state div
+    // Styles for the closed state div
+    border: 4px solid #ff00fb;
+    width: 0;
 }
 
-.open-button {
-  // Styles for the button
-}
+

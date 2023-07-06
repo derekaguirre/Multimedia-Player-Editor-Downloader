@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import "./PlaylistMenu.scss";
 import Resizer from "./Resizer";
+import "./Sidebar.scss";
 
 interface SidebarProps {
   isOpen: boolean;
