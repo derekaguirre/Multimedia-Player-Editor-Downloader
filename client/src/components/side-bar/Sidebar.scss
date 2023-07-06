@@ -1,16 +1,14 @@
-
 .sidebar {
-    // border: 4px solid #b73da9;
-    //Needed but this is what's empty
-    width: 0;
+    //used inside of the div inside of app
+    border: 4px solid #b73da9;
     //This makes the black come back on the list
     height: 100vh;
     // height: 100%;
+    flex-grow: 0;
     overflow-x: hidden;
     position: sticky;
     //disable highlighting
     user-select: none;
-
     background-color: #481c1c;
     transition: width 0.3s ease;
     transform: translatX(-100%);
@@ -80,34 +78,33 @@
 .header h3 {
     color: indigo;
 }
-.playlist-items li {
-    color: white;
-}
-.playlist-items ul {
-    padding: 11px 0px;
-    list-style: none;
-}
+.playlist-items {
+    ul li {
+        font-size: 20px;
+        font-weight: 500;
+        padding: 5px 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-ul li {
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 5px 11px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
+    li {
+        color: white;
+    }
     & li:hover {
+        cursor: pointer;
         background-color: rgb(150, 142, 132);
     }
+    ul {
+        background-color: #9b6262;
+        //need to center
+        padding: 30px 20px;
+        list-style: none;
+    }
 }
-
-
 
 .sidebar-closed {
     // Styles for the closed state div
     border: 4px solid #ff00fb;
-    width: 0;
+    width: 1;
 }
-
-

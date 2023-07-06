@@ -3,6 +3,9 @@ import "./App.scss";
 import AppRouter from "./Router/AppRouter";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
 import Sidebar from "./components/side-bar/Sidebar";
+import NextIcon from "./images/next.svg";
+import PlayIcon from "./images/play.svg";
+import PrevIcon from "./images/prev.svg";
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -31,18 +34,43 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
+      {/* TOP OF THE PAGE */}
+      <div className ="top-page">
+        {/* SIDE BAR */}
       <div className="sidebar-container">
         <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       </div>
+      {/* PAGE CONTENT */}
       <div className="content-container">
         {/* prettier-ignore */}
         {isButtonVisible && (
-          <button className={`sidebar-toggle-button ${sidebarOpen ? "hidden" : ""}`} onClick={toggleSidebar}>
+          <button
+            className={`sidebar-toggle-button ${sidebarOpen ? "hidden" : ""}`}
+            onClick={toggleSidebar}
+          >
             Open Sidebar in App
           </button>
         )}
-
         <AppRouter />
+      </div>
+      </div>
+      
+      {/* BOTTOM OF THE PAGE */}
+      {/* PLAY BAR */}
+      <div className="music-controller-container">
+        <div className="beginTime">beginTime</div>
+        <div className="playBar"></div>
+        <div className="endTime">endTime</div>
+        <br></br>
+        <div className="PrevButton">
+          <img src={PrevIcon} width={30} height={30} />
+        </div>
+        <div className="PlayButton">
+          <img src={PlayIcon} width={30} height={30} />
+        </div>
+        <div className="NextButton">
+          <img src={NextIcon} width={30} height={30} />
+        </div>
       </div>
     </div>
   );

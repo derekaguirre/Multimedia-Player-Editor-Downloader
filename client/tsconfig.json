@@ -23,6 +23,9 @@
   },
   "include": [
     "src",
-    "client/electron-app/**/*pp/**/*", "client/components",
+    "client/electron-app/**/*pp/**/*",
+    "client/components",
+    "client/images",
+    "client/**/*.ts",
   ]
 }
