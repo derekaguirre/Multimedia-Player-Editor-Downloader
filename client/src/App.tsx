@@ -35,42 +35,41 @@ const App: React.FC = () => {
   return (
     <div className="App">
       {/* TOP OF THE PAGE */}
-      <div className ="top-page">
+      <div className="top-page">
         {/* SIDE BAR */}
-      <div className="sidebar-container">
-        <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        <div className="sidebar-container">
+          <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        </div>
+        {/* PAGE CONTENT */}
+        <div className="content-container">
+          {/* prettier-ignore */}
+          {isButtonVisible && (
+            <button
+              className={`sidebar-toggle-button ${sidebarOpen ? "hidden" : ""}`}
+              onClick={toggleSidebar}
+            >
+              Open Sidebar in App
+            </button>
+          )}
+          <PlaylistMain />
+        </div>
       </div>
-      {/* PAGE CONTENT */}
-      <div className="content-container">
-        {/* prettier-ignore */}
-        {isButtonVisible && (
-          <button
-            className={`sidebar-toggle-button ${sidebarOpen ? "hidden" : ""}`}
-            onClick={toggleSidebar}
-          >
-            Open Sidebar in App
-          </button>
-        )}
-        <PlaylistMain />
-      </div>
-      </div>
-      
+
       {/* BOTTOM OF THE PAGE */}
       {/* PLAY BAR */}
+      {/* prettier-ignore */}
       <div className="music-controller-container">
-        <div className="beginTime">beginTime</div>
-        <div className="playBar"></div>
-        <div className="endTime">endTime</div>
-        <br></br>
-        <div className="PrevButton">
-          <img src={PrevIcon} width={30} height={30} />
+      <div className="songButtonElements">
+          <div className="PrevButton"><img src={PrevIcon} width={30} height={30} /></div>
+          <div className="PlayButton"><img src={PlayIcon} width={30} height={30} /></div>
+          <div className="NextButton"><img src={NextIcon} width={30} height={30} /></div>
         </div>
-        <div className="PlayButton">
-          <img src={PlayIcon} width={30} height={30} />
+        <div className="songTimeElements">
+          <div className="currTime">0:00</div>
+          <div className="playBar"></div>
+          <div className="endTime">4:00</div>
         </div>
-        <div className="NextButton">
-          <img src={NextIcon} width={30} height={30} />
-        </div>
+        
       </div>
     </div>
   );

@@ -12,8 +12,8 @@ interface FileObject {
   fileNameOriginal: string; //NEEDED
   fileNameFormatted: string; //NEEDED
   filePath: string; //Might be needed for deleting
-  fileSize: number; //Not needed
-  fileType: string; //Not needed
+  fileSize: number; //Not utilized yet
+  fileType: string; //Not utilized yet
 }
 interface SongObject {
   duration?: unknown; // New property for storing duration
