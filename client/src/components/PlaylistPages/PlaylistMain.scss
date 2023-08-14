@@ -5,14 +5,22 @@
   height: 100%;
   box-sizing: content-box;
   background-color: #293375;
-  background: rgb(108, 108, 108);
-  background: linear-gradient(180deg, rgba(108, 108, 108, 1) 0%, rgba(90, 90, 90, 1) 20%, rgba(18, 18, 18, 1) 70%);
-  h1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(75, 75, 75);
+  background: rgb(18, 18, 18);
+  // background: rgb(108, 108, 108);
+
+  .header {
+    background-color: #6a7c81;
+    // background: linear-gradient(180deg, #6c6c6c 0%, #5a5a5a 2%, #121212 90%);
+    background: linear-gradient(180deg, #b3d1d9 0%, #a2bdc4 2%, #8ca4aa 10%, #6a7c80 60%, #6a7c81 80%);
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #e3e0e0;
+    }
   }
+
   .PlaylistTableContainer {
     // border: 4px solid #5752b3;
     bottom: 0;
