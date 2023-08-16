@@ -5,25 +5,22 @@
 
 ::-webkit-scrollbar {
   width: 0.7em; // width of the entire scrollbar
-  
+
   &-track {
     background: #a7a7a7; // color of the tracking area
     opacity: 0;
     width: 0px;
-    
   }
 
   &-thumb {
     background-color: #575757; // color of the scroll thumb
     border-radius: 20px; // roundness of the scroll thumb
     // border: 3px solid rgb(158, 156, 156); // creates padding around scroll thumb
-    &:hover{
+    &:hover {
       background-color: #444444; // color of the tracking area
     }
   }
-  
 }
-
 
 //ENTIRE APP STYLING
 .App {
@@ -39,9 +36,9 @@
   flex-grow: 1;
   height: 100%;
 
-  .sidebar-container {
-    // border: 4px solid #31bdd2;
-  }
+  // .sidebar-container {
+  //   // border: 4px solid #31bdd2;
+  // }
   .content-container {
     // border: 4px solid #697423;
     display: flex;
@@ -94,8 +91,8 @@
   .songButtonElements {
     display: flex;
     flex-direction: row;
-    margin-bottom: 12px;
-    margin-top: 12px;
+    margin-bottom: 22px;
+    margin-top: 5px;
 
     .PrevButton,
     .NextButton,

@@ -13,14 +13,13 @@ const ContextMenu: FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
   useOnClickOutside(contextMenuRef, closeContextMenu);
 
   const menuStyle: React.CSSProperties = {
-    position: "absolute",
+    position: "fixed",
     top: `${y - 20}px`,
     left: `${x + 20}px`,
     zIndex: 20,
   };
 
   return (
-    
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
       <div className="item"> Option 1</div>
       <div className="item"> Option 2</div>
