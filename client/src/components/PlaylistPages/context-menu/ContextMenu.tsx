@@ -21,11 +21,10 @@ const ContextMenu: FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
 
   return (
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
-      <div className="item"> Option 1</div>
-      <div className="item"> Option 2</div>
-      <div className="item"> Option 3</div>
-      <div className="item"> Option 4</div>
-      <div className="item"> Option 5</div>
+      <div className="item">Like</div>
+      <div className="item">Edit</div>
+      <div className="item">Hide</div>
+      <div className="item">Delete</div>
     </div>
   );
 };
