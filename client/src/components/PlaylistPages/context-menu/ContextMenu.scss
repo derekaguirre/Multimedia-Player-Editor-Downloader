@@ -1,9 +1,11 @@
+
 .item {
     z-index: 0;
     width: 150px;
     background: #393939;
     border-color: #3b72a3;
     color: #aba5a5;
+    cursor: pointer;
     &:hover {
         background-color: #5d5d5d;
     }

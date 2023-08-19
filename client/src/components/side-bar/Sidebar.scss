@@ -1,6 +1,11 @@
+.header{
+    background-color: #000000;
+    color:white;
+}
+
 .sidebar {
     //used inside of the div inside of app
-    border: 4px solid #b73da9;
+    // border: 4px solid #b73da9;
     //This makes the black come back on the list
     height: 100vh;
     // height: 100%;
@@ -9,7 +14,7 @@
     position: sticky;
     //disable highlighting
     user-select: none;
-    background-color: #481c1c;
+    background-color: #000000;
     transition: width 0.3s ease;
     transform: translatX(-100%);
     min-width: 0px;
@@ -39,10 +44,12 @@
         padding: 15px;
         border: solid;
         border-radius: 10px;
-        border-color: black;
+        background-color: #d3d3d3;
+        border-color: #000000;
+        
         &:hover {
             cursor: pointer;
-            background-color: rgb(179, 170, 159);
+            background-color: #a4a4a4;
         }
     }
 
@@ -64,19 +71,19 @@
     position: absolute;
     background-color: rgb(85, 85, 85);
     &:hover {
-        background-color: rgba(114, 114, 114, 0.8);
+        background-color: #5d5d5d;
     }
 }
 
 .header {
     padding: 22px 11px;
-    background-color: lightgrey;
+    background-color: #d3d3d3;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 .header h3 {
-    color: indigo;
+    color: #b3b3b3;
 }
 .playlist-items {
     ul li {
@@ -89,22 +96,22 @@
     }
 
     li {
-        color: white;
+        color: #b3b3b3;
     }
     & li:hover {
         cursor: pointer;
-        background-color: rgb(150, 142, 132);
+        background-color: #5d5d5d;
     }
     ul {
-        background-color: #9b6262;
+        background-color: #000000;
         //need to center
-        padding: 30px 20px;
+        padding: 30px 10px;
         list-style: none;
     }
 }
 
 .sidebar-closed {
     // Styles for the closed state div
-    border: 4px solid #ff00fb;
+    // border: 4px solid #ff00fb;
     width: 1;
 }
