@@ -32,6 +32,8 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       <div className="close-button" onClick={hideSidebar}>
         X
       </div>
+      {/* Populate with playlist names from backend */}
+      {/* May also need own context menu for editing playlist info or deleting a playlist */}
       <div className="playlist-items">
         <ul>
           <li>Item 1</li>

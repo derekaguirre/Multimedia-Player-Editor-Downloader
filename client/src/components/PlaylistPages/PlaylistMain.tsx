@@ -3,6 +3,9 @@ import "./PlaylistMain.scss";
 import FileUploader from "./file-uploader/FileUploader";
 import MusicTable from "./music-table/MusicTable";
 
+//Pass current playlist name here consider refactoring musictable into here if overhead too large
+//Pass fileuploader to encompass the whole page and only accept drops
+//File uploader will be used again inside of settings with more visible usage i.e. button and dragging.
 function PlaylistMain() {
   return (
     <div className="PlaylistMain">
