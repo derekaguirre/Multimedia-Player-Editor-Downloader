@@ -29,6 +29,7 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       <div className="header">
         <h3>Playlist Menu</h3>
       </div>
+      {/* Change button to svg and update styling */}
       <div className="close-button" onClick={hideSidebar}>
         X
       </div>
