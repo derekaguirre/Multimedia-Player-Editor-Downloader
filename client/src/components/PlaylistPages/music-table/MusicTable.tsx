@@ -6,7 +6,14 @@ import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
 
+
+
 const API_URL = "http://localhost:4000";
+
+
+
+
+
 const playlistId = "649d7447e7a0d197e0bb6d3c";
 
 //Defining all the information stored in DB for reference
@@ -66,19 +73,31 @@ const PlaylistPage: React.FC = () => {
 
   useEffect(() => {
     fetchPlaylistData(playlistId);
+    fetchAllPlaylists();
   }, []);
 
   const fetchPlaylistData = async (playlistId: string) => {
     try {
       // prettier-ignore
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
+
       console.log("FRONTEND METADATA: ", response.data);
+      console.log("ALL PLAYLISTS")
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
   };
 
+  const fetchAllPlaylists = async () => {
+    try {
+      // prettier-ignore
+      const response = await axios.get(`${API_URL}/playlist/all`);
+      console.log("ALL PLAYLISTS : ", response.data);
+    } catch (error) {
+      console.error("Error fetching playlist data:", error);
+    }
+  };
   const handlePlay = (file: string) => {
     console.log("Can file play? ", ReactPlayer.canPlay(file));
     console.log("Attempting to play: ", file);

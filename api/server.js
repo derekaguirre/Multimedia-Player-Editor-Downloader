@@ -119,6 +119,17 @@ app.get("/playlist/:id/songs", async (req, res) => {
     res.status(500).json({ error: "Failed to get songs from playlist" });
   }
 });
+// Define a route to retrieve all playlists
+app.get('/playlist/all', async (req, res) => {
+  try {
+    const playlists = await PlaylistModel.find();
+    console.log("server playlists")
+    res.json(playlists);
+  } catch (error) {
+    console.error('Error fetching playlists:', error);
+    res.status(500).json({ error: 'Failed to fetch playlists' });
+  }
+});
 
 //Stores file metadata using mongodb
 // app.post("/files/new-metadata", async (req, res) => {
@@ -145,9 +156,6 @@ app.get("/playlist/:id/songs", async (req, res) => {
 //     res.status(500).send("Error storing file names");
 //   }
 // });
-
-//Create a new blank playlist
-
 
 //Create a new empty playlist
 app.post("/files/new-playlist", async (req, res) => {
