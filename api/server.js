@@ -100,7 +100,7 @@ app.use("/uploads", express.static("uploads"));
 //Import model file(s)
 const PlaylistModel = require("./models/PlaylistSchema");
 
-// Get all songs in a playlist
+// Fetch all songs in a playlist
 app.get("/playlist/:id/songs", async (req, res) => {
   try {
     const playlistId = req.params.id;
@@ -119,15 +119,15 @@ app.get("/playlist/:id/songs", async (req, res) => {
     res.status(500).json({ error: "Failed to get songs from playlist" });
   }
 });
-// Define a route to retrieve all playlists
-app.get('/playlist/all', async (req, res) => {
+// Fetch all playlist names and IDs
+app.get('/playlist/names', async (req, res) => {
   try {
-    const playlists = await PlaylistModel.find();
-    console.log("server playlists")
+    console.log("Server fetching playlist names/ids")
+    const playlists = await PlaylistModel.find({}, '_id name');
     res.json(playlists);
   } catch (error) {
-    console.error('Error fetching playlists:', error);
-    res.status(500).json({ error: 'Failed to fetch playlists' });
+    console.error('Error fetching playlist names:', error);
+    res.status(500).json({ error: 'Failed to fetch playlist names' });
   }
 });
 

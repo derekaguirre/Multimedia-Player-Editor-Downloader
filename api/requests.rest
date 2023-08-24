@@ -20,7 +20,7 @@ POST http://localhost:4000/files/new-playlist
 Content-Type: application/json
 
 {
-  "name": "TestPlaylist",
+  "name": "New Playlist",
   "songs": [
   ]
 }

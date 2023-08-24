@@ -1,20 +1,11 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import React, { MouseEvent, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
 import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
-
-
-
 const API_URL = "http://localhost:4000";
-
-
-
-
-
-const playlistId = "649d7447e7a0d197e0bb6d3c";
 
 //Defining all the information stored in DB for reference
 interface ImageTypeObject {
@@ -70,11 +61,15 @@ const PlaylistPage: React.FC = () => {
   //Coordinate States
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [contextMenu, setContextMenu] = useState(initialContextMenu);
+  
+  const storedPlaylistId = localStorage.getItem('currentPlaylist');
 
   useEffect(() => {
-    fetchPlaylistData(playlistId);
-    fetchAllPlaylists();
-  }, []);
+    if(storedPlaylistId){
+      fetchPlaylistData(storedPlaylistId);
+    }
+    // fetchAllPlaylists();
+  }, [storedPlaylistId]);
 
   const fetchPlaylistData = async (playlistId: string) => {
     try {
@@ -82,22 +77,21 @@ const PlaylistPage: React.FC = () => {
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
 
       console.log("FRONTEND METADATA: ", response.data);
-      console.log("ALL PLAYLISTS")
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
   };
 
-  const fetchAllPlaylists = async () => {
-    try {
-      // prettier-ignore
-      const response = await axios.get(`${API_URL}/playlist/all`);
-      console.log("ALL PLAYLISTS : ", response.data);
-    } catch (error) {
-      console.error("Error fetching playlist data:", error);
-    }
-  };
+  // const fetchAllPlaylists = async () => {
+  //   try {
+  //     // prettier-ignore
+  //     const response = await axios.get(`${API_URL}/playlist/names`);
+  //     console.log("ALL PLAYLISTS : ", response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching playlist data:", error);
+  //   }
+  // };
   const handlePlay = (file: string) => {
     console.log("Can file play? ", ReactPlayer.canPlay(file));
     console.log("Attempting to play: ", file);
@@ -148,32 +142,18 @@ const PlaylistPage: React.FC = () => {
   const contextMenuClose = () => setContextMenu(initialContextMenu);
 
   return (
+    
     <div className="tableElementContainer">
-      {contextMenu.show && (
-        <ContextMenu
-          x={contextMenu.x}
-          y={contextMenu.y}
-          closeContextMenu={contextMenuClose}
-        />
-      )}
+      {/* prettier-ignore */}
+      {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)}
 
       <div className="filePlayer">
-        {playingFile && (
-          <ReactPlayer
-            url={playingFile}
-            playing
-            controls
-            width="100%"
-            height="100px"
-          />
-        )}
+        {/* prettier-ignore */}
+        {playingFile && ( <ReactPlayer url={playingFile} playing controls width="100%" height="100px" />)}
       </div>
-
-      <div
-        className="playlistTable"
-        onContextMenu={(e) => {
-          handleContextMenu(e);
-        }}
+            
+      {/* prettier-ignore */}
+      <div className="playlistTable" onContextMenu={(e) => { handleContextMenu(e); }}
       >
         <table style={{ width: "100%" }}>
           <thead>

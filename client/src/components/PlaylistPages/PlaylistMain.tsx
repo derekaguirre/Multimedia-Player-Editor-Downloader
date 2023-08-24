@@ -6,10 +6,8 @@ const API_URL = "http://localhost:4000";
 
 //TODO if no playlist ID exists, create one
 //can be achieved by checking local storage if playlistID is populated
-console.log("checking local storage:")
 
 // if()
-console.log(localStorage)
 //if not, then call api to create an empty playlist with a default name "New Playlist"
 //TODO store playlist id in local storage
 //TODO Remove honeycore from localstorage
@@ -21,7 +19,7 @@ const textFromStorage = localStorage.getItem('my-key');
 function PlaylistMain() {
   return (
     <div className="PlaylistMain">
-      {/* <FileUploader /> */}
+      <FileUploader />
       <div className="header">
         <h1>PlaylistMain Header</h1>
       </div>
