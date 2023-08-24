@@ -10,8 +10,8 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 interface PlaylistProps {
-  name: string;
   _id: string;
+  name: string;
 }
 const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   //Local states
@@ -43,9 +43,12 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   };
 
   //Switching playlists
-  const handlePlaylistClick = (playlistId: string) => {
+  const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     console.log("Clicked on playlist with ID:", playlistId);
-    localStorage.setItem("currentPlaylist", playlistId);
+    
+    localStorage.setItem("currentPlaylistId", playlistId);
+    localStorage.setItem("currentPlaylistName", playlistName);
+    console.log(localStorage);
   };
 
   return (
@@ -70,7 +73,7 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           {playlists.map((playlist) => (
             <li
               key={playlist._id}
-              onClick={() => handlePlaylistClick(playlist._id)}
+              onClick={() => handlePlaylistClick(playlist._id, playlist.name)}
             >
               {playlist.name}
             </li>

@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { MouseEvent, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-
 import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
@@ -37,6 +36,9 @@ interface SongObject {
   _id: string;
   sortOrder?: "asc" | "desc";
 }
+interface PlaylistObject {
+  currentPlaylistId: string; // Define the prop
+}
 interface SortArrowProps {
   order?: "asc" | "desc";
 }
@@ -51,7 +53,7 @@ const initialContextMenu = {
 // playlist selection
 // adding songs
 
-const PlaylistPage: React.FC = () => {
+const PlaylistPage: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //Local states
   const [songs, setSongs] = useState<SongObject[]>([]);
   const [playingFile, setPlayingFile] = useState<string | null>(null);
@@ -62,36 +64,24 @@ const PlaylistPage: React.FC = () => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [contextMenu, setContextMenu] = useState(initialContextMenu);
   
-  const storedPlaylistId = localStorage.getItem('currentPlaylist');
+  
 
   useEffect(() => {
-    if(storedPlaylistId){
-      fetchPlaylistData(storedPlaylistId);
-    }
-    // fetchAllPlaylists();
-  }, [storedPlaylistId]);
+    fetchPlaylistData(currentPlaylistId); // Fetch songs when the playlist ID changes
+  }, [currentPlaylistId]);
 
   const fetchPlaylistData = async (playlistId: string) => {
     try {
       // prettier-ignore
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-
-      console.log("FRONTEND METADATA: ", response.data);
+      
+      console.log("Fetching all songs from playlist: ", response.data);
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
   };
 
-  // const fetchAllPlaylists = async () => {
-  //   try {
-  //     // prettier-ignore
-  //     const response = await axios.get(`${API_URL}/playlist/names`);
-  //     console.log("ALL PLAYLISTS : ", response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching playlist data:", error);
-  //   }
-  // };
   const handlePlay = (file: string) => {
     console.log("Can file play? ", ReactPlayer.canPlay(file));
     console.log("Attempting to play: ", file);

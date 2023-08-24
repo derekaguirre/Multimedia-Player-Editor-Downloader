@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
+import { PlaylistProvider } from "./components/PlaylistContext"; // import the context provider
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
 import Sidebar from "./components/side-bar/Sidebar";
 import NextIcon from "./images/next.svg";
 import PlayIcon from "./images/play.svg";
 import PrevIcon from "./images/prev.svg";
+
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -51,7 +53,10 @@ const App: React.FC = () => {
               Open Sidebar in App
             </button>
           )}
-          <PlaylistMain />
+          <PlaylistProvider>
+            <PlaylistMain/>
+          </PlaylistProvider>
+
         </div>
       </div>
 
