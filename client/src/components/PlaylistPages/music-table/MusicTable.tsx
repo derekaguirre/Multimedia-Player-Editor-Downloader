@@ -53,7 +53,7 @@ const initialContextMenu = {
 // playlist selection
 // adding songs
 
-const PlaylistPage: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
+const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //Local states
   const [songs, setSongs] = useState<SongObject[]>([]);
   const [playingFile, setPlayingFile] = useState<string | null>(null);
@@ -67,6 +67,7 @@ const PlaylistPage: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   
 
   useEffect(() => {
+    console.log("Current Playlist ID in MusicTable:", currentPlaylistId);
     fetchPlaylistData(currentPlaylistId); // Fetch songs when the playlist ID changes
   }, [currentPlaylistId]);
 
@@ -188,4 +189,4 @@ const PlaylistPage: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   );
 };
 
-export default PlaylistPage;
+export default MusicTable;

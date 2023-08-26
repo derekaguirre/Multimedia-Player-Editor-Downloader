@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePlaylist } from "../PlaylistContext";
 import "./PlaylistMain.scss";
 import FileUploader from "./file-uploader/FileUploader";
 import MusicTable from "./music-table/MusicTable";
+
 
 const API_URL = "http://localhost:4000";
 
@@ -20,8 +21,15 @@ const API_URL = "http://localhost:4000";
 //File uploader will be used again inside of settings with more visible usage i.e. button and dragging.
 const PlaylistMain: React.FC = () => {
   const { currentPlaylistId, currentPlaylistName } = usePlaylist(); // Use the context hook
-  // console.log("PL ID", {currentPlaylistId})
+  console.log("PlaylistMain useEffect triggered with updated context data");
 
+  // This useEffect will be triggered whenever currentPlaylistId or currentPlaylistName changes
+  useEffect(() => {
+    // when the context data changes, any logic will get executed with a re-render
+    console.log("PlaylistMain useEffect triggered with updated context data");
+  }, [currentPlaylistId, currentPlaylistName]);
+  
+  console.log("11111PlaylistMain rendering with currentPlaylistId:", currentPlaylistId);
   return (
     <div className="PlaylistMain">
       <FileUploader />

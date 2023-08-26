@@ -9,9 +9,9 @@ interface PlaylistContextProps {
 
 export const PlaylistContext = createContext<PlaylistContextProps>({
     currentPlaylistId: "",
-    setCurrentPlaylistId: () => { },
+    setCurrentPlaylistId: () => {},
     currentPlaylistName: "",
-    setCurrentPlaylistName: () => { },
+    setCurrentPlaylistName: () => {},
 });
 
 export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -23,6 +23,8 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const storedPlaylistName = localStorage.getItem("currentPlaylistName");
 
         if (storedPlaylistId && storedPlaylistName) {
+            console.log("Context Playlist ID:", storedPlaylistId);
+            console.log("Context Playlist Name:", storedPlaylistName);
             setCurrentPlaylistId(storedPlaylistId);
             setCurrentPlaylistName(storedPlaylistName);
         }
@@ -32,7 +34,7 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         <PlaylistContext.Provider
             value={{
                 currentPlaylistId,
-                setCurrentPlaylistId,
+                setCurrentPlaylistId, 
                 currentPlaylistName,
                 setCurrentPlaylistName,
             }}

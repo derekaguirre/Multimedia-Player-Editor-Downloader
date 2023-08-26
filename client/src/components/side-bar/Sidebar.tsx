@@ -1,5 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { PlaylistContext } from "./../PlaylistContext";
+
 
 import Resizer from "./Resizer";
 import "./Sidebar.scss";
@@ -18,6 +20,9 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState(false);
   const [playlists, setPlaylists] = useState<PlaylistProps[]>([]);
+  
+  const { setCurrentPlaylistId, setCurrentPlaylistName } = useContext(PlaylistContext);
+
 
   useEffect(() => {
     fetchAllPlaylists();
@@ -49,6 +54,11 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     localStorage.setItem("currentPlaylistId", playlistId);
     localStorage.setItem("currentPlaylistName", playlistName);
     console.log(localStorage);
+
+    setCurrentPlaylistId(playlistId);
+    setCurrentPlaylistName(playlistName);
+
+    console.log("Sidebar Playlist ID:", playlistId, "Sidebar Playlist Name:", playlistName);
   };
 
   return (
