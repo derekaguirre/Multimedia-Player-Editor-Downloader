@@ -104,7 +104,7 @@ const PlaylistModel = require("./models/PlaylistSchema");
 app.get("/playlist/:id/songs", async (req, res) => {
   try {
     const playlistId = req.params.id;
-    console.log("SERVER PLAYLIST ID: ", playlistId);
+    console.log("Server playlist ID: ", playlistId);
     // Find the playlist by ID
     const playlist = await PlaylistModel.findById(playlistId);
     if (!playlist) {

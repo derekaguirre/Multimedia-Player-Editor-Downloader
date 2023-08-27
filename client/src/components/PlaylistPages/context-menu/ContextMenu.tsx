@@ -11,13 +11,15 @@ interface ContextMenuProps {
 const ContextMenu: FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
   const contextMenuRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(contextMenuRef, closeContextMenu);
-
+  
+  //TODO context menu scales further away from cursor when page is scrolled down
   const menuStyle: React.CSSProperties = {
     position: "fixed",
     top: `${y - 20}px`,
     left: `${x + 20}px`,
     zIndex: 20,
   };
+
 
   return (
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
