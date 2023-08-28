@@ -151,12 +151,12 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
             {/* prettier-ignore */}
             <tr>
               <th></th>
-              <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th>
+              {/* <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th> */}
               <th onClick={() => handleSort("fileNameOriginal")}>File Name{" "}<SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("title")}>Title{" "}<SortArrow order={sortColumn === "title" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("artist")}>Artist{" "}<SortArrow order={sortColumn === "artist" ? sortDirection : undefined}/></th>
               <th onClick={() => handleSort("album")}>Album{" "}<SortArrow order={sortColumn === "album" ? sortDirection : undefined}/></th>
-              <th onClick={() => handleSort("filePath")}>File Path{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th>
+              {/* <th onClick={() => handleSort("filePath")}>File Path{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th> */}
             </tr>
           </thead>
           <tbody>
@@ -169,12 +169,12 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
                       Play
                     </button>
                   </td>
-                  <td>{file._id}</td>
+                  {/* <td>{file._id}</td> */}
                   <td>{file.fileNameOriginal}</td>
                   <td>{file.title}</td>
                   <td>{file.artist}</td>
                   <td>{file.album}</td>
-                  <td>{file.filePath}</td>
+                  {/* <td>{file.filePath}</td> */}
                 </tr>
               ))
             ) : (
