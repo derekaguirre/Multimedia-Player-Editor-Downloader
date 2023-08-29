@@ -9,16 +9,19 @@ interface PlaylistContextProps {
 
 export const PlaylistContext = createContext<PlaylistContextProps>({
     currentPlaylistId: "",
-    setCurrentPlaylistId: () => {},
+    setCurrentPlaylistId: () => { },
     currentPlaylistName: "",
-    setCurrentPlaylistName: () => {},
+    setCurrentPlaylistName: () => { },
 });
 
-export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
     const [currentPlaylistId, setCurrentPlaylistId] = useState<string>("");
     const [currentPlaylistName, setCurrentPlaylistName] = useState<string>("");
 
     useEffect(() => {
+        console.log("PLAYLIST CONTEXT LOADED");
         const storedPlaylistId = localStorage.getItem("currentPlaylistId");
         const storedPlaylistName = localStorage.getItem("currentPlaylistName");
 
@@ -30,11 +33,12 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
     }, []);
 
+    //TODO values with set may be superfluous
     return (
         <PlaylistContext.Provider
             value={{
                 currentPlaylistId,
-                setCurrentPlaylistId, 
+                setCurrentPlaylistId,
                 currentPlaylistName,
                 setCurrentPlaylistName,
             }}

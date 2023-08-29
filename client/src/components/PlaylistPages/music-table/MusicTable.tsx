@@ -63,20 +63,30 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //Coordinate States
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [contextMenu, setContextMenu] = useState(initialContextMenu);
-  
-  
 
   useEffect(() => {
-    console.log("Current Playlist ID in MusicTable:", currentPlaylistId);
-    fetchPlaylistData(currentPlaylistId); // Fetch songs when the playlist ID changes
+    console.log("Rendering MusicTable");
+    // Only fetch playlist data if currentPlaylistId is not empty
+    if (currentPlaylistId) {
+      console.log("Fetching playlist with ID: ", currentPlaylistId);
+      fetchPlaylistData(currentPlaylistId); // Fetch songs when the playlist ID changes
+    } else
+      console.log("Current playlist ID is empty. No playlist data fetched.");
   }, [currentPlaylistId]);
 
   const fetchPlaylistData = async (playlistId: string) => {
     try {
       // prettier-ignore
-      const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-      
-      console.log("Fetching all songs from playlist: ", response.data);
+      console.log('fetching songs for the table: ', `${API_URL}/playlist/${playlistId}/songs`)
+      const response = await axios.get(
+        `${API_URL}/playlist/${playlistId}/songs`
+      );
+
+      console.log(
+        "Fetching all songs from playlist:",
+        `${playlistId} `,
+        response.data
+      );
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
@@ -131,21 +141,33 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     setContextMenu({show: true, x: pageX, y: pageY})
   }
   const contextMenuClose = () => setContextMenu(initialContextMenu);
-
+// TODO states that handle which data the columns show, select name, title, album and only those show, add more options for other metadata
   return (
-    
     <div className="tableElementContainer">
       {/* prettier-ignore */}
-      {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)}
+      {contextMenu.show && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          closeContextMenu={contextMenuClose}
+        />
+      )}
 
       <div className="filePlayer">
         {/* prettier-ignore */}
-        {playingFile && ( <ReactPlayer url={playingFile} playing controls width="100%" height="100px" />)}
+        {playingFile && (
+          <ReactPlayer
+            url={playingFile}
+            playing
+            controls
+            width="100%"
+            height="100px"
+          />
+        )}
       </div>
-            
+
       {/* prettier-ignore */}
-      <div className="playlistTable" onContextMenu={(e) => { handleContextMenu(e); }}
-      >
+      <div className="playlistTable" onContextMenu={(e) => { handleContextMenu(e); }}>
         <table style={{ width: "100%" }}>
           <thead>
             {/* prettier-ignore */}
@@ -180,7 +202,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
               ))
             ) : (
               <tr>
-                <td colSpan={6}>Loading songs...</td>
+                {/* <td colSpan={6}>Loading songs...</td> */}
               </tr>
             )}
           </tbody>

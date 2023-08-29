@@ -2,11 +2,11 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { PlaylistContext } from "./../PlaylistContext";
 
-
 import Resizer from "./Resizer";
 import "./Sidebar.scss";
 const API_URL = "http://localhost:4000";
-
+//PROPS FOR SIDE BAR
+//TODO refactor the name and id fetching to another file.
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
@@ -15,17 +15,18 @@ interface PlaylistProps {
   _id: string;
   name: string;
 }
+
 const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   //Local states
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState(false);
   const [playlists, setPlaylists] = useState<PlaylistProps[]>([]);
-  
-  const { setCurrentPlaylistId, setCurrentPlaylistName } = useContext(PlaylistContext);
-
 
   useEffect(() => {
+    //TODO move fetching out into higher level
     fetchAllPlaylists();
+  console.log("Local Storage:", localStorage);
+
   }, []);
 
   //Logic for hiding the sidebar
@@ -34,7 +35,6 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       sidebarRef.current.style.width = "0";
     }
   };
-
   //Fetch all playlist names and ids from the server
   const fetchAllPlaylists = async () => {
     try {
@@ -47,28 +47,31 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+  const { setCurrentPlaylistId, setCurrentPlaylistName, currentPlaylistId, currentPlaylistName } = useContext(PlaylistContext);
+  console.log("PlaylistMenu - currentPlaylistId:", currentPlaylistId);
   //Switching playlists
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     console.log("Clicked on playlist with ID:", playlistId);
-    
+    console.log("ID Before Click:", currentPlaylistId);
+    console.log("Name Before Click:", currentPlaylistName);
+
     localStorage.setItem("currentPlaylistId", playlistId);
     localStorage.setItem("currentPlaylistName", playlistName);
-    console.log(localStorage);
 
     setCurrentPlaylistId(playlistId);
     setCurrentPlaylistName(playlistName);
-
-    console.log("Sidebar Playlist ID:", playlistId, "Sidebar Playlist Name:", playlistName);
+    
+    console.log( "Sidebar Playlist ID:", playlistId, "Sidebar Playlist Name:", playlistName);
   };
 
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`} ref={sidebarRef}>
-      <Resizer
+      {/* <Resizer
         sidebarRef={sidebarRef}
         isResizing={isResizing}
         setIsResizing={setIsResizing}
         hideSidebar={hideSidebar} // Pass the hideSidebar function
-      />
+      /> */}
 
       <div className="header">
         <h3>Playlist Menu</h3>

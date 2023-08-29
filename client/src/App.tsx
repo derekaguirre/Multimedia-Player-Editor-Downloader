@@ -8,10 +8,11 @@ import NextIcon from "./images/next.svg";
 import PlayIcon from "./images/play.svg";
 import PrevIcon from "./images/prev.svg";
 
-
 const App: React.FC = () => {
+  console.log("APP LOADED");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isButtonVisible, setIsButtonVisible] = useState(!sidebarOpen); // Initialize with the opposite value of sidebarOpen
+  
 
   const toggleSidebar = () => {
     console.log("Toggling sidebar, is it currently open? ", sidebarOpen);
@@ -34,31 +35,35 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // TODO refactor all of sidebar into its own component and subcomponents.
+  //Ideally it should be imported as a button off to the side and then extend when clicked. Will be handled with states
   return (
     <div className="App">
       {/* TOP OF THE PAGE */}
-      <div className="top-page">
-        {/* SIDE BAR */}
-        <div className="sidebar-container">
-          <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-        </div>
-        {/* PAGE CONTENT */}
-        <div className="content-container">
-          {/* prettier-ignore */}
-          {isButtonVisible && (
-            <button
-              className={`sidebar-toggle-button ${sidebarOpen ? "hidden" : ""}`}
-              onClick={toggleSidebar}
-            >
-              Open Sidebar in App
-            </button>
-          )}
-          <PlaylistProvider>
-            <PlaylistMain/>
-          </PlaylistProvider>
 
+      <PlaylistProvider>
+        <div className="top-page">
+          {/* SIDE BAR */}
+          <div className="sidebar-container">
+            <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+          </div>
+          {/* PAGE CONTENT */}
+          <div className="content-container">
+            {/* prettier-ignore */}
+            {isButtonVisible && (
+              <button
+                className={`sidebar-toggle-button ${
+                  sidebarOpen ? "hidden" : ""
+                }`}
+                onClick={toggleSidebar}
+              >
+                Open Sidebar in App
+              </button>
+            )}
+            <PlaylistMain />
+          </div>
         </div>
-      </div>
+      </PlaylistProvider>
 
       {/* BOTTOM OF THE PAGE */}
       {/* PLAY BAR */}

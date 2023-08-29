@@ -7,20 +7,7 @@ import './FileUploader.scss';
 const API_URL = "http://localhost:4000";
 const playlistId = "649d7447e7a0d197e0bb6d3c";
 
-interface FileObject {
-  _id: string;
-  fileNameOriginal: string; //NEEDED
-  fileNameFormatted: string; //NEEDED
-  filePath: string; //Might be needed for deleting
-  fileSize: number; //Not utilized yet
-  fileType: string; //Not utilized yet
-}
-interface SongObject {
-  duration?: unknown; // New property for storing duration
-  artist?: string; // New property for storing artist
-  album: string; // New property for storing album
-  albumCover?: unknown; // New property for storing album cover
-}
+  // BACKEND INTERFACING--------------------------------------------
 
 
 const FileUploader: React.FC = () => {
@@ -32,7 +19,6 @@ const FileUploader: React.FC = () => {
   //File importing logic
   const onDrop = async (acceptedFiles: File[]) => {
     try {
-
       //Retrieve the actual file
       const fileObj = new FormData();
       acceptedFiles.forEach((file) => {
@@ -63,6 +49,9 @@ const FileUploader: React.FC = () => {
       console.error("Error uploading files:", error);
     }
   };
+
+  // IMPORTING--------------------------------------------
+  
   //Properties for file importing
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
