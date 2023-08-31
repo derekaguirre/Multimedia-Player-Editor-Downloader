@@ -7,6 +7,7 @@ import "./Sidebar.scss";
 const API_URL = "http://localhost:4000";
 //PROPS FOR SIDE BAR
 //TODO refactor the name and id fetching to another file.
+//TODO add context and use in App to allow for state control on collapse
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
