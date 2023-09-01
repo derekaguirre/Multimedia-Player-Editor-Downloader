@@ -1,7 +1,10 @@
-.header{
-    background-color: #000000;
-    color:white;
-}
+// .header {
+//     background-color: #000000;
+//     color: white;
+//     position: relative;
+// }
+
+
 
 .sidebar {
     //used inside of the div inside of app
@@ -16,25 +19,49 @@
     user-select: none;
     background-color: #000000;
     transition: width 0.3s ease;
-    transform: translatX(-100%);
+    // transform: translatX(-100%);
     min-width: 0px;
     max-width: 400px;
     flex-shrink: 0;
     top: 0;
     left: 0;
+    width: 400px;
 
-    &.open {
-        width: 400px;
+    .playlist-items {
+        ul li {
+            font-size: 20px;
+            font-weight: 500;
+            padding: 5px 11px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+        li {
+            color: #b3b3b3;
+        }
+        & li:hover {
+            cursor: pointer;
+            background-color: #5d5d5d;
+        }
+        ul {
+            background-color: #000000;
+            //need to center
+            padding: 30px 10px;
+            list-style: none;
+        }
     }
 
-    &.closed {
-        width: 0;
-        padding: 0;
-        margin: 0;
-        visibility: hidden;
-        overflow: hidden;
+    .open-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        border: 3px solid green;
+        z-index: 10;
+        position: absolute;
     }
-
+    
     .close-button {
         position: absolute;
         top: 10px;
@@ -46,72 +73,44 @@
         border-radius: 10px;
         background-color: #d3d3d3;
         border-color: #000000;
-        
+
         &:hover {
             cursor: pointer;
             background-color: #a4a4a4;
         }
     }
 
-    // .resizable-content {
-    //     width: 100%;
-    //     height: 100%;
-    //     overflow: auto;
-    //     /* Add additional styling for the resizable content if needed */
-    // }
-}
-
-.resizer {
-    // actual size will be 1px but it can be selected up to 10px away
-    width: 10px;
-    top: 0;
-    right: 0;
-    cursor: col-resize;
-    height: 100%;
-    position: absolute;
-    background-color: rgb(85, 85, 85);
-    &:hover {
+    .header {
+        padding: 22px 11px;
         background-color: #5d5d5d;
-    }
-}
-
-.header {
-    padding: 22px 11px;
-    background-color: #5d5d5d;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.header h3 {
-    color: #b3b3b3;
-}
-.playlist-items {
-    ul li {
-        font-size: 20px;
-        font-weight: 500;
-        padding: 5px 11px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        & h3{
+        color: #d3d3d3;
+        }
     }
 
-    li {
-        color: #b3b3b3;
+    .resizer {
+        // actual size will be 1px but it can be selected up to 10px away
+        width: 10px;
+        top: 0;
+        right: 0;
+        cursor: col-resize;
+        height: 100%;
+        position: absolute;
+        background-color: rgb(85, 85, 85);
+        &:hover {
+            background-color: #5d5d5d;
+        }
     }
-    & li:hover {
-        cursor: pointer;
-        background-color: #5d5d5d;
-    }
-    ul {
-        background-color: #000000;
-        //need to center
-        padding: 30px 10px;
-        list-style: none;
-    }
+    
 }
 
-.sidebar-closed {
-    // Styles for the closed state div
-    // border: 4px solid #ff00fb;
-    width: 1;
+.closed {
+    width: 0;
+    padding: 0;
+    margin: 0;
+    visibility: hidden;
+    overflow: hidden;
 }

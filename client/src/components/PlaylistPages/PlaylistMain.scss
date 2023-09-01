@@ -7,8 +7,13 @@
   background-color: #293375;
   background: rgb(18, 18, 18);
   // background: rgb(108, 108, 108);
-
+  
   .header {
+    padding: 22px 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     background-color: #6a7c81;
     // background: linear-gradient(180deg, #6c6c6c 0%, #5a5a5a 2%, #121212 90%);
     background: linear-gradient(180deg, #b3d1d9 0%, #a2bdc4 2%, #8ca4aa 10%, #6a7c80 60%, #6a7c81 80%);

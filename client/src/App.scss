@@ -1,6 +1,7 @@
 
 //SCROLL BAR TODO consider refactoring to another file's css
 
+
 ::-webkit-scrollbar {
   width: 0.7em; // width of the entire scrollbar
 
@@ -21,11 +22,12 @@
 }
 
 //ENTIRE APP STYLING
+
 .App {
   // border: 4px solid #d5b918;
   display: flex;
   flex-direction: column;
-  height: 100;
+  // height: 100;
 }
 .top-page {
   display: flex;
@@ -47,7 +49,15 @@
     display: none;
   }
 }
-
+.sidebar-toggle-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 3px solid green;
+  position: absolute;
+  z-index: 10;
+}
 // PLAY BAR (TODO REFACTOR)
 //TODO Picture element in left corner
 .music-controller-container {
