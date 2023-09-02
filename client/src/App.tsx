@@ -10,56 +10,35 @@ import PrevIcon from "./images/prev.svg";
 
 const App: React.FC = () => {
   console.log("APP LOADED");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isButtonVisible, setIsButtonVisible] = useState(!sidebarOpen); // Initialize with the opposite value of sidebarOpen
+  const [sidebarOpen, setSidebar] = useState(true);
   
 
   const toggleSidebar = () => {
     console.log("Toggling sidebar, is it currently open? ", sidebarOpen);
-    setSidebarOpen(!sidebarOpen);
+    setSidebar(!sidebarOpen);
   };
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const checkSidebarWidth = () => {
-      const sidebarWidth = sidebarRef.current?.offsetWidth || 0;
-      setIsButtonVisible(sidebarWidth === 0);
-    };
-
-    window.addEventListener("resize", checkSidebarWidth);
-    checkSidebarWidth();
-
-    return () => {
-      window.removeEventListener("resize", checkSidebarWidth);
-    };
-  }, []);
 
   // TODO refactor all of sidebar into its own component and subcomponents.
   //Ideally it should be imported as a button off to the side and then extend when clicked. Will be handled with states
   return (
+    // TODO Music controller is falling off the page. Refactor css and formatting of DOM for consistency
+    // F12 -> Elements -> Layout -> Flexbox overlays
     <div className="App">
-      {/* TOP OF THE PAGE */}
-
       <PlaylistProvider>
         <div className="top-page">
-          {/* SIDE BAR */}
+
           <div className="sidebar-container">
-            <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+            {/* If open, renders side bar, otherwise renders button */}
+            {sidebarOpen ? 
+              (<Sidebar isOpen={sidebarOpen} setSidebar={toggleSidebar} />) :
+              (<button className="sidebar-toggle-button" onClick={toggleSidebar}>Open Sidebar</button>)}
           </div>
+          
           {/* PAGE CONTENT */}
           <div className="content-container">
-            {/* prettier-ignore */}
-            {isButtonVisible && (
-              <button
-                className={`sidebar-toggle-button ${
-                  sidebarOpen ? "hidden" : ""
-                }`}
-                onClick={toggleSidebar}
-              >
-                Open Sidebar in App
-              </button>
-            )}
             <PlaylistMain />
           </div>
         </div>

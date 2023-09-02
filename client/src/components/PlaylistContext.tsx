@@ -14,9 +14,7 @@ export const PlaylistContext = createContext<PlaylistContextProps>({
     setCurrentPlaylistName: () => { },
 });
 
-export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({children,}) => {
     const [currentPlaylistId, setCurrentPlaylistId] = useState<string>("");
     const [currentPlaylistName, setCurrentPlaylistName] = useState<string>("");
 

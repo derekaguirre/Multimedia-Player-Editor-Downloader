@@ -6,18 +6,18 @@ import Resizer from "./Resizer";
 import "./Sidebar.scss";
 const API_URL = "http://localhost:4000";
 //PROPS FOR SIDE BAR
-//TODO refactor the name and id fetching to another file.
+//TODO seek possible refactor for fetching the name and id.
 //TODO add context and use in App to allow for state control on collapse
 interface SidebarProps {
   isOpen: boolean;
-  toggleSidebar: () => void;
+  setSidebar: () => void;
 }
 interface PlaylistProps {
   _id: string;
   name: string;
 }
 
-const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+const Sidebar: React.FC<SidebarProps> = ({  }) => {
   //Local states
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState(false);
@@ -26,8 +26,7 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   useEffect(() => {
     //TODO move fetching out into higher level
     fetchAllPlaylists();
-  console.log("Local Storage:", localStorage);
-
+    console.log("Local Storage:", localStorage);
   }, []);
 
   //Logic for hiding the sidebar
@@ -48,47 +47,37 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     }
   };
 
-  const { setCurrentPlaylistId, setCurrentPlaylistName, currentPlaylistId, currentPlaylistName } = useContext(PlaylistContext);
-  console.log("PlaylistMenu - currentPlaylistId:", currentPlaylistId);
-  //Switching playlists
+  //Switch playlists utilizing context
+  const { setCurrentPlaylistId, setCurrentPlaylistName } =
+    useContext(PlaylistContext);
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     console.log("Clicked on playlist with ID:", playlistId);
-    console.log("ID Before Click:", currentPlaylistId);
-    console.log("Name Before Click:", currentPlaylistName);
 
     localStorage.setItem("currentPlaylistId", playlistId);
     localStorage.setItem("currentPlaylistName", playlistName);
 
     setCurrentPlaylistId(playlistId);
     setCurrentPlaylistName(playlistName);
-    
-    console.log( "Sidebar Playlist ID:", playlistId, "Sidebar Playlist Name:", playlistName);
   };
 
   return (
-    <div className={`sidebar ${isOpen ? "open" : ""}`} ref={sidebarRef}>
-      {/* <Resizer
-        sidebarRef={sidebarRef}
-        isResizing={isResizing}
-        setIsResizing={setIsResizing}
-        hideSidebar={hideSidebar} // Pass the hideSidebar function
-      /> */}
+    <div className={`sidebar`} >
+      {/* <Resizer sidebarRef={sidebarRef} isResizing={isResizing} setIsResizing={setIsResizing} hideSidebar={hideSidebar}/> */}
 
       <div className="header">
         <h3>Playlist Menu</h3>
       </div>
-      {/* Change button to svg and update styling */}
+      
+      {/* TODO convert to SVG Button */}
       <div className="close-button" onClick={hideSidebar}>
         X
       </div>
-      {/* May also need own context menu for editing playlist info or deleting a playlist */}
+      
+      {/* TODO refactor into own component, which will move fetching outside and make the components more cohesive */}
       <div className="playlist-items">
         <ul>
           {playlists.map((playlist) => (
-            <li
-              key={playlist._id}
-              onClick={() => handlePlaylistClick(playlist._id, playlist.name)}
-            >
+            <li key={playlist._id} onClick={() => handlePlaylistClick(playlist._id, playlist.name)}>
               {playlist.name}
             </li>
           ))}
@@ -98,4 +87,4 @@ const PlaylistMenu: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   );
 };
 
-export default PlaylistMenu;
+export default Sidebar;
