@@ -31,7 +31,6 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({child
         }
     }, []);
 
-    //TODO values with set may be superfluous
     return (
         <PlaylistContext.Provider
             value={{
