@@ -62,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({  }) => {
 
   return (
     <div className={`sidebar`} >
-      {/* <Resizer sidebarRef={sidebarRef} isResizing={isResizing} setIsResizing={setIsResizing} hideSidebar={hideSidebar}/> */}
+      <Resizer sidebarRef={sidebarRef} isResizing={isResizing} setIsResizing={setIsResizing} hideSidebar={hideSidebar}/>
 
       <div className="header">
         <h3>Playlist Menu</h3>
