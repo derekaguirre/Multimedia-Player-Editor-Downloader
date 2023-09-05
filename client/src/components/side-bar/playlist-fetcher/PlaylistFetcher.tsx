@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { PlaylistContext } from "./../PlaylistContext";
+import { PlaylistContext } from "../../PlaylistContext";
 
-import "./Sidebar.scss";
+import "./PlaylistFetcher.scss";
 const API_URL = "http://localhost:4000";
 
 interface PlaylistProps {
@@ -29,7 +29,8 @@ const PlaylistFetcher: React.FC = () => {
   };
 
   //Switch playlists utilizing context
-  const { setCurrentPlaylistId, setCurrentPlaylistName } = useContext(PlaylistContext);
+  const { setCurrentPlaylistId, setCurrentPlaylistName } =
+    useContext(PlaylistContext);
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     localStorage.setItem("currentPlaylistId", playlistId);
     localStorage.setItem("currentPlaylistName", playlistName);
@@ -41,12 +42,12 @@ const PlaylistFetcher: React.FC = () => {
   return (
     <div className="playlist-items">
       <ul>
-        {playlists.map((playlist) => (
+        {playlists.map((playlist) =>
           // prettier-ignore
           <li key={playlist._id} onClick={() => handlePlaylistClick(playlist._id, playlist.name)}>
             {playlist.name}
           </li>
-        ))}
+        )}
       </ul>
     </div>
   );

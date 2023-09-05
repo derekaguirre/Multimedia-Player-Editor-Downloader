@@ -1,0 +1,24 @@
+.playlist-items {
+    ul li {
+        font-size: 20px;
+        font-weight: 500;
+        padding: 5px 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    li {
+        color: #b3b3b3;
+    }
+    & li:hover {
+        cursor: pointer;
+        background-color: #5d5d5d;
+    }
+    ul {
+        background-color: #000000;
+        //need to center
+        padding: 30px 10px;
+        list-style: none;
+    }
+}

@@ -10,15 +10,6 @@ import PrevIcon from "./images/prev.svg";
 
 const App: React.FC = () => {
   console.log("APP LOADED");
-  const [sidebarOpen, setSidebar] = useState(true);
-  
-
-  const toggleSidebar = () => {
-    console.log("Toggling sidebar, is it currently open? ", sidebarOpen);
-    setSidebar(!sidebarOpen);
-  };
-
-  const sidebarRef = useRef<HTMLDivElement>(null);
 
 
   // TODO refactor all of sidebar into its own component and subcomponents.
@@ -31,10 +22,8 @@ const App: React.FC = () => {
         <div className="top-page">
 
           <div className="sidebar-container">
-            {/* If open, renders side bar, otherwise renders button */}
-            {sidebarOpen ? 
-              (<Sidebar isOpen={sidebarOpen} setSidebar={toggleSidebar} />) :
-              (<button className="sidebar-toggle-button" onClick={toggleSidebar}>Open Sidebar</button>)}
+            {/* Renders side bar if open, otherwise renders button */}
+              <Sidebar/>
           </div>
           
           {/* PAGE CONTENT */}
@@ -46,6 +35,7 @@ const App: React.FC = () => {
 
       {/* BOTTOM OF THE PAGE */}
       {/* PLAY BAR */}
+      {/* TODO refactor into its own component  */}
       {/* prettier-ignore */}
       <div className="music-controller-container">
       <div className="songButtonElements">
