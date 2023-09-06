@@ -3,6 +3,7 @@ import "./App.scss";
 import AppRouter from "./Router/AppRouter";
 import { PlaylistProvider } from "./components/PlaylistContext"; // import the context provider
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
+import { SongsProvider } from "./components/SongsContext";
 import Sidebar from "./components/side-bar/Sidebar";
 import NextIcon from "./images/next.svg";
 import PlayIcon from "./images/play.svg";
@@ -28,7 +29,9 @@ const App: React.FC = () => {
           
           {/* PAGE CONTENT */}
           <div className="content-container">
-            <PlaylistMain />
+            <SongsProvider>
+              <PlaylistMain />
+            </SongsProvider>
           </div>
         </div>
       </PlaylistProvider>

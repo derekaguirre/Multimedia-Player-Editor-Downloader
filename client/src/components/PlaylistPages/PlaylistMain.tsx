@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { usePlaylist } from "../PlaylistContext";
+import { useSongs } from "../SongsContext";
 import "./PlaylistMain.scss";
 // import FileUploader from "./file-uploader/FileUploader";
 import MusicTable from "./music-table/MusicTable";
@@ -18,6 +19,8 @@ const API_URL = "http://localhost:4000";
 //File uploader will be used again inside of settings with more visible usage i.e. button and dragging.
 const PlaylistMain: React.FC = () => {
   const { currentPlaylistId, currentPlaylistName } = usePlaylist(); // Context hook
+  const { songs, setSongs } = useSongs();
+
 
   //Formatting names to be read by music player
   const nameFormatter = (str: string) => {
@@ -48,9 +51,12 @@ const PlaylistMain: React.FC = () => {
 
       //Post the metadata to mongo
       console.log("METADATA FROM FRONT END", metadataArray);
-      await axios.post(`${API_URL}/playlist/${currentPlaylistId}/add-songs`, {
-        metadataArray,
-      });
+      await axios.post(`${API_URL}/playlist/${currentPlaylistId}/add-songs`, {metadataArray});
+      
+      //Update table state
+      const fetchedSongs = await axios.get(`${API_URL}/playlist/${currentPlaylistId}/songs`);
+      setSongs(fetchedSongs.data); // Pass the updated songs array
+
       console.log("File metadata stored successfully!");
     } catch (error) {
       console.error("Error uploading files:", error);
@@ -62,6 +68,7 @@ const PlaylistMain: React.FC = () => {
   //Properties for file importing
   const { getRootProps, isDragActive } = useDropzone({
     onDrop,
+    noClick: true,
     accept: {
       "audio/*": [],
       "video/*": [],

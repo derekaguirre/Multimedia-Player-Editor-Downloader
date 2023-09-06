@@ -32,14 +32,7 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({child
     }, []);
 
     return (
-        <PlaylistContext.Provider
-            value={{
-                currentPlaylistId,
-                setCurrentPlaylistId,
-                currentPlaylistName,
-                setCurrentPlaylistName,
-            }}
-        >
+        <PlaylistContext.Provider value={{currentPlaylistId,setCurrentPlaylistId,currentPlaylistName,setCurrentPlaylistName}}>
             {children}
         </PlaylistContext.Provider>
     );

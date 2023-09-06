@@ -1,41 +1,16 @@
 import axios from "axios";
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import ContextMenu from "../context-menu/ContextMenu";
+import { SongObject, SongsContext } from "./../../SongsContext";
+import MusicTableHeader from "./MusicTableHeader";
+
 // import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
 const API_URL = "http://localhost:4000";
 
 //Defining all the information stored in DB for reference
-interface ImageTypeObject {
-  imageId: number;
-  imageName: string;
-  _id: string;
-}
-interface ImageObject {
-  mime: string;
-  imageType: ImageTypeObject;
-  imageDescription: string;
-  imageBuffer: Buffer;
-  _id: string;
-}
-interface SongObject {
-  fileNameOriginal: string;
-  fileNameFormatted: string;
-  fileSize: number;
-  fileType: string;
-  filePath: string;
-  dateAdded: Date;
-  isVisible: boolean;
-  isLiked: boolean;
-  title: string;
-  artist: string;
-  album: string;
-  genre: string;
-  image: ImageObject;
-  _id: string;
-  sortOrder?: "asc" | "desc";
-}
+
 interface PlaylistObject {
   currentPlaylistId: string; // Define the prop
 }
@@ -49,13 +24,13 @@ const initialContextMenu = {
 };
 
 //Migrate fetch to own file and invoke at:
-// startup
-// playlist selection
-// adding songs
+// startup TODO
+// playlist selection (implemented here but can move to sidebar now)
+// adding songs DONE (implemented inside of PlaylistMain)
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //Local states
-  const [songs, setSongs] = useState<SongObject[]>([]);
+  const { songs, setSongs } = useContext(SongsContext);
   const [playingFile, setPlayingFile] = useState<string | null>(null);
   const [sortColumn, setSortColumn] = useState<keyof SongObject | "">("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
@@ -75,18 +50,11 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   }, [currentPlaylistId]);
 
   const fetchPlaylistData = async (playlistId: string) => {
+    // prettier-ignore
     try {
-      // prettier-ignore
       console.log('fetching songs for the table: ', `${API_URL}/playlist/${playlistId}/songs`)
-      const response = await axios.get(
-        `${API_URL}/playlist/${playlistId}/songs`
-      );
-
-      console.log(
-        "Fetching all songs from playlist:",
-        `${playlistId} `,
-        response.data
-      );
+      const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
+      console.log( "Fetching all songs from playlist:", `${playlistId} `, response.data);
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
@@ -104,6 +72,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   );
 
   //Logic for sorting
+  //TODO REFACTOR TO OWN FILE
   const handleSort = (column: keyof SongObject) => {
     if (!column) return;
 
@@ -141,7 +110,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     setContextMenu({show: true, x: pageX, y: pageY})
   }
   const contextMenuClose = () => setContextMenu(initialContextMenu);
-// TODO states that handle which data the columns show, select name, title, album and only those show, add more options for other metadata
+  // TODO states that handle which data the columns show, select name, title, album and only those show, add more options for other metadata
   return (
     <div className="tableElementContainer">
       {/* prettier-ignore */}
