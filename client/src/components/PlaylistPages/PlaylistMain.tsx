@@ -53,7 +53,7 @@ const PlaylistMain: React.FC = () => {
       console.log("METADATA FROM FRONT END", metadataArray);
       await axios.post(`${API_URL}/playlist/${currentPlaylistId}/add-songs`, {metadataArray});
       
-      //Update table state
+      //Update table state takes way too long, find another way to update the state, possible size check
       const fetchedSongs = await axios.get(`${API_URL}/playlist/${currentPlaylistId}/songs`);
       setSongs(fetchedSongs.data); // Pass the updated songs array
 

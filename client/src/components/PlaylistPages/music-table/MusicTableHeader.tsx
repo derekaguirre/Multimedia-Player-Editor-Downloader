@@ -3,8 +3,6 @@ import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import ContextMenu from "../context-menu/ContextMenu";
 import { SongObject, SongsContext } from "./../../SongsContext";
-import MusicTableHeader from "./MusicTableHeader";
-
 
 // import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
@@ -29,12 +27,9 @@ const initialContextMenu = {
 // playlist selection (implemented here but can move to sidebar now)
 // adding songs DONE (implemented inside of PlaylistMain)
 
-const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
-// FOR EDITOR MODAL
-//https://www.youtube.com/watch?v=-yIsQPp31L0
-//Local states
-const { songs, setSongs } = useContext(SongsContext);
-  const [playingFile, setPlayingFile] = useState<string | null>(null);
+const MusicTable: React.FC<PlaylistObject> = () => {
+  //Local states
+  const { songs, setSongs } = useContext(SongsContext);
   const [sortColumn, setSortColumn] = useState<keyof SongObject | "">("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
@@ -42,15 +37,6 @@ const { songs, setSongs } = useContext(SongsContext);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
-  useEffect(() => {
-    console.log("Rendering MusicTable");
-    // Only fetch playlist data if currentPlaylistId is not empty
-    if (currentPlaylistId) {
-      console.log("Fetching playlist with ID: ", currentPlaylistId);
-      fetchPlaylistData(currentPlaylistId); // Fetch songs when the playlist ID changes
-    } else
-      console.log("Current playlist ID is empty. No playlist data fetched.");
-  }, [currentPlaylistId]);
 
   const fetchPlaylistData = async (playlistId: string) => {
     // prettier-ignore
@@ -64,11 +50,6 @@ const { songs, setSongs } = useContext(SongsContext);
     }
   };
 
-  const handlePlay = (file: string) => {
-    console.log("Can file play? ", ReactPlayer.canPlay(file));
-    console.log("Attempting to play: ", file);
-    setPlayingFile(file);
-  };
 
   const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
     <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
@@ -125,21 +106,9 @@ const { songs, setSongs } = useContext(SongsContext);
         />
       )}
 
-      <div className="filePlayer">
-        {/* prettier-ignore */}
-        {playingFile && (
-          <ReactPlayer
-            url={playingFile}
-            playing
-            controls
-            width="100%"
-            height="100px"
-          />
-        )}
-      </div>
-
+      {/* TODO className="playlistTable" onContextMenu={(e) => { handleHEADERContextMenu(e); */}
       {/* prettier-ignore */}
-      <div className="playlistTable" onContextMenu={(e) => { handleContextMenu(e); }}>
+      <div className="playlistTable" >
         <table style={{ width: "100%" }}>
           <thead>
             {/* prettier-ignore */}
@@ -154,30 +123,6 @@ const { songs, setSongs } = useContext(SongsContext);
               {/* <th onClick={() => handleSort("filePath")}>File Path{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th> */}
             </tr>
           </thead>
-          <tbody>
-            {songs && songs.length > 0 ? (
-              songs.map((file) => (
-                <tr key={file._id}>
-                  <td id="playButtonEntry">
-                    {/* prettier-ignore */}
-                    <button onClick={() => handlePlay(`${API_URL}/uploads/${file.fileNameFormatted}` ) }>
-                      Play
-                    </button>
-                  </td>
-                  {/* <td>{file._id}</td> */}
-                  <td>{file.fileNameOriginal}</td>
-                  <td>{file.title}</td>
-                  <td>{file.artist}</td>
-                  <td>{file.album}</td>
-                  {/* <td>{file.filePath}</td> */}
-                </tr>
-              ))
-            ) : (
-              <tr>
-                {/* <td colSpan={6}>Loading songs...</td> */}
-              </tr>
-            )}
-          </tbody>
         </table>
       </div>
     </div>
