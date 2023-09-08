@@ -30,6 +30,7 @@ export interface SongObject {
   image: ImageObject;
   _id: string;
   sortOrder?: "asc" | "desc";
+  [key: string]: any;
 }
 
 
