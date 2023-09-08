@@ -1,32 +1,34 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { PlayerProvider } from "../PlayerContext";
 import { usePlaylist } from "../PlaylistContext";
 import { useSongs } from "../SongsContext";
 import "./PlaylistMain.scss";
+
 // import FileUploader from "./file-uploader/FileUploader";
 import MusicTable from "./music-table/MusicTable";
 
 const API_URL = "http://localhost:4000";
 //TODO if no playlist ID exists, create one
 //can be achieved by checking local storage if playlistID is populated
-
 //if not, then call api to create an empty playlist with a default name "New Playlist"
-//DONE store playlist id in local storage
+
 //TODO Remove honeycore from localstorage
 
-//TODO Pass fileuploader to encompass the whole page and only accept drops
 //File uploader will be used again inside of settings with more visible usage i.e. button and dragging.
 const PlaylistMain: React.FC = () => {
-  const { currentPlaylistId, currentPlaylistName } = usePlaylist(); // Context hook
-  const { songs, setSongs } = useSongs();
+
+  //Context hooks
+  const { currentPlaylistId, currentPlaylistName } = usePlaylist(); 
+  const { setSongs } = useSongs();
 
 
   //Formatting names to be read by music player
   const nameFormatter = (str: string) => {
     return str.replace(/ /g, "%20").replace(",", "%2C");
   };
-
+  // IMPORTING--------------------------------------------
   //File importing logic
   const onDrop = async (acceptedFiles: File[]) => {
     try {
@@ -62,9 +64,6 @@ const PlaylistMain: React.FC = () => {
       console.error("Error uploading files:", error);
     }
   };
-
-  // IMPORTING--------------------------------------------
-
   //Properties for file importing
   const { getRootProps, isDragActive } = useDropzone({
     onDrop,
@@ -86,7 +85,9 @@ const PlaylistMain: React.FC = () => {
         <div {...getRootProps()} className="PlaylistTableContainer" >
           {/* prettier-ignore */}
           {/* <input type="file" name="uploadedFiles" multiple id="file" {...getInputProps()}/> */}
+          <PlayerProvider>
           <MusicTable currentPlaylistId={currentPlaylistId} />
+          </PlayerProvider>
         </div>
       </div>
     </div>

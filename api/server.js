@@ -39,7 +39,8 @@ const databaseUrl = "mongodb://127.0.0.1:27017/SongDB";
 mongoose
   .connect(databaseUrl, { useNewUrlParser: true, useUnifiedTopology: true })
   //prettier-ignore
-  .then(() => {console.log("Connected successfully to MongoDB");
+  .then(() => {
+    console.log("Connected successfully to MongoDB");
     // Perform database operations here
   })
   .catch((err) => {
@@ -120,14 +121,14 @@ app.get("/playlist/:id/songs", async (req, res) => {
   }
 });
 // Fetch all playlist names and IDs
-app.get('/playlist/names', async (req, res) => {
+app.get("/playlist/names", async (req, res) => {
   try {
-    console.log("Server fetching playlist names/ids")
-    const playlists = await PlaylistModel.find({}, '_id name');
+    console.log("Server fetching playlist names/ids");
+    const playlists = await PlaylistModel.find({}, "_id name");
     res.json(playlists);
   } catch (error) {
-    console.error('Error fetching playlist names:', error);
-    res.status(500).json({ error: 'Failed to fetch playlist names' });
+    console.error("Error fetching playlist names:", error);
+    res.status(500).json({ error: "Failed to fetch playlist names" });
   }
 });
 
@@ -230,7 +231,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         image: imageDataArr,
       };
       console.log("FULL SONG INFO", fullSongMetadata);
-      
+
       //Add the song to the playlist's songs array
       playlist.songs.push(fullSongMetadata);
     }

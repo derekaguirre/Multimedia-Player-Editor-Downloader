@@ -2,18 +2,18 @@ import React, { createContext, useContext, useState } from "react";
 
 // Create a context and provider for songs
 
-interface ImageTypeObject {
-  imageId: number;
-  imageName: string;
-  _id: string;
-}
-interface ImageObject {
-  mime: string;
-  imageType: ImageTypeObject;
-  imageDescription: string;
-  imageBuffer: Buffer;
-  _id: string;
-}
+// interface ImageTypeObject {
+//   imageId: number;
+//   imageName: string;
+//   _id: string;
+// }
+// interface ImageObject {
+//   mime: string;
+//   imageType: ImageTypeObject;
+//   imageDescription: string;
+//   imageBuffer: Buffer;
+//   _id: string;
+// }
 export interface SongObject {
   fileNameOriginal: string;
   fileNameFormatted: string;
@@ -27,9 +27,18 @@ export interface SongObject {
   artist: string;
   album: string;
   genre: string;
-  image: ImageObject;
+  image: {
+    mime: string;
+    imageType: {
+      imageId: number;
+      imageName: string;
+      _id: string;
+    }
+    imageDescription: string;
+    imageBuffer: Buffer;
+    _id: string;
+  }
   _id: string;
-  sortOrder?: "asc" | "desc";
   [key: string]: any;
 }
 

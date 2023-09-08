@@ -12,7 +12,6 @@ import PrevIcon from "./images/prev.svg";
 const App: React.FC = () => {
   console.log("APP LOADED");
 
-
   // TODO refactor all of sidebar into its own component and subcomponents.
   //Ideally it should be imported as a button off to the side and then extend when clicked. Will be handled with states
   return (
@@ -21,17 +20,16 @@ const App: React.FC = () => {
     <div className="App">
       <PlaylistProvider>
         <div className="top-page">
-
           <div className="sidebar-container">
             {/* Renders side bar if open, otherwise renders button */}
-              <Sidebar/>
+            <Sidebar />
           </div>
-          
+
           {/* PAGE CONTENT */}
           <div className="content-container">
-            <SongsProvider>
-              <PlaylistMain />
-            </SongsProvider>
+              <SongsProvider>
+                <PlaylistMain />
+              </SongsProvider>
           </div>
         </div>
       </PlaylistProvider>

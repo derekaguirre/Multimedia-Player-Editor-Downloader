@@ -39,7 +39,7 @@ const MusicTableHeader: React.FC<HeaderProps> = ({ columns }) => {
     try {
       console.log('fetching songs for the table: ', `${API_URL}/playlist/${playlistId}/songs`)
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-      console.log( "Fetching all songs from playlist:", `${playlistId} `, response.data);
+      console.log("Fetching all songs from playlist:", `${playlistId} `, response.data);
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
@@ -82,10 +82,10 @@ const MusicTableHeader: React.FC<HeaderProps> = ({ columns }) => {
   };
 
   //prettier-ignore
-  const handleContextMenu = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) =>{
+  const handleContextMenu = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
     e.preventDefault();
-    const {pageX, pageY} = e
-    setContextMenu({show: true, x: pageX, y: pageY})
+    const { pageX, pageY } = e
+    setContextMenu({ show: true, x: pageX, y: pageY })
   }
   const contextMenuClose = () => setContextMenu(initialContextMenu);
   // TODO states that handle which data the columns show, select name, title, album and only those show, add more options for other metadata
@@ -94,24 +94,23 @@ const MusicTableHeader: React.FC<HeaderProps> = ({ columns }) => {
   // {/* TODO className="playlistTable" onContextMenu={(e) => { handleHEADERContextMenu(e); */}
 
   return (
-          <thead>
-            {/* prettier-ignore */}
-            <tr>
-            {columns.map((column) => (
-          <th key={column.accessor} className="header-cell">
+    <thead>
+      <tr>
+        <th></th>
+        {columns.map((column) => (
+          <th key={column.accessor} className="headerCells">
             {column.Header}
           </th>
         ))}
-              <th></th>
-              {/* <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th> */}
-              {/* <th onClick={() => handleSort("fileNameOriginal")}>File Name{" "}<SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/></th> */}
-              {/* <th onClick={() => handleSort("title")}>Title{" "}<SortArrow order={sortColumn === "title" ? sortDirection : undefined}/></th> */}
-              {/* <th onClick={() => handleSort("album")}>Album{" "}<SortArrow order={sortColumn === "album" ? sortDirection : undefined}/></th> */}
-              {/* <th onClick={() => handleSort("artist")}>Artist{" "}<SortArrow order={sortColumn === "artist" ? sortDirection : undefined}/></th> */}
-              {/* TODO entry for date added */}
-              {/* <th onClick={() => handleSort("filePath")}>File Path{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th> */}
-            </tr>
-          </thead>
+        {/* <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th> */}
+        {/* <th onClick={() => handleSort("fileNameOriginal")}>File Name{" "}<SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/></th> */}
+        {/* <th onClick={() => handleSort("title")}>Title{" "}<SortArrow order={sortColumn === "title" ? sortDirection : undefined}/></th> */}
+        {/* <th onClick={() => handleSort("album")}>Album{" "}<SortArrow order={sortColumn === "album" ? sortDirection : undefined}/></th> */}
+        {/* <th onClick={() => handleSort("artist")}>Artist{" "}<SortArrow order={sortColumn === "artist" ? sortDirection : undefined}/></th> */}
+        {/* TODO entry for date added */}
+        {/* <th onClick={() => handleSort("filePath")}>File Path{" "}<SortArrow order={sortColumn === "filePath" ? sortDirection : undefined}/></th> */}
+      </tr>
+    </thead>
 
   );
 };

@@ -1,6 +1,6 @@
 .tableElementContainer {
   //Any changes to the size are bound by the div contaier inside of PlaylistMain
-  border: 4px solid #52b3a5;
+  // border: 4px solid #52b3a5;
   position: relative;
   display: flex;
   justify-content: center;
@@ -24,13 +24,13 @@
       border-collapse: collapse;
 
       thead {
-        border: 4px solid #d4d765;
+        // border: 4px solid #d4d765;
         background: linear-gradient(180deg, #495659 0%, #495659 20%, #3d4749 90%);
 
         position: sticky;
         top: 0;
         background-color: #5a5a5a;
-        // border-bottom: 2px solid #707070; 
+        // border-bottom: 2px solid #707070;
 
         th {
           padding: 14px;
@@ -45,7 +45,6 @@
       }
 
       tbody {
-        display: none;
         // border: 4px solid #65d765;
         background: linear-gradient(180deg, #3d4749 0%, #121212 2%);
         // padding: 30px;
@@ -68,4 +67,7 @@
       }
     }
   }
+}
+.filePlayer{
+  background: #52b3a5;
 }
