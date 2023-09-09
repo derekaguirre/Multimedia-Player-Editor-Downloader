@@ -102,6 +102,7 @@ const MusicTableHeader: React.FC<HeaderProps> = ({ columns }) => {
             {column.Header}
           </th>
         ))}
+        {/* TODO apply to dynamic renderer for the columns  */}
         {/* <th onClick={() => handleSort("_id")}>File ID{" "}<SortArrow order={sortColumn === "_id" ? sortDirection : undefined}/></th> */}
         {/* <th onClick={() => handleSort("fileNameOriginal")}>File Name{" "}<SortArrow order={sortColumn === "fileNameOriginal" ? sortDirection : undefined}/></th> */}
         {/* <th onClick={() => handleSort("title")}>Title{" "}<SortArrow order={sortColumn === "title" ? sortDirection : undefined}/></th> */}
