@@ -57,6 +57,7 @@
     "@types/node": "^20.3.1",
     "@types/query-string": "^6.3.0",
     "@types/react": "^18.2.21",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "electron": "^25.2.0"
   }
 }

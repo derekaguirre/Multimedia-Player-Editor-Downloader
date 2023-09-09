@@ -91,6 +91,12 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     ],
     []
   );
+  //Could be a result of:
+  //  useeffects
+  //  context on player
+  //  memoization
+  //  table population
+  //  react-player update "react-player": "^2.12.0",
   console.log("Rendering the music table again with a new song: ", playingFile);
   return (
     <div className="tableElementContainer">
@@ -100,7 +106,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
       <div className="playlistTable" onContextMenu={(e) => {handleContextMenu(e); }}>
         {playingFile && (
           <div className="player-wrapper">
-            <ReactPlayer className="react-player" url={playingFile} width="100%" height="100%"/>
+            <ReactPlayer className="react-player"  url={playingFile} width="100%" height="100%"/>
           </div>
         )}
         <table>
