@@ -55,7 +55,7 @@ const PlaylistMain: React.FC = () => {
       console.log("METADATA FROM FRONT END", metadataArray);
       await axios.post(`${API_URL}/playlist/${currentPlaylistId}/add-songs`, {metadataArray});
       
-      //Update table state takes way too long, find another way to update the state, possible size check
+      //Update table state w/ backend fetch takes way too long, find another way to update the state, possible size check for state update
       const fetchedSongs = await axios.get(`${API_URL}/playlist/${currentPlaylistId}/songs`);
       setSongs(fetchedSongs.data); // Pass the updated songs array
 
@@ -85,9 +85,9 @@ const PlaylistMain: React.FC = () => {
         <div {...getRootProps()} className="PlaylistTableContainer" >
           {/* prettier-ignore */}
           {/* <input type="file" name="uploadedFiles" multiple id="file" {...getInputProps()}/> */}
-          <PlayerProvider>
+          {/* <PlayerProvider> */}
           <MusicTable currentPlaylistId={currentPlaylistId} />
-          </PlayerProvider>
+          {/* </PlayerProvider> */}
         </div>
       </div>
     </div>

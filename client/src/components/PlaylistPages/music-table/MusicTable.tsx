@@ -34,7 +34,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //https://www.youtube.com/watch?v=-yIsQPp31L0
   //Local states
   const { songs, setSongs } = useContext(SongsContext);
-  const { playingFile, setPlayingFile } = usePlayer();
+  // const { playingFile, setPlayingFile } = usePlayer();
 
   //Coordinate States
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -97,18 +97,18 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //  memoization
   //  table population
   //  react-player update "react-player": "^2.12.0",
-  console.log("Rendering the music table again with a new song: ", playingFile);
+  console.log("Rendering the music table again");
   return (
     <div className="tableElementContainer">
       {/* prettier-ignore */}
       {/* {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)} */}
       {/* prettier-ignore */}
       <div className="playlistTable" onContextMenu={(e) => {handleContextMenu(e); }}>
-        {playingFile && (
+        {/* {playingFile && (
           <div className="player-wrapper">
             <ReactPlayer className="react-player"  url={playingFile} width="100%" height="100%"/>
           </div>
-        )}
+        )} */}
         <table>
           <MusicTableHeader columns={columns} />
           <MusicTableContent entries={songs} columns={columns} />

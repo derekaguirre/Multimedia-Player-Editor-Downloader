@@ -36,8 +36,9 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns,}) =>
   
   // Context hooks
   const { currentPlaylistId } = usePlaylist(); 
-  const {playingFile,setPlayingFile} = usePlayer();
-  
+  // const {playingFile,setPlayingFile} = usePlayer();
+  const [playingFile, setPlayingFile] = useState<string | null>(null);
+
   //Local states
 
   useEffect(() => {
@@ -52,7 +53,10 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns,}) =>
   const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
     <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
   );
-
+  // {playingFile && (
+  //   <div className="player-wrapper">
+  //   </div>
+  // )}
 
   // Loop through each entry in the 'entries' array create a table row with a unique key based on entry ID
   return (
@@ -60,8 +64,19 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns,}) =>
       {entries.map((entry) => (
         <tr key={entry._id}>
           {/* prettier-ignore */}
-          <td id="playButtonEntry">
-            {/* <button onClick={() =>handlePlay(entry.fileNameFormatted)}>Play</button> */}
+            <td id="playButtonEntry">
+            <button onClick={() =>handlePlay(entry.fileNameFormatted)}>Play</button>
+            {playingFile && (
+              <ReactPlayer
+              className="react-player"
+              url={playingFile}
+              width="100%"
+              height="100%"
+              onError={(error) => {
+                console.error("Error playing media:", error);
+              }}
+            />
+            )}
           </td>
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
