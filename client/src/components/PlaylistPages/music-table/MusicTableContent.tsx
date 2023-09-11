@@ -50,6 +50,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns,}) =>
     setPlayingFile(file);
   };
 
+  console.log("testing file passed to player ",playingFile)
   const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
     <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
   );
@@ -65,7 +66,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns,}) =>
         <tr key={entry._id}>
           {/* prettier-ignore */}
             <td id="playButtonEntry">
-            <button onClick={() =>handlePlay(entry.fileNameFormatted)}>Play</button>
+            <button onClick={() =>handlePlay(`${API_URL}/uploads/${entry.fileNameFormatted}`)}>Play</button>
             {playingFile && (
               <ReactPlayer
               className="react-player"
