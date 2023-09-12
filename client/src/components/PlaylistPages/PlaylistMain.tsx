@@ -65,14 +65,15 @@ const PlaylistMain: React.FC = () => {
     }
   };
   //Properties for file importing
-  const { getRootProps, isDragActive } = useDropzone({
-    onDrop,
-    noClick: true,
-    accept: {
-      "audio/*": [],
-      "video/*": [],
-    },
-  });
+  // const { getRootProps, isDragActive } = useDropzone({
+  //   onDrop,
+  //   noClick: true,
+  //   accept: {
+  //     "audio/*": [],
+  //     "video/*": [],
+  //   },
+  // });
+  console.log("PLAYLISTMAIN RENDERED");
 
   return (
     // {...getRootProps()}

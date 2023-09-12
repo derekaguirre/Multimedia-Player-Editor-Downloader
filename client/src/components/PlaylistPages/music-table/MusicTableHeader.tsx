@@ -46,48 +46,48 @@ const MusicTableHeader: React.FC<HeaderProps> = ({ columns }) => {
     }
   };
 
-  const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
-    <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
-  );
+  // const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
+  //   <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
+  // );
 
   //Logic for sorting
-  const handleSort = (column: keyof SongObject) => {
-    if (!column) return;
+  // const handleSort = (column: keyof SongObject) => {
+  //   if (!column) return;
 
-    setSongs((prevSongs) => {
-      const isAsc = sortColumn === column && sortDirection === "asc";
-      const sortedSongs = [...prevSongs].sort((a, b) => {
-        const aValue =
-          typeof a[column] === "number" ? a[column]?.toString() : a[column];
-        const bValue =
-          typeof b[column] === "number" ? b[column]?.toString() : b[column];
+  //   setSongs((prevSongs) => {
+  //     const isAsc = sortColumn === column && sortDirection === "asc";
+  //     const sortedSongs = [...prevSongs].sort((a, b) => {
+  //       const aValue =
+  //         typeof a[column] === "number" ? a[column]?.toString() : a[column];
+  //       const bValue =
+  //         typeof b[column] === "number" ? b[column]?.toString() : b[column];
 
-        if (aValue && bValue) {
-          if (aValue < bValue) return isAsc ? -1 : 1;
-          if (aValue > bValue) return isAsc ? 1 : -1;
-        }
-        return 0;
-      });
+  //       if (aValue && bValue) {
+  //         if (aValue < bValue) return isAsc ? -1 : 1;
+  //         if (aValue > bValue) return isAsc ? 1 : -1;
+  //       }
+  //       return 0;
+  //     });
 
-      sortedSongs.forEach((song) => {
-        song.sortOrder = song === sortedSongs[0] ? sortDirection : undefined;
-      });
+  //     sortedSongs.forEach((song) => {
+  //       song.sortOrder = song === sortedSongs[0] ? sortDirection : undefined;
+  //     });
 
-      return sortedSongs;
-    });
+  //     return sortedSongs;
+  //   });
 
-    setSortColumn(column);
-    //prettier-ignore
-    setSortDirection(sortColumn === column ? (sortDirection === "asc" ? "desc" : "asc") : "asc");
-  };
+  //   setSortColumn(column);
+  //   //prettier-ignore
+  //   setSortDirection(sortColumn === column ? (sortDirection === "asc" ? "desc" : "asc") : "asc");
+  // };
 
   //prettier-ignore
-  const handleContextMenu = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
-    e.preventDefault();
-    const { pageX, pageY } = e
-    setContextMenu({ show: true, x: pageX, y: pageY })
-  }
-  const contextMenuClose = () => setContextMenu(initialContextMenu);
+  // const handleContextMenu = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+  //   e.preventDefault();
+  //   const { pageX, pageY } = e
+  //   setContextMenu({ show: true, x: pageX, y: pageY })
+  // }
+  // const contextMenuClose = () => setContextMenu(initialContextMenu);
   // TODO states that handle which data the columns show, select name, title, album and only those show, add more options for other metadata
   // prettier-ignore
   // {/* {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)} */}
