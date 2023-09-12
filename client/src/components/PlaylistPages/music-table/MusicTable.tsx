@@ -97,8 +97,8 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //  memoization
   //  table population
   //  react-player update "react-player": "^2.12.0",
-  // dropzone on table
-  console.log("Rendering the music table again");
+  // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
+  console.log("MUSIC TABLE RENDERED");
   return (
     <div className="tableElementContainer">
       {/* prettier-ignore */}

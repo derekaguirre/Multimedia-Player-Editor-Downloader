@@ -75,14 +75,14 @@ const PlaylistMain: React.FC = () => {
   });
 
   return (
-    <div className="PlaylistMain">
+    // {...getRootProps()}
+    <div  className="PlaylistMain">
       {/* prettier-ignore */}
-      <div  className={`dropzone ${isDragActive ? "active" : ""}`}>
+      {/* <div  className={`dropzone ${isDragActive ? "active" : ""}`}> */}
         <div className="header">
           <h1>{currentPlaylistName}: {currentPlaylistId}</h1>
         </div>
-          
-        <div {...getRootProps()} className="PlaylistTableContainer" >
+        <div className="PlaylistTableContainer" >
           {/* prettier-ignore */}
           {/* <input type="file" name="uploadedFiles" multiple id="file" {...getInputProps()}/> */}
           {/* <PlayerProvider> */}
@@ -90,7 +90,7 @@ const PlaylistMain: React.FC = () => {
           {/* </PlayerProvider> */}
         </div>
       </div>
-    </div>
+    // </div>
   );
 };
 
