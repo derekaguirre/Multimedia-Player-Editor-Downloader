@@ -3,6 +3,7 @@ import "./App.scss";
 import AppRouter from "./Router/AppRouter";
 import { PlaylistProvider } from "./components/PlaylistContext"; // import the context provider
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
+import MusicController from "./components/PlaylistPages/music-controller/MusicController";
 import { SongsProvider } from "./components/SongsContext";
 import Sidebar from "./components/side-bar/Sidebar";
 import NextIcon from "./images/next.svg";
@@ -27,9 +28,9 @@ const App: React.FC = () => {
 
           {/* PAGE CONTENT */}
           <div className="content-container">
-              <SongsProvider>
-                <PlaylistMain />
-              </SongsProvider>
+            <SongsProvider>
+              <PlaylistMain />
+            </SongsProvider>
           </div>
         </div>
       </PlaylistProvider>
@@ -37,20 +38,7 @@ const App: React.FC = () => {
       {/* BOTTOM OF THE PAGE */}
       {/* PLAY BAR */}
       {/* TODO refactor into its own component  */}
-      {/* prettier-ignore */}
-      <div className="music-controller-container">
-      <div className="songButtonElements">
-          <div className="PrevButton"><img src={PrevIcon} width={30} height={30} /></div>
-          <div className="PlayButton"><img src={PlayIcon} width={30} height={30} /></div>
-          <div className="NextButton"><img src={NextIcon} width={30} height={30} /></div>
-        </div>
-        <div className="songTimeElements">
-          <div className="currTime">0:00</div>
-          <div className="playBar"></div>
-          <div className="endTime">4:00</div>
-        </div>
-        
-      </div>
+      <MusicController/>
     </div>
   );
 };

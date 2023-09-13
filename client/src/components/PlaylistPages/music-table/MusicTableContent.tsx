@@ -3,9 +3,9 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import { usePlaylist } from "../../PlaylistContext";
 // import ContextMenu from "../context-menu/ContextMenu";
 import { usePlayer } from "../../PlayerContext";
+import Player from "../music-controller/Player";
 import { SongObject, SongsContext } from "./../../SongsContext";
 import "./MusicTableContent.scss";
-import Player from "./Player";
 var counter = 0;
 
 const API_URL = "http://localhost:4000";
@@ -22,10 +22,7 @@ interface TableContentProps {
 // on playlist selection (implemented here but can move to sidebar now)
 // adding songs DONE (implemented inside of PlaylistMain)
 
-const MusicTableContent: React.FC<TableContentProps> = ({
-  entries,
-  columns,
-}) => {
+const MusicTableContent: React.FC<TableContentProps> = ({entries, columns}) => {
   // FOR UPCOMING EDITOR MODAL
   //https://www.youtube.com/watch?v=-yIsQPp31L0
 
@@ -72,7 +69,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({
           <td id="playButtonEntry">
             <button onClick={() =>handlePlay(`${API_URL}/uploads/${entry.fileNameFormatted}`)}>Play</button>
             {/* <Player playing={isPlaying} currentSong = {`${API_URL}/uploads/${entry.fileNameFormatted}`} /> */}
-            <Player playing={activeSong === `${API_URL}/uploads/${entry.fileNameFormatted}`} currentSong={`${API_URL}/uploads/${entry.fileNameFormatted}`} />
           </td>
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
