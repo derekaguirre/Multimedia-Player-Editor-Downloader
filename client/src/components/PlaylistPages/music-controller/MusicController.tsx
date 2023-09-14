@@ -6,6 +6,7 @@ import PlayIcon from "../../../images/play.svg";
 import PrevIcon from "../../../images/prev.svg";
 import { SongObject, SongsContext } from "./../../SongsContext";
 import "./MusicController.scss";
+import Player from "./Player";
 
 // import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
@@ -19,8 +20,8 @@ const API_URL = "http://localhost:4000";
 const MusicController: React.FC = () => {
   //Local states
   useEffect(() => {
-    console.log("PLAYER RENDERED");
-  }, []);
+    console.log("CONTROLLER RENDERED");
+  });
 
   //PROBLEMS WITH CURRENT APPROACH:
   //Players are displayed for every song entry
@@ -42,9 +43,16 @@ const MusicController: React.FC = () => {
   return (
     <div className="music-controller-container">
       <div className="songButtonElements">
-        <div className="PrevButton"><img src={PrevIcon} width={30} height={30} /></div>
-        <div className="PlayButton"><img src={PlayIcon} width={30} height={30} /></div>
-        <div className="NextButton"><img src={NextIcon} width={30} height={30} /></div>
+        <div className="PrevButton">
+          <img src={PrevIcon} width={30} height={30} />
+          {/* <Player /> */}
+        </div>
+        <div className="PlayButton">
+          <img src={PlayIcon} width={30} height={30} />
+        </div>
+        <div className="NextButton">
+          <img src={NextIcon} width={30} height={30} />
+        </div>
       </div>
       <div className="songTimeElements">
         <div className="currTime">0:00</div>

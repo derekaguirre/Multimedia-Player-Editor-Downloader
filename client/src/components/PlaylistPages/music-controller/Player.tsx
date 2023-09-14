@@ -18,6 +18,7 @@ const Player: React.FC<PlayerProps> = ({ playing, currentSong }) => {
     console.log("PLAYER RENDERED");
   }, []);
 
+  const [activeSong, setActiveSong] = useState<string | null>(null);
 
   //PROBLEMS WITH CURRENT APPROACH:
   //Players are displayed for every song entry
@@ -34,7 +35,10 @@ const Player: React.FC<PlayerProps> = ({ playing, currentSong }) => {
   //TODO implement prev / next song feature
   //TODO maybe a shuffle
   //TODO implement the play/pause button
-
+  const handlePlay = (file: string) => {
+    
+    setActiveSong(file); // Set the file to play globally
+  };
   return (
     <ReactPlayer
       className="react-player"

@@ -30,7 +30,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries, columns}) => {
   const { currentPlaylistId } = usePlaylist();
   // const {playingFile,setPlayingFile} = usePlayer();
   // const [playingFile, setPlayingFile] = useState<string | null>(null);
-  const [activeSong, setActiveSong] = useState<string | null>(null);
 
   //Local states
 
@@ -45,10 +44,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries, columns}) => {
   //     // console.log("testing file passed to player ",playingFile)
   //     return
   //   };
-  const handlePlay = (file: string) => {
-    
-    setActiveSong(file); // Set the file to play globally
-  };
+
 
   // const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
   //   <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
@@ -67,7 +63,8 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries, columns}) => {
         <tr key={entry._id}>
           {/* prettier-ignore */}
           <td id="playButtonEntry">
-            <button onClick={() =>handlePlay(`${API_URL}/uploads/${entry.fileNameFormatted}`)}>Play</button>
+            {/* TODO set a state and pass it to context for use in MusicController.tsx*/}
+            {/* <button onClick={() =>handlePlay(`${API_URL}/uploads/${entry.fileNameFormatted}`)}>Play</button> */}
             {/* <Player playing={isPlaying} currentSong = {`${API_URL}/uploads/${entry.fileNameFormatted}`} /> */}
           </td>
           {columns.map((column) => (
