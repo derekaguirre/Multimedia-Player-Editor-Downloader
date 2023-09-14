@@ -1,15 +1,16 @@
 import axios from "axios";
 import React, { MouseEvent, useContext, useEffect, useState } from "react";
-import ReactPlayer from "react-player";
 import NextIcon from "../../../images/next.svg";
 import PlayIcon from "../../../images/play.svg";
 import PrevIcon from "../../../images/prev.svg";
-import { SongObject, SongsContext } from "./../../SongsContext";
+import { PlayerContext } from "./../../PlayerContext";
+
 import "./MusicController.scss";
 import Player from "./Player";
-
 // import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
+
+
 
 const API_URL = "http://localhost:4000";
 // interface PlayerProps {
@@ -18,6 +19,8 @@ const API_URL = "http://localhost:4000";
 // }
 
 const MusicController: React.FC = () => {
+  const { activeSong, setActiveSong } = useContext(PlayerContext);
+  console.log("activesong changed:", activeSong)
   //Local states
   useEffect(() => {
     console.log("CONTROLLER RENDERED");
@@ -38,14 +41,15 @@ const MusicController: React.FC = () => {
   //TODO implement prev / next song feature
   //TODO maybe a shuffle
   //TODO implement the play/pause button
-  //   <Player playing={activeSong === `${API_URL}/uploads/${entry.fileNameFormatted}`} currentSong={`${API_URL}/uploads/${entry.fileNameFormatted}`} />
+  //   
 
   return (
     <div className="music-controller-container">
       <div className="songButtonElements">
         <div className="PrevButton">
           <img src={PrevIcon} width={30} height={30} />
-          {/* <Player /> */}
+          {/* <Player/> */}
+          {/* <Player playing={activeSong === `${API_URL}/uploads/${entry.fileNameFormatted}`} currentSong={`${API_URL}/uploads/${entry.fileNameFormatted}`} /> */}
         </div>
         <div className="PlayButton">
           <img src={PlayIcon} width={30} height={30} />

@@ -1,24 +1,21 @@
 import axios from "axios";
 import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
+import { PlayerContext } from "../../PlayerContext";
 import { SongObject, SongsContext } from "../../SongsContext";
 
 // import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
 
 const API_URL = "http://localhost:4000";
-interface PlayerProps {
-  playing: boolean;
-  currentSong: string;
-}
 
-const Player: React.FC<PlayerProps> = ({ playing, currentSong }) => {
+const Player: React.FC = () => {
   //Local states
   useEffect(() => {
     console.log("PLAYER RENDERED");
   }, []);
 
-  const [activeSong, setActiveSong] = useState<string | null>(null);
+  const {activeSong} = useContext(PlayerContext);
 
   //PROBLEMS WITH CURRENT APPROACH:
   //Players are displayed for every song entry
@@ -35,18 +32,14 @@ const Player: React.FC<PlayerProps> = ({ playing, currentSong }) => {
   //TODO implement prev / next song feature
   //TODO maybe a shuffle
   //TODO implement the play/pause button
-  const handlePlay = (file: string) => {
-    
-    setActiveSong(file); // Set the file to play globally
-  };
+  
   return (
     <ReactPlayer
       className="react-player"
-      url={currentSong}
-      playing={playing}
+      url={activeSong || ''}
       // controls={true}
-      // width="100px"
-      // height="100px"
+      width="100px"
+      height="100px"
       volume={0.4}
       onError={(error) => {
         console.error("Error playing media:", error);

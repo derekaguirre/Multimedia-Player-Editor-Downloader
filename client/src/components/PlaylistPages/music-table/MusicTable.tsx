@@ -4,15 +4,14 @@ import React, { MouseEvent, useContext, useEffect, useMemo, useState, } from "re
 import ReactPlayer from "react-player";
 import ContextMenu from "../context-menu/ContextMenu";
 import { SongObject, SongsContext } from "./../../SongsContext";
-import MusicTableHeader from "./MusicTableHeader";
+import MusicTableHeader from "./table-header/MusicTableHeader";
 // import SearchBar from "../search-bar/SearchBar";
-import { type } from "os";
-import { PlayerProvider, usePlayer } from "../../PlayerContext";
 import "./MusicTable.scss";
-import MusicTableContent from "./MusicTableContent";
+import MusicTableContent from "./table-content/MusicTableContent";
 const API_URL = "http://localhost:4000";
 
 //Defining all the information stored in DB for reference
+console.log("MUSIC TABLE RENDERED")
 
 interface PlaylistObject {
   currentPlaylistId: string; // Define the prop
@@ -23,7 +22,6 @@ const initialContextMenu = {
   x: 0,
   y: 0,
 };
-
 //Migrate fetch to own file and invoke at:
 // startup TODO
 // playlist selection (implemented here but can move to sidebar now)
@@ -49,7 +47,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //   return songs;
   // }, [currentPlaylistId]);
 
-  //TODO RERENDERS AFTER EVERY CLICK
+  
   useEffect(() => {
     if (currentPlaylistId) {
       // Only fetch playlist data if currentPlaylistId is not empty
@@ -91,7 +89,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     ],
     []
   );
-  //Could be a result of:
+  //Clicking refreshing the page be a result of:
   //  useeffects
   //  context on player
   //  memoization
@@ -99,6 +97,8 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //  react-player update "react-player": "^2.12.0",
   // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
   console.log("MUSIC TABLE RENDERED");
+    
+  //TODO remove tableElementContainer
   return (
     <div className="tableElementContainer">
       {/* prettier-ignore */}

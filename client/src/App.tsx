@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
-import { PlaylistProvider } from "./components/PlaylistContext"; // import the context provider
+import { PlayerProvider } from "./components/PlayerContext";
+import { PlaylistProvider } from "./components/PlaylistContext";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
 import MusicController from "./components/PlaylistPages/music-controller/MusicController";
 import { SongsProvider } from "./components/SongsContext";
 import Sidebar from "./components/side-bar/Sidebar";
-import NextIcon from "./images/next.svg";
-import PlayIcon from "./images/play.svg";
-import PrevIcon from "./images/prev.svg";
 
 const App: React.FC = () => {
   console.log("APP LOADED");
@@ -19,26 +17,26 @@ const App: React.FC = () => {
     // TODO Music controller is falling off the page. Refactor css and formatting of DOM for consistency
     // F12 -> Elements -> Layout -> Flexbox overlays
     <div className="App">
-      <PlaylistProvider>
-        <div className="top-page">
-          <div className="sidebar-container">
-            {/* Renders side bar if open, otherwise renders button */}
-            <Sidebar />
-          </div>
+      <PlayerProvider>
+        <PlaylistProvider>
+          <div className="top-page">
+            <div className="sidebar-container">
+              {/* Renders side bar if open, otherwise renders button */}
+              <Sidebar />
+            </div>
 
-          {/* PAGE CONTENT */}
-          <div className="content-container">
-            <SongsProvider>
-              <PlaylistMain />
-            </SongsProvider>
+            {/* PAGE CONTENT */}
+            <div className="content-container">
+              <SongsProvider>
+                <PlaylistMain />
+              </SongsProvider>
+            </div>
           </div>
-        </div>
-      </PlaylistProvider>
+        </PlaylistProvider>
 
-      {/* BOTTOM OF THE PAGE */}
-      {/* PLAY BAR */}
-      {/* TODO refactor into its own component  */}
-      <MusicController/>
+        {/* BOTTOM OF THE PAGE PLAY BAR */}
+        <MusicController />
+      </PlayerProvider>
     </div>
   );
 };

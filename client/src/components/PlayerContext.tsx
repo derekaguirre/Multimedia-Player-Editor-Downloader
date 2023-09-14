@@ -1,27 +1,24 @@
 import React, { createContext, useContext, useState } from "react";
 
-interface PlayerContextType {
-  playingFile: string | null;
-  setPlayingFile: (file: string | null) => void;
-  //Can also share the duration or store it in the local storage, need persistence
-}
-
-const initialPlayerContext: PlayerContextType = {
-  playingFile: null,
-  setPlayingFile: () => {},
-};
-
-const PlayerContext = createContext<PlayerContextType>(initialPlayerContext);
+export const PlayerContext = createContext<{
+  //TODO USE STRING[]
+  //Consider duration of a song
+  //Or store it in the local storage, will MOST likely need persistence
+  activeSong: string | string[] | null;
+  setActiveSong: (file: string | null) => void;
+}>({
+  activeSong: null,
+  setActiveSong: () => {},
+});
 
 export const usePlayerContext = () => useContext(PlayerContext);
 
+// prettier-ignore
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({children,}) => {
-  const [playingFile, setPlayingFile] = useState<string | null>(
-    initialPlayerContext.playingFile
-  );
+  const [activeSong, setActiveSong] = useState<string | null>(null);
 
   return (
-    <PlayerContext.Provider value={{ playingFile, setPlayingFile }}>
+    <PlayerContext.Provider value={{ activeSong, setActiveSong }}>
       {children}
     </PlayerContext.Provider>
   );
