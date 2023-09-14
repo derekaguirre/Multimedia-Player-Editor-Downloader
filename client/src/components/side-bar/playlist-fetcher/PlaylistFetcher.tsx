@@ -29,8 +29,8 @@ const PlaylistFetcher: React.FC = () => {
   };
 
   //Switch playlists utilizing context
-  const { setCurrentPlaylistId, setCurrentPlaylistName } =
-    useContext(PlaylistContext);
+  //prettier-ignore
+  const { setCurrentPlaylistId, setCurrentPlaylistName } = useContext(PlaylistContext);
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     localStorage.setItem("currentPlaylistId", playlistId);
     localStorage.setItem("currentPlaylistName", playlistName);

@@ -4,7 +4,7 @@ export const PlayerContext = createContext<{
   //TODO USE STRING[]
   //Consider duration of a song
   //Or store it in the local storage, will MOST likely need persistence
-  activeSong: string | string[] | null;
+  activeSong: string | null;
   setActiveSong: (file: string | null) => void;
 }>({
   activeSong: null,

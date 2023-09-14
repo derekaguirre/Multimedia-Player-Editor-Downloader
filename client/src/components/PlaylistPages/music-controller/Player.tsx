@@ -37,9 +37,10 @@ const Player: React.FC = () => {
     <ReactPlayer
       className="react-player"
       url={activeSong || ''}
+      playing = {true}
       // controls={true}
-      width="100px"
-      height="100px"
+      // width="100px"
+      // height="100px"
       volume={0.4}
       onError={(error) => {
         console.error("Error playing media:", error);
