@@ -42,13 +42,13 @@ const MusicController: React.FC = () => {
 
   return (
     <div className="music-controller-container">
+          <Player/>
       <div className="songButtonElements">
         <div className="PrevButton">
           {/* <img src={PrevIcon} width={30} height={30} /> */}
         </div>
         <div className="PlayButton">
           {/* <img src={PlayIcon} width={30} height={30} /> */}
-          <Player/>
         </div>
         <div className="NextButton">
           {/* <img src={NextIcon} width={30} height={30} /> */}

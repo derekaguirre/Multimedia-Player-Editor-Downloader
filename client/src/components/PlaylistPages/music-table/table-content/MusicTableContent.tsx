@@ -3,7 +3,6 @@ import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import { usePlaylist } from "../../../PlaylistContext";
 // import ContextMenu from "../context-menu/ContextMenu";
 import { PlayerContext } from "../../../PlayerContext";
-import Player from "../../music-controller/Player";
 import { SongObject, SongsContext } from "./../../../SongsContext";
 import "./MusicTableContent.scss";
 
@@ -41,11 +40,10 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,}) => {
   // const handlePlay = (file: string) => {
   //   //TODO SET A PLAYLIST, not the current song. since the player can accept string[]
   //   setActiveSong(`${API_URL}/uploads/${file}`);
-    
   // };
 
 
-  //  If the row is not currently playing, set the active song to the current row. Otherwise 
+  //  If the row is not currently playing, set the active song to the current row 
 const handlePlay = (fileName: string) => {
   if (!currentPlaying.includes(fileName)) {
     setActiveSong(`${API_URL}/uploads/${fileName}`);
@@ -95,9 +93,7 @@ const handlePlay = (fileName: string) => {
       >
           {/* prettier-ignore */}
           <td id="playButtonEntry">
-            {/* TODO set a state and pass it to context for use in MusicController.tsx*/}
-            {/* <button>Play</button> */}
-            {/* <Player playing={isPlaying} currentSong = {`${API_URL}/uploads/${entry.fileNameFormatted}`} /> */}
+            <button>Play</button>
           </td>
           {columns.map((column) => (
             <td  key={column.accessor} className="table-cell" >

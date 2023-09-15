@@ -15,33 +15,25 @@ const Player: React.FC = () => {
     console.log("PLAYER RENDERED");
   }, []);
 
-  const {activeSong} = useContext(PlayerContext);
+  const { activeSong } = useContext(PlayerContext);
+  //TODO use local storage for persistence.
 
-  //PROBLEMS WITH CURRENT APPROACH:
-  //Players are displayed for every song entry
-  //Switching SONGS does not restart the song. only continues where it left off. this is due to one player per entry
-
-  //Switching to another playlist does a few things:
-  //  stops the song if the next playlist does not contain the song
-  //  restarts the song if it does exist. it is playing the song from the new playlist. I believe it re-fetches the song and plays the one from the new playlist. not the old one
-
-  //TODO Ideally I should be using this component inside of the SongController(IN PROGRESS) component
-    //Can memorize both the playlist and the song or just use a state for the song
-    // Need to use either global state or context. maybe even local storage to keep it consistently playing to prevent rerenders. local storage might be better for persistence.
-    
   //TODO implement prev / next song feature
   //TODO maybe a shuffle
   //TODO implement the play/pause button
-  
+
   return (
     <ReactPlayer
       className="react-player"
-      url={activeSong || ''}
-      playing = {true}
-      // controls={true}
-      // width="100px"
-      // height="100px"
+      url={activeSong || ""}
+      playing={true}
+      controls={true}
+      width="640px"
+      height="360px"
       volume={0.4}
+      onEnded={() => {
+        console.log("onEnded");
+      }}
       onError={(error) => {
         console.error("Error playing media:", error);
       }}
@@ -49,3 +41,32 @@ const Player: React.FC = () => {
   );
 };
 export default Player;
+
+/*
+Howler.js: 
+Howler.js is a powerful and flexible JavaScript audio library that can be integrated into React applications. 
+It provides features like audio playback, volume control, and the ability to create custom audio controllers.
+GitHub: https://github.com/goldfire/howler.js
+
+
+SoundManager 2: 
+SoundManager 2 is a JavaScript API that wraps HTML5 and Flash audio APIs. 
+It's customizable and can be used with React. You can build your custom audio player interface on top of it.
+GitHub: https://github.com/scottschiller/SoundManager2
+
+React Audio Player: 
+This is a customizable React audio player component that allows you to create your custom controls and 
+style the player to fit your application's design.
+GitHub: https://github.com/justinmc/react-audio-player
+
+React Media Player:
+React Media Player is another customizable audio and video player for React applications.
+It provides a set of customizable components, including the player itself and the controls, 
+that you can style and customize to your liking.
+GitHub: https://github.com/souporserious/react-media-player
+
+React-JPlayer:
+React-JPlayer is a React audio and video player library that provides a wide range of customization options,
+including the ability to create custom controls and skins.
+GitHub: https://github.com/jplayer/react-jPlayer
+*/

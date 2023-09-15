@@ -1,7 +1,6 @@
 import axios from "axios";
 //prettier-ignore
 import React, { MouseEvent, useContext, useEffect, useMemo, useState, } from "react";
-import ReactPlayer from "react-player";
 import ContextMenu from "../context-menu/ContextMenu";
 import { SongObject, SongsContext } from "./../../SongsContext";
 import MusicTableHeader from "./table-header/MusicTableHeader";
@@ -105,11 +104,6 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
       {/* {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)} */}
       {/* prettier-ignore */}
       <div className="playlistTable" onContextMenu={(e) => {handleContextMenu(e); }}>
-        {/* {playingFile && (
-          <div className="player-wrapper">
-            <ReactPlayer className="react-player"  url={playingFile} width="100%" height="100%"/>
-          </div>
-        )} */}
         <table>
           <MusicTableHeader columns={columns} />
           <MusicTableContent entries={songs} columns={columns} />
