@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { MouseEvent, useContext, useEffect, useState } from "react";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import { PlayerContext } from "../../PlayerContext";
 import { SongObject, SongsContext } from "../../SongsContext";
 
@@ -23,21 +23,22 @@ const Player: React.FC = () => {
   //TODO implement the play/pause button
 
   return (
-    <ReactPlayer
-      className="react-player"
-      url={activeSong || ""}
-      playing={true}
-      controls={true}
-      width="640px"
-      height="360px"
-      volume={0.4}
-      onEnded={() => {
-        console.log("onEnded");
-      }}
-      onError={(error) => {
-        console.error("Error playing media:", error);
-      }}
-    />
+    <div>Player</div>
+    // <ReactPlayer
+    //   className="react-player"
+    //   url={activeSong || ""}
+    //   playing={true}
+    //   controls={true}
+    //   width="640px"
+    //   height="360px"
+    //   volume={0.4}
+    //   onEnded={() => {
+    //     console.log("onEnded");
+    //   }}
+    //   onError={(error) => {
+    //     console.error("Error playing media:", error);
+    //   }}
+    // />
   );
 };
 export default Player;
