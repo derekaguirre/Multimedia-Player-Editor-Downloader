@@ -10,8 +10,6 @@ import Player from "./Player";
 // import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
 
-
-
 const API_URL = "http://localhost:4000";
 // interface PlayerProps {
 //   playing: boolean;
@@ -19,17 +17,27 @@ const API_URL = "http://localhost:4000";
 // }
 
 const MusicController: React.FC = () => {
+  const {Howl, Howler} = require('howler');
+
   const { activeSong, setActiveSong } = useContext(PlayerContext);
-  console.log("activesong changed:", activeSong)
   //Local states
   useEffect(() => {
+    console.log("SONG UPDATE:", activeSong);
     console.log("CONTROLLER RENDERED");
   });
+
+
+  //Plays double audio
+  var sound = new Howl({
+    src: [activeSong]
+  });
+  sound.play();
+
+  
 
   //PROBLEMS WITH CURRENT APPROACH:
   //Players are displayed for every song entry
   //Switching SONGS does not restart the song. only continues where it left off. this is due to one player per entry
-
 
   //TODO Ideally I should be using this component inside of the SongController(IN PROGRESS) component
   //Can memorize both the playlist and the song or just use a state for the song
@@ -39,10 +47,9 @@ const MusicController: React.FC = () => {
   //TODO maybe a shuffle
   //TODO implement the play/pause button
 
-
   return (
     <div className="music-controller-container">
-          <Player/>
+      <Player />
       <div className="songButtonElements">
         <div className="PrevButton">
           {/* <img src={PrevIcon} width={30} height={30} /> */}
