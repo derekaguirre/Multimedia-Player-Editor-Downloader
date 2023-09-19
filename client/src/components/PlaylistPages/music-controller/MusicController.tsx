@@ -1,39 +1,67 @@
 import axios from "axios";
 import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import NextIcon from "../../../images/next.svg";
+import PauseIcon from "../../../images/pause.svg";
 import PlayIcon from "../../../images/play.svg";
 import PrevIcon from "../../../images/prev.svg";
 import { PlayerContext } from "./../../PlayerContext";
 
 import "./MusicController.scss";
 import Player from "./Player";
-// import ContextMenu from "../context-menu/ContextMenu";
-// import SearchBar from "../search-bar/SearchBar";
 
 const API_URL = "http://localhost:4000";
-// interface PlayerProps {
-//   playing: boolean;
-//   currentSong: string;
-// }
+
 
 const MusicController: React.FC = () => {
-  const {Howl, Howler} = require('howler');
+  const { Howl } = require("howler");
+  const [currentHowl, setCurrentHowl] = useState<null | typeof Howl>(null); // Use typeof Howl
+  const [isPlaying, setIsPlaying] = useState(false); // State to track playing/paused status
+  const { activeSong } = useContext(PlayerContext);
 
-  const { activeSong, setActiveSong } = useContext(PlayerContext);
+  var songId = 0;
   //Local states
   useEffect(() => {
-    console.log("SONG UPDATE:", activeSong);
-    console.log("CONTROLLER RENDERED");
-  });
+    if (activeSong) {
+      if (currentHowl) {
+        // If a song is already playing, stop it before playing the new one
+        currentHowl.stop();
+      }
 
+      const newHowl = new Howl({
+        volume: 0.5,
+        src: [activeSong],
+        onend: function () {
+          console.log("Finished playing");
+        },
+      });
 
-  //Plays double audio
-  var sound = new Howl({
-    src: [activeSong]
-  });
-  sound.play();
+      setCurrentHowl(newHowl);
+      setIsPlaying(true);
+      newHowl.play();
+    }
+  }, [activeSong]);
 
-  
+  // //Formatting names to be read by music player
+  // const handlePlaySong = (id: number) => {
+  //   console.log("In MusicController Playing:", id);
+  //   currentSong.pause(id)
+  //   songId = currentSong.play();
+  //   // console.log(currentSong.onPlay())
+  // };
+
+  const togglePlayPause = () => {
+    if (currentHowl) {
+      if (isPlaying) {
+        // If currently playing, pause the music
+        currentHowl.pause();
+        setIsPlaying(false);
+      } else {
+        // If paused, resume the music
+        currentHowl.play();
+        setIsPlaying(true);
+      }
+    }
+  };
 
   //PROBLEMS WITH CURRENT APPROACH:
   //Players are displayed for every song entry
@@ -49,13 +77,19 @@ const MusicController: React.FC = () => {
 
   return (
     <div className="music-controller-container">
-      <Player />
+      {/* <Player /> */}
       <div className="songButtonElements">
         <div className="PrevButton">
           {/* <img src={PrevIcon} width={30} height={30} /> */}
         </div>
-        <div className="PlayButton">
-          {/* <img src={PlayIcon} width={30} height={30} /> */}
+        <div onClick={() => togglePlayPause()} className="PlayButton">
+          {isPlaying ? (
+            // Display pause icon when music is playing
+            <img src={PauseIcon} width={30} height={30} />
+          ) : (
+            // Display play icon when music is paused
+            <img src={PlayIcon} width={30} height={30} />
+          )}
         </div>
         <div className="NextButton">
           {/* <img src={NextIcon} width={30} height={30} /> */}

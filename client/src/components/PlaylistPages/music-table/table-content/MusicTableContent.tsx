@@ -20,6 +20,7 @@ interface TableContentProps {
 
 //prettier-ignore
 const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,}) => {
+  
   useEffect(() => {
     //Set PLAYLIST ARRAY here**** a full playlist fill is fine for now. will optimize with smaller playlist sample size
     console.log("TABLE CONTENT RENDERED");
