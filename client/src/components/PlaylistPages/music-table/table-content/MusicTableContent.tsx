@@ -23,7 +23,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,}) => {
   
   useEffect(() => {
     //Set PLAYLIST ARRAY here**** a full playlist fill is fine for now. will optimize with smaller playlist sample size
-    console.log("TABLE CONTENT RENDERED");
+    // console.log("TABLE CONTENT RENDERED");
   }, []);
   
   // FOR UPCOMING EDITOR MODAL
@@ -81,7 +81,6 @@ const handlePlay = (fileName: string) => {
 
 
   // Loop through each entry in the 'entries' array create a table row with a unique key based on entry ID
-  console.log("TABLE CONTENT RENDERED");
 
   return (
     <tbody>
