@@ -13,6 +13,7 @@ import TimeControls from "./time-controls/TimeControls";
 //TODO implement prev / next song feature
 //TODO maybe a shuffle
 //TODO persistent volume
+//TODO media buttons
 
 const MusicController: React.FC = () => {
   const { Howl } = require("howler");
