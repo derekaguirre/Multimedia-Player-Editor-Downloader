@@ -11,6 +11,15 @@ import Sidebar from "./components/side-bar/Sidebar";
 const App: React.FC = () => {
   console.log("APP LOADED");
 
+
+// TODO
+// Seek bar
+// Search bar
+// Images on song entries
+// Implement playlist functionality, forward and backward through songs
+// Implement autoplay
+// Implement shuffle
+
   return (
     <div className="App">
       <PlayerProvider>

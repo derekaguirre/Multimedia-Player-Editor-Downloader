@@ -41,7 +41,7 @@ const MusicController: React.FC = () => {
 
       //Set up the new song and overwrite states with new song
       const newHowl = new Howl({
-        volume: 0.5,
+        volume: 0.3,
         src: [activeSong],
         onload: function () {
           setFullDuration(newHowl.duration());
