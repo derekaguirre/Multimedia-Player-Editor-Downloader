@@ -1,6 +1,6 @@
 import { Howl } from "howler";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { SeekContext } from "./../../../SeekContext";
+// import { SeekContext } from "./../../../SeekContext";
 
 //Can memorize both the playlist and the song or just use a state for the song
 // local storage might be better for persistence.
@@ -10,9 +10,10 @@ import { SeekContext } from "./../../../SeekContext";
 
 //TODO instead of redrawing the width of the progress bar, make it the length of the play bar and just transform it in the right direction over the bar. consider using z-axis to hide it when not on the bar
 //TODO seek bar moves every interval by itself. so disable seek calculation when holding the bar
-//TODO add a div wrapper over seekbar that is invis but allows the hovering and seeking
+//TODO add a div wrapper over seekbar that extends the range of initiating a seek by 4px but is invis
 //TODO fix the progress bar sliding off the end of the seek bar
-//TODO fix progress bar getting stuck to the cursor when dragging off the seek bar
+//TODO seek on click too
+//TODO seek sometimes works every other drag, it would just snap to original location and ignore the drag
 
 interface TimeProps {
   currentHowl: Howl | null;
@@ -25,7 +26,8 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
   //Local states
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seekPosition, setSeekPosition] = useState(0);
-  const { isSeeking, setIsSeeking } = useContext(SeekContext);
+  // const { isSeeking, setIsSeeking } = useContext(SeekContext);
+  const [isSeeking, setIsSeeking] = useState<boolean | null>(null);
 
   useEffect(() => {
     timerLogic(currentHowl);
@@ -35,7 +37,7 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
     let updateInterval: NodeJS.Timeout | null = null;
 
     if (currentHowl) {
-      // Update the current song timer every quarter of a second
+      // Update the current song timer every half a second
       updateInterval = setInterval(() => {
         if (currentHowl.playing !== undefined && currentHowl.playing()) {
           const newCurrentTime = currentHowl.seek();
@@ -71,7 +73,7 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
   // Set progress bar width state
   useEffect(() => {
     setProgressBarWidth(calculateSeekBarWidth());
-  }, [currentHowl, fullDuration, currentTime]);
+  }, [currentTime]);
 
   const handleSeekStart = () => {
     if (!isSeeking) {
@@ -81,12 +83,10 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
 
   const handleSeekRelease = () => {
     if (isSeeking) {
-      // Only seek and remove the mousemove event listener if dragging is active
       if (currentHowl) {
         currentHowl.seek(seekPosition);
       }
       setIsSeeking(false);
-      console.log("RELEASE PROGRESS", progressBarWidth)
     }
   };
 
@@ -102,8 +102,6 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
         const newSeekPosition = newPosition * durationInSeconds;
         setSeekPosition(newSeekPosition);
         setProgressBarWidth(`${newPosition * 100}%`);
-
-        console.log("SEEKING PROGRESS", `${newPosition * 100}%`)
       }
     }
   };
@@ -123,14 +121,20 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
     }
   }, [isSeeking]);
 
+  // Log the seekPosition whenever it changes
+  useEffect(() => {
+    console.log("**SEEK POSITION", seekPosition);
+  }, [seekPosition]);
+
+  // Log the progressBarWidth whenever it changes
+  useEffect(() => {
+    console.log("**BAR WIDTH", progressBarWidth);
+  }, [progressBarWidth]);
+
   return (
     <div className="songTimeElements">
       <div className="currTime">{timeFormatter(currentTime)}</div>
-      <div
-        className="seekBar"
-        onMouseDown={handleSeekStart}
-        ref={seekBarRef}
-      >
+      <div className="seekBar" onMouseDown={handleSeekStart} ref={seekBarRef}>
         <div className="progress" style={{ width: progressBarWidth }}></div>
       </div>
       <div className="endTime">
