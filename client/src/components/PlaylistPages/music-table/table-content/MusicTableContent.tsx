@@ -49,7 +49,6 @@ const handlePlay = (fileName: string) => {
   if (!currentPlaying.includes(fileName)) {
     setActiveSong(`${API_URL}/uploads/${fileName}`);
     setCurrentPlaying([fileName]);
-  
   } else {
     // TODO reset song when double clicking on current row
 

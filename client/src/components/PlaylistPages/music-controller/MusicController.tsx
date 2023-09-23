@@ -34,9 +34,10 @@ const MusicController: React.FC = () => {
       //If there is a song playing already when a new song is selected, unload the previous song
       if (currentHowl) {
         // setCurrentTime(0);
-        console.log("null howl", currentHowl);
+        // console.log("null howl", currentHowl);
         currentHowl.unload();
         setIsPlaying(false);
+        console.log("PLAYING SONG:", activeSong);
       }
 
       //Set up the new song and overwrite states with new song

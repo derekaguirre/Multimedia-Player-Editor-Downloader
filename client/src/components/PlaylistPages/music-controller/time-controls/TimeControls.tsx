@@ -1,5 +1,7 @@
 import { Howl } from "howler";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { SeekContext } from "./../../../SeekContext";
+
 
 //Can memorize both the playlist and the song or just use a state for the song
 // local storage might be better for persistence.
@@ -24,9 +26,15 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
   //Local states
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [seekPosition, setSeekPosition] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [progressBarWidth, setProgressBarWidth] = useState("0%"); // Store progress bar width
+  // const [isSeeking, setIsSeeking] = useState(false);
+  const { isSeeking, setIsSeeking } = useContext(SeekContext);
 
+  useEffect(() => {
+    console.log("TIME CONTROLS SEEK:", isSeeking)
+  }, [isSeeking]);
+
+
+  const [progressBarWidth, setProgressBarWidth] = useState("0%"); // Store progress bar width
 
   const seekBarRef = useRef<HTMLDivElement | null>(null);
 
@@ -77,17 +85,18 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
   }, [currentHowl, fullDuration, currentTime]);
 
   const handleSeekRelease = () => {
-    if (currentHowl) {
-      currentHowl.seek(seekPosition);
+    if (isSeeking) {
+      // Only seek and remove the mousemove event listener if dragging is active
+      if (currentHowl) {
+        currentHowl.seek(seekPosition);
+      }
+      setIsSeeking(false);
+      document.removeEventListener("mousemove", handleSeekDrag);
     }
-    setIsDragging(false);
-
-    // Remove the global mousemove event listener when not dragging
-    document.removeEventListener("mousemove", handleSeekDrag);
   };
 
   const handleSeekDrag = (event: MouseEvent) => {
-    if (isDragging) {
+    if (isSeeking) {
       event.preventDefault();
       const progressBar = seekBarRef.current;
       if (progressBar) {
@@ -97,27 +106,28 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
         const durationInSeconds = fullDuration || 0;
         const newSeekPosition = newPosition * durationInSeconds;
         setSeekPosition(newSeekPosition);
-        setProgressBarWidth(`${newPosition * 100}%`); // Update progress bar width
+        setProgressBarWidth(`${newPosition * 100}%`);
       }
     }
   };
 
   useEffect(() => {
-    if (isDragging) {
-      // Add the global mousemove event listener while dragging
+    if (isSeeking) {
       document.addEventListener("mousemove", handleSeekDrag);
-    } else {
-      // Remove the event listener when not dragging
-      document.removeEventListener("mousemove", handleSeekDrag);
+      // Remove the mousemove event listener when the component unmounts or when not dragging
+      return () => {
+        document.removeEventListener("mousemove", handleSeekDrag);
+      };
     }
-  }, [isDragging]); // Add isDragging as a dependency
+  }, [isSeeking]);
 
+  console.log("TIMECONTROLS RERENDERING", isSeeking)
   return (
     <div className="songTimeElements">
       <div className="currTime">{timeFormatter(currentTime)}</div>
       <div
         className="seekBar"
-        onMouseDown={() => setIsDragging(true)}
+        onMouseDown={() => setIsSeeking(true)}
         onMouseUp={handleSeekRelease}
         ref={seekBarRef}
       >
