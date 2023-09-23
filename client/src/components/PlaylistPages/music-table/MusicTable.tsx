@@ -10,7 +10,7 @@ import MusicTableContent from "./table-content/MusicTableContent";
 const API_URL = "http://localhost:4000";
 
 //Defining all the information stored in DB for reference
-console.log("MUSIC TABLE RENDERED")
+console.log("MUSIC TABLE RENDERED");
 
 interface PlaylistObject {
   currentPlaylistId: string; // Define the prop
@@ -37,16 +37,13 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
-
-
   //Check if playlist exists, if so memo the playlist data
   // const fetchedSongs = useMemo(() => {
-    
+
   //   // Memoize the songs to prevent refetching on every render
   //   return songs;
   // }, [currentPlaylistId]);
 
-  
   useEffect(() => {
     if (currentPlaylistId) {
       // Only fetch playlist data if currentPlaylistId is not empty
@@ -96,7 +93,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //  react-player update "react-player": "^2.12.0",
   // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
   console.log("MUSIC TABLE RENDERED");
-    
+
   //TODO remove tableElementContainer
   return (
     <div className="tableElementContainer">
