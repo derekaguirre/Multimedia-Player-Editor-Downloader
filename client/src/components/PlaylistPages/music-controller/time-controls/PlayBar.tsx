@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 //TODO seek bar moves every interval by itself. so disable seek calculation when holding the bar
 //TODO add a div wrapper over seekbar that extends the range of initiating a seek by 4px but is invis
 //TODO fix the progress bar sliding off the end of the seek bar
-//TODO seek on click too
+//TODO add seek on click too
 //TODO seek sometimes works every other drag, it would just snap to original location and ignore the drag
 
 // Howl needed for seek

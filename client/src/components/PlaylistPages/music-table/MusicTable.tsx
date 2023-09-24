@@ -9,8 +9,14 @@ import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
 const API_URL = "http://localhost:4000";
 
+// TODO Implement search bar
+// Migrate fetch to own file and invoke at:
+//  startup TODO
+//  playlist selection (implemented here but can move to sidebar now)
+//  adding songs DONE (implemented inside of PlaylistMain)
+
 //Defining all the information stored in DB for reference
-console.log("MUSIC TABLE RENDERED");
+
 
 interface PlaylistObject {
   currentPlaylistId: string; // Define the prop
@@ -21,17 +27,11 @@ const initialContextMenu = {
   x: 0,
   y: 0,
 };
-//Migrate fetch to own file and invoke at:
-// startup TODO
-// playlist selection (implemented here but can move to sidebar now)
-// adding songs DONE (implemented inside of PlaylistMain)
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
-  // FOR EDITOR MODAL
-  //https://www.youtube.com/watch?v=-yIsQPp31L0
+  // FOR EDITOR MODAL: https://www.youtube.com/watch?v=-yIsQPp31L0
   //Local states
   const { songs, setSongs } = useContext(SongsContext);
-  // const { playingFile, setPlayingFile } = usePlayer();
 
   //Coordinate States
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -45,6 +45,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   // }, [currentPlaylistId]);
 
   useEffect(() => {
+    console.log("MUSIC TABLE RENDERED");
     if (currentPlaylistId) {
       // Only fetch playlist data if currentPlaylistId is not empty
       console.log("Fetching playlist with ID: ", currentPlaylistId);
@@ -90,16 +91,14 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //  context on player
   //  memoization
   //  table population
-  //  react-player update "react-player": "^2.12.0",
   // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
   console.log("MUSIC TABLE RENDERED");
 
   //TODO remove tableElementContainer
   return (
+    // prettier-ignore
     <div className="tableElementContainer">
-      {/* prettier-ignore */}
       {/* {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)} */}
-      {/* prettier-ignore */}
       <div className="playlistTable" onContextMenu={(e) => {handleContextMenu(e); }}>
         <table>
           <MusicTableHeader columns={columns} />

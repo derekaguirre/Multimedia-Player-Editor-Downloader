@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import PlaybackBar from "./PlayBar";
 import "./TimeControls.scss";
 
-// Can memorize both the playlist and the song or just use a state for the song
-// local storage might be better for persistence.
 
-//TODO implement prev / next song feature
-//TODO maybe a shuffle
 interface TimeProps {
   currentHowl: Howl | null;
   fullDuration: number | null;

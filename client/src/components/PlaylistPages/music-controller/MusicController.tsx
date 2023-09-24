@@ -7,13 +7,14 @@ import { PlayerContext } from "./../../PlayerContext";
 import "./MusicController.scss";
 import TimeControls from "./time-controls/TimeControls";
 
-//Can memorize both the playlist and the song or just use a state for the song
-// local storage might be better for persistence.
+// TODO persist active song name and current time in song using local storage to continue listening session
+// TODO Images on song entries
+// TODO Implement playlist functionality, forward and backward through songs w/ autoplay
+// TODO Implement shuffle
+// TODO Volume slider and make it persistent 
+// TODO Allow for media buttons
 
-//TODO implement prev / next song feature
-//TODO maybe a shuffle
-//TODO persistent volume
-//TODO media buttons
+//TODO verify if howl states need to be manipulated or if active song is sufficient to be passed to children components
 
 const MusicController: React.FC = () => {
   const { Howl } = require("howler");
@@ -69,14 +70,14 @@ const MusicController: React.FC = () => {
     <div className="music-controller-container">
       <div className="songButtonElements">
         <div className="PrevButton">
-          {/* <img src={PrevIcon} width={30} height={30} /> */}
+          <img src={PrevIcon} width={30} height={30} />
         </div>
         {/* prettier-ignore */}
         <div onClick={() => togglePlayPause()} className="PlayButton">
           {isPlaying ? (<img src={PauseIcon} width={30} height={30} />) : (<img src={PlayIcon} width={30} height={30} />)}
         </div>
         <div className="NextButton">
-          {/* <img src={NextIcon} width={30} height={30} /> */}
+          <img src={NextIcon} width={30} height={30} />
         </div>
       </div>
       <TimeControls currentHowl={currentHowl} fullDuration={fullDuration} />
