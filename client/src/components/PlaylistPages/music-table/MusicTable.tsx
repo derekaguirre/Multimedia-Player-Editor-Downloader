@@ -75,11 +75,13 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const contextMenuClose = () => setContextMenu(initialContextMenu);
 
   // TODO add a selector for the headers and accessors to make display dynamic
+  // TODO display date added 'Month D, YYYY'
+  // TODO display duration of song
   //prettier-ignore
   const columns = useMemo(
     () => [
       // { Header: "File ID", accessor: "_id"},
-      { Header: "File Name", accessor: "fileNameOriginal"},
+      // { Header: "File Name", accessor: "fileNameOriginal"},
       { Header: "Title", accessor: "title"},
       { Header: "Artist", accessor: "artist"},
       { Header: "Album", accessor: "album"},

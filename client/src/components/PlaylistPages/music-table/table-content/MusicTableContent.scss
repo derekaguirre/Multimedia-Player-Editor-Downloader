@@ -9,14 +9,14 @@ tbody {
 
         &.playing-selected {
             background-color: #5a5a5a;
-            td{
+            td {
                 color: #1db956; // Green text color
             }
         }
         &.selected {
             background-color: #5a5a5a; // Only highlighted background
         }
-        &.playing td{
+        &.playing td {
             color: #1db956; // Only green text color
         }
         td {

@@ -215,6 +215,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         imageBuffer: tags.image.imageBuffer || Buffer.alloc(0),
       };
       //Create the song object with extracted metadata
+      //'metadata' comes from the front end
       const fullSongMetadata = {
         fileNameOriginal: metadata.fileNameOriginal,
         fileNameFormatted: metadata.fileNameFormatted,
@@ -224,13 +225,13 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         dateAdded: new Date(),
         isVisible: true,
         isLiked: false,
-        title: tags.title || "",
+        title: metadata.title,
         artist: tags.artist || "",
         album: tags.album || "",
         genre: tags.genre || "",
         image: imageDataArr,
       };
-      console.log("FULL SONG INFO", fullSongMetadata);
+      console.log("SONG INFO SENT TO DB", fullSongMetadata);
 
       //Add the song to the playlist's songs array
       playlist.songs.push(fullSongMetadata);

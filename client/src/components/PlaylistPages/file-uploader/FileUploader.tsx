@@ -3,19 +3,27 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import './FileUploader.scss';
 
+//TODO remove use of playlist ID
+//TODO make env file with API URL
+//TODO use component in settings
+//TODO if possible, wrap functionality around MusicTable
 
 const API_URL = "http://localhost:4000";
-const playlistId = "649d7447e7a0d197e0bb6d3c";
+const playlistId = "64e57f4ca023540bb2cad9de";
 
-  // BACKEND INTERFACING--------------------------------------------
-
-
-const FileUploader: React.FC = () => {
+  // DATA FORMATTING METHODS--------------------------------------------
   //Formatting names to be read by music player
   const nameFormatter = (str: string) => {
     return str.replace(/ /g, "%20").replace(",", "%2C");
   };
+  //Formatting for song titles
+  const fileExtensionRemover = (str: string) => {
+    return str.replace(".mp3", "");
+  };
 
+
+  // BACKEND INTERFACING--------------------------------------------
+const FileUploader: React.FC = () => {
   //File importing logic
   const onDrop = async (acceptedFiles: File[]) => {
     try {
@@ -25,15 +33,15 @@ const FileUploader: React.FC = () => {
         fileObj.append("uploadedFiles", file);
       });
 
-      //Retrieve the metadata of the file
+      //Retrieve the metadata of the file, this will be sent to the server so data here must be fully pre-processed
       const metadataArray = acceptedFiles.map((file) => ({
         fileNameOriginal: file.name,
         fileNameFormatted: nameFormatter(file.name),
         filePath: file.webkitRelativePath,
         fileSize: file.size,
         fileType: file.type,
+        title: fileExtensionRemover(file.name),
       }));
-
 
       // Post the file (make a copy) to the uploads folder in the api
       await axios.post(`${API_URL}/playlist/new-file`, fileObj);
@@ -43,13 +51,11 @@ const FileUploader: React.FC = () => {
       console.log("METADATA FROM FRONT END", metadataArray);
       await axios.post(`${API_URL}/playlist/${playlistId}/add-songs`, { metadataArray });
       console.log("File metadata stored successfully!");
-
       
     } catch (error) {
       console.error("Error uploading files:", error);
     }
   };
-
   // IMPORTING--------------------------------------------
   
   //Properties for file importing
