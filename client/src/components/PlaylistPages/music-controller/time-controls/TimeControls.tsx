@@ -32,7 +32,7 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
             setCurrentTime(newCurrentTime);
           }
         }
-      }, 250);
+      }, 500);
     }
     return () => {
       // Clear the interval when the component unmounts or when currentHowl changes

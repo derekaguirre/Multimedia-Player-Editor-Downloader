@@ -19,29 +19,88 @@ const PlaybackBar: React.FC<TimeProps> = ({
   currentTime,
   fullDuration,
 }) => {
-  //Local states
+  // Local states
   const seekBarRef = useRef<HTMLDivElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
 
-  // Passive calculation of the progress bar
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
   useEffect(() => {
-    if (currentHowl && seekBarRef.current && progressBarRef.current) {
+    if (
+      !isDragging &&
+      currentHowl &&
+      seekBarRef.current &&
+      progressBarRef.current
+    ) {
       const seekBar = seekBarRef.current;
       const progressBar = progressBarRef.current;
       const durationInSeconds = fullDuration || 0;
 
-      // Calculate the percentage of progress
       const progressPercentage = (currentTime / durationInSeconds) * 100;
+      const initialTranslation = `translateX(${progressPercentage}%)`;
 
-      // Calculate the initial translation value to start at negative full duration
-      const initialTranslation = "translateX(0%)";
-      // Translate the play bar to the right based on the progress
-      progressBar.style.transform = `translateX(${progressPercentage}%) ${initialTranslation}`;
+      if (progressBar) {
+        progressBar.style.transform = initialTranslation;
+      }
     }
-  }, [currentTime, currentHowl, fullDuration]);
+  }, [currentTime, currentHowl, fullDuration, isDragging]);
+
+  const handleSeekStart = () => {
+    console.log("Seek Start");
+    setIsDragging(true);
+  };
+
+  const handleSeekRelease: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    console.log("Seek Release");
+    setIsDragging(false);
+
+    if (currentHowl && seekBarRef.current) {
+      const seekBar = seekBarRef.current;
+      const progressBar = progressBarRef.current;
+      const boundingBox = seekBar.getBoundingClientRect();
+      const newPosition =
+        (event.clientX - boundingBox.left) / boundingBox.width;
+      const durationInSeconds = fullDuration || 0;
+      const newSeekPosition = newPosition * durationInSeconds;
+
+      if (!isDragging) {
+        currentHowl.seek(newSeekPosition);
+      }
+
+      if (progressBar) {
+        const progressPercentage = (newSeekPosition / durationInSeconds) * 100;
+        progressBar.style.transform = `translateX(${progressPercentage}%)`;
+      }
+    }
+  };
+
+  const handleSeekDrag: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    if (isDragging && currentHowl && seekBarRef.current) {
+      const seekBar = seekBarRef.current;
+      const progressBar = progressBarRef.current;
+      const boundingBox = seekBar.getBoundingClientRect();
+      const newPosition =
+        (event.clientX - boundingBox.left) / boundingBox.width;
+      const durationInSeconds = fullDuration || 0;
+      const newSeekPosition = newPosition * durationInSeconds;
+
+      currentHowl.seek(newSeekPosition);
+
+      if (progressBar) {
+        const progressPercentage = (newSeekPosition / durationInSeconds) * 100;
+        progressBar.style.transform = `translateX(${progressPercentage}%)`;
+      }
+    }
+  };
 
   return (
-    <div className="seekBar" ref={seekBarRef}>
+    <div
+      className="seekBar"
+      ref={seekBarRef}
+      onMouseDown={handleSeekStart}
+      onMouseUp={handleSeekRelease}
+      onMouseMove={handleSeekDrag}
+    >
       <div className="progressBar" ref={progressBarRef}></div>
     </div>
   );
