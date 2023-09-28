@@ -18,7 +18,6 @@ const API_URL = "http://localhost:4000";
 // FOR EDITOR MODAL: https://www.youtube.com/watch?v=-yIsQPp31L0
 
 // TODO check if memoization is needed. also verify if this approach that's commented out works and why.
-// TODO on columns, add sorting by clicking on col. Check if its possible to implement in sub components.
 // TODO in table, add 'date added' col, in 'Month D, YYYY' format
 // TODO in table, add 'duration' col, in MM:SS format (**NEED TO ADD THIS FIELD TO DATABASE)
 // TODO in table, add 'liked' col with correct state change and sending updates to the db
@@ -33,12 +32,20 @@ interface PlaylistObject {
 }
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
-  //Local states
   const { songs, setSongs } = useContext(SongsContext);
 
-  //Coordinate States
+  //States for searching
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSongs, setFilteredSongs] = useState<SongObject[]>([]);
+
+  //States for sorting
+  const [sortingOrder, setSortingOrder] = useState<string | null>(null);
+  const [clickedHeader, setClickedHeader] = useState<string | null>(null);
+
+  const handleHeaderClick = () => {
+    // Toggle between "asc" and "desc" on header click
+    setSortingOrder(sortingOrder === "asc" ? "desc" : "asc");
+  };
 
   //Check if playlist exists, if so memo the playlist data
   // const fetchedSongs = useMemo(() => {
@@ -48,6 +55,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
 
   // Only fetch playlist data if there is a playlist id in local storage
   // Playlist is fetched every time the sidebar changes the currentPlaylistId
+  console.log("MUSIC TABLE SORT ORDER:", sortingOrder);
   useEffect(() => {
     console.log("MUSIC TABLE RENDERED");
     if (currentPlaylistId) {
@@ -72,6 +80,8 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     }
   };
 
+
+  //TODO make a selector for the header/accessor pairs so this doesn't need to be hard coded
   //prettier-ignore
   const columns = useMemo(
     () => [
@@ -89,13 +99,27 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
 
   //TODO remove tableElementContainer
   return (
-    // prettier-ignore
     <div className="tableElementContainer">
       <div className="playlistTable">
-      <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} setFilteredSongs={setFilteredSongs} /> 
+        <TableSearch
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          setFilteredSongs={setFilteredSongs}
+        />
         <table>
-          <MusicTableHeader columns={columns}/>
-          <MusicTableContent entries={filteredSongs} columns={columns} searchQuery={searchQuery}/>
+          <MusicTableHeader
+            columns={columns}
+            sortingOrder={sortingOrder}
+            setSortingOrder={setSortingOrder}
+            setClickedHeader={setClickedHeader}
+          />
+          <MusicTableContent
+            entries={filteredSongs}
+            columns={columns}
+            searchQuery={searchQuery}
+            sortingOrder={sortingOrder ?? ""}
+            clickedHeader={clickedHeader}
+          />
         </table>
       </div>
     </div>
