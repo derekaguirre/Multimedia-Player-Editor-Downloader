@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../../../PlayerContext";
 import { usePlaylist } from "../../../PlaylistContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
-import HighlightedText from "./../HighlightedText"; // Import the HighlightedText component
+import HighlightedText from "./../table-search/HighlightedText"; // Import the HighlightedText component
 import "./MusicTableContent.scss";
 
 const API_URL = "http://localhost:4000";
@@ -14,13 +14,16 @@ interface TableContentProps {
   searchQuery: string;
 }
 
-const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, searchQuery }) => {
+const MusicTableContent: React.FC<TableContentProps> = ({
+  entries,
+  columns,
+  searchQuery,
+}) => {
   // Context hooks
   const { setActiveSong } = useContext(PlayerContext);
   // Local states
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
-
 
   useEffect(() => {
     // Set PLAYLIST ARRAY here**** a full playlist is fine for now. will optimize with smaller playlist sample size
@@ -61,6 +64,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, sear
   };
 
   // Loop through each entry in the 'entries' array create a table row with a unique key based on entry ID
+  // prettier-ignore
   return (
     <tbody>
       {entries.map((entry, index) => (
@@ -70,13 +74,12 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, sear
           key={entry._id}
           className={getRowClassName(entry.fileNameFormatted, entry._id)}
         >
-          {/* prettier-ignore */}
-          <td id="playButtonEntry">
-            <button>Play</button>
+          <td id="tableEntryIndex">
+            {index + 1}
           </td>
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
-              {column.accessor === "title" || column.accessor === "artist" ? (
+              {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? (
                 <HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />
               ) : (
                 entry[column.accessor] || "N/A"
@@ -90,7 +93,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, sear
 };
 
 export default MusicTableContent;
-
 
 //Sorting
 

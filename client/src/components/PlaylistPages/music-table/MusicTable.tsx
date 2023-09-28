@@ -7,15 +7,13 @@ import MusicTableHeader from "./table-header/MusicTableHeader";
 // import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
+import TableSearch from "./table-search/TableSearch";
 const API_URL = "http://localhost:4000";
 
 // TODO when currentPlaylistId does not exist
 //   (prompt a button to create a playlist, can be handled with a popup for basic playlist info and a dropzone can be included)
 //   (create a default empty playlist)
 
-// TODO Refactor search out to own file
-// TODO Add search to a div that will include sort functionality
-// TODO highlight text found that matches the query
 // TODO in settings add a selector for the headers to allow for more customized song table
 // FOR EDITOR MODAL: https://www.youtube.com/watch?v=-yIsQPp31L0
 
@@ -31,7 +29,7 @@ const API_URL = "http://localhost:4000";
 //  adding songs (needs to be re-implemented due to bug that caused re-rendering after every click inside of was inside of PlaylistMain)
 
 interface PlaylistObject {
-  currentPlaylistId: string; // Define the prop
+  currentPlaylistId: string;
 }
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
@@ -39,7 +37,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const { songs, setSongs } = useContext(SongsContext);
 
   //Coordinate States
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
   const [filteredSongs, setFilteredSongs] = useState<SongObject[]>([]);
 
   //Check if playlist exists, if so memo the playlist data
@@ -49,10 +47,11 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   // }, [currentPlaylistId]);
 
   // Only fetch playlist data if there is a playlist id in local storage
+  // Playlist is fetched every time the sidebar changes the currentPlaylistId
   useEffect(() => {
     console.log("MUSIC TABLE RENDERED");
     if (currentPlaylistId) {
-      console.log("Fetching playlist with ID: ", currentPlaylistId);
+      console.log("MusicTable fetching playlist with ID: ", currentPlaylistId);
       fetchPlaylistData(currentPlaylistId);
     } else {
       console.log("Current playlist ID is empty. No playlist data fetched.");
@@ -73,27 +72,6 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     }
   };
 
-  // If search query is empty, show all songs, otherwise only show songs that match the search query
-  //prettier-ignore
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredSongs(songs);
-    } else {
-      const filtered = songs.filter(
-        (song) =>
-          //Possible queries the search will accept
-          song.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          song.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          song.album.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredSongs(filtered);
-    }
-  }, [songs, searchQuery]);
-
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
   //prettier-ignore
   const columns = useMemo(
     () => [
@@ -105,11 +83,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     ],
     []
   );
-  //Clicking refreshing the page be a result of:
-  //  useeffects
-  //  context on player
-  //  memoization
-  //  table population
+
   // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
   console.log("MUSIC TABLE RENDERED");
 
@@ -118,15 +92,9 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     // prettier-ignore
     <div className="tableElementContainer">
       <div className="playlistTable">
-      <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-        />
+      <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} setFilteredSongs={setFilteredSongs} /> 
         <table>
-          {/* Verify implementation of sorting inside of here, if not then functionality will work in MusicTable */}
-          <MusicTableHeader columns={columns} />
+          <MusicTableHeader columns={columns}/>
           <MusicTableContent entries={filteredSongs} columns={columns} searchQuery={searchQuery}/>
         </table>
       </div>

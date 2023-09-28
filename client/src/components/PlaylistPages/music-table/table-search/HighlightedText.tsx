@@ -6,8 +6,8 @@ interface HighlightedTextProps {
 }
 
 const HighlightedText: React.FC<HighlightedTextProps> = ({ text, query }) => {
+  // If the query is empty, return text as is
   if (!query) {
-    // No query, return the text as is
     return <span>{text}</span>;
   }
 

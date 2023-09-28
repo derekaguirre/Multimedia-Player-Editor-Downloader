@@ -1,6 +1,5 @@
-import axios from "axios";
-import React, { MouseEvent, useContext, useEffect, useState } from "react";
-import { SongObject, SongsContext } from "./../../../SongsContext";
+import React, { useContext } from "react";
+import { SongsContext } from "./../../../SongsContext";
 import "./MusicTableHeader.scss";
 // import ContextMenu from "../context-menu/ContextMenu";
 // import SearchBar from "../search-bar/SearchBar";
@@ -10,14 +9,7 @@ const API_URL = "http://localhost:4000";
 interface HeaderProps {
   columns: { Header: string; accessor: string }[];
 }
-interface SortArrowProps {
-  order?: "asc" | "desc";
-}
-const initialContextMenu = {
-  show: false,
-  x: 0,
-  y: 0,
-};
+
 
 //Migrate fetch to own file and invoke at:
 // startup TODO
@@ -26,25 +18,8 @@ const initialContextMenu = {
 
 const MusicTableHeader: React.FC<HeaderProps> = ({ columns }) => {
   //Local states
-  const { songs, setSongs } = useContext(SongsContext);
-  const [sortColumn, setSortColumn] = useState<keyof SongObject | "">("");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   //Coordinate States
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [contextMenu, setContextMenu] = useState(initialContextMenu);
-
-  const fetchPlaylistData = async (playlistId: string) => {
-    // prettier-ignore
-    try {
-      console.log('fetching songs for the table: ', `${API_URL}/playlist/${playlistId}/songs`)
-      const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-      console.log("Fetching all songs from playlist:", `${playlistId} `, response.data);
-      setSongs(response.data);
-    } catch (error) {
-      console.error("Error fetching playlist data:", error);
-    }
-  };
 
   // const SortArrow: React.FC<SortArrowProps> = ({ order }) => (
   //   <span>{order === "asc" ? "▲" : order === "desc" ? "▼" : ""}</span>
