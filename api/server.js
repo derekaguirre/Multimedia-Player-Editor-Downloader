@@ -198,12 +198,16 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
       if (isDuplicate) {
         //prettier-ignore
         console.log("Duplicate song found, skipping:",metadata.fileNameOriginal);
+
         continue;
       }
 
       //Set the file path and read the tags
       const filePath = `${uploadDirectory}\\${metadata.fileNameOriginal}`;
+
       const tags = NodeID3.read(filePath);
+
+
       // console.log("IMAGE BEFORE PROCESSING", tags.image.type.name);
       const imageDataArr = {
         mime: tags.image.mime || " ",
@@ -226,12 +230,12 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         isVisible: true,
         isLiked: false,
         title: metadata.title,
+        duration: metadata.duration || "",
         artist: tags.artist || "",
         album: tags.album || "",
         genre: tags.genre || "",
         image: imageDataArr,
       };
-      console.log("SONG INFO SENT TO DB", fullSongMetadata);
 
       //Add the song to the playlist's songs array
       playlist.songs.push(fullSongMetadata);

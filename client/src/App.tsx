@@ -10,7 +10,7 @@ import Sidebar from "./components/side-bar/Sidebar";
 
 const App: React.FC = () => {
   console.log("APP LOADED");
-
+  
   // TODO ENV file for API key
   // TODO verify heierachy of providers
   // TODO Use navbar on sidebar to update/navigate router on page content section
@@ -19,6 +19,8 @@ const App: React.FC = () => {
     <div className="App">
       <PlaylistProvider>
         <PlayerProvider>
+        <SongsProvider>
+
           <div className="top-page">
             {/* SIDEBAR */}
 
@@ -28,13 +30,12 @@ const App: React.FC = () => {
 
             {/* PAGE CONTENT */}
             <div className="content-container">
-              <SongsProvider>
                 <PlaylistMain />
-              </SongsProvider>
             </div>
           </div>
           {/* SONG CONTROLLER */}
           <MusicController />
+          </SongsProvider>
         </PlayerProvider>
       </PlaylistProvider>
     </div>

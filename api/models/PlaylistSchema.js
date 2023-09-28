@@ -37,6 +37,9 @@ const playListSchema = new mongoose.Schema({
       title: {
         type: String,
       },
+      duration: {
+        type: Number,
+      },
       artist: {
         type: String,
       },

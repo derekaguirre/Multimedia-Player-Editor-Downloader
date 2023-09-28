@@ -24,6 +24,7 @@ export interface SongObject {
   isVisible: boolean;
   isLiked: boolean;
   title: string;
+  duration: number;
   artist: string;
   album: string;
   genre: string;
