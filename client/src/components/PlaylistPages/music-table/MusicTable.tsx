@@ -127,7 +127,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
         <table>
           {/* Verify implementation of sorting inside of here, if not then functionality will work in MusicTable */}
           <MusicTableHeader columns={columns} />
-          <MusicTableContent entries={filteredSongs} columns={columns} />
+          <MusicTableContent entries={filteredSongs} columns={columns} searchQuery={searchQuery}/>
         </table>
       </div>
     </div>
