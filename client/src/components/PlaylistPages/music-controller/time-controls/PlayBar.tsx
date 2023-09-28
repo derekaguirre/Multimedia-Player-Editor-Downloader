@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 //TODO replace isDragging with isSeeking from parent component
 //TODO disable highlighting of other components while dragging the bar
 //TODO Allow for progress bar to be dragged even if the cursor leaves the component
+//TODO handleSeekDrag fires off every pixel traveled while hovering the seek bar
 
 interface TimeProps {
   currentHowl: Howl | null;

@@ -8,42 +8,31 @@ import "./MusicTableContent.scss";
 
 const API_URL = "http://localhost:4000";
 
+//TODO setActiveSong should set an array of song titles
+//TODO implement shuffle functionality here or in MusicTable
+
 interface TableContentProps {
   entries: SongObject[];
   columns: { Header: string; accessor: string }[];
 }
 
-//Migrate fetch to own file and invoke at:
-// startup TODO
-// on playlist selection (implemented in sidebar)
-// adding songs DONE (implemented inside of MusicTable)
-
 //prettier-ignore
 const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,}) => {
+  // Context hooks
+  const { setActiveSong } = useContext(PlayerContext) 
+  //Local states
+  const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
+  const [selectedRow, setSelectedRow] = useState<string[]>([]);
   
   useEffect(() => {
-    //Set PLAYLIST ARRAY here**** a full playlist fill is fine for now. will optimize with smaller playlist sample size
+    //Set PLAYLIST ARRAY here**** a full playlist is fine for now. will optimize with smaller playlist sample size
     // console.log("TABLE CONTENT RENDERED");
   }, []);
   
   // FOR UPCOMING EDITOR MODAL
   //https://www.youtube.com/watch?v=-yIsQPp31L0
 
-  //Local states
-  const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
-  const [selectedRow, setSelectedRow] = useState<string[]>([]);
-
-
-  // Context hooks
-  const { setActiveSong } = useContext(PlayerContext);
-
   
-  // const handlePlay = (file: string) => {
-  //   //TODO SET A PLAYLIST, not the current song. since the player can accept string[]
-  //   setActiveSong(`${API_URL}/uploads/${file}`);
-  // };
-
-
   //  If the row is not currently playing, set the active song to the current row 
 const handlePlay = (fileName: string) => {
   if (!currentPlaying.includes(fileName)) {
@@ -51,7 +40,6 @@ const handlePlay = (fileName: string) => {
     setCurrentPlaying([fileName]);
   } else {
     // TODO reset song when double clicking on current row
-
   }
 };
 
@@ -80,7 +68,6 @@ const handlePlay = (fileName: string) => {
 
 
   // Loop through each entry in the 'entries' array create a table row with a unique key based on entry ID
-
   return (
     <tbody>
       {entries.map((entry, index) => (

@@ -9,45 +9,49 @@ import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
 const API_URL = "http://localhost:4000";
 
-// TODO Implement search bar
+// TODO when currentPlaylistId does not exist
+//   (prompt a button to create a playlist, can be handled with a popup for basic playlist info and a dropzone can be included)
+//   (create a default empty playlist)
+
+// TODO Refactor search out to own file
+// TODO Add search to a div that will include sort functionality
+// TODO highlight text found that matches the query
+// TODO in settings add a selector for the headers to allow for more customized song table
+// FOR EDITOR MODAL: https://www.youtube.com/watch?v=-yIsQPp31L0
+
+// TODO check if memoization is needed. also verify if this approach that's commented out works and why.
+// TODO on columns, add sorting by clicking on col. Check if its possible to implement in sub components.
+// TODO in table, add 'date added' col, in 'Month D, YYYY' format
+// TODO in table, add 'duration' col, in MM:SS format (**NEED TO ADD THIS FIELD TO DATABASE)
+// TODO in table, add 'liked' col with correct state change and sending updates to the db
+
 // Migrate fetch to own file and invoke at:
-//  startup TODO
-//  playlist selection (implemented here but can move to sidebar now)
-//  adding songs DONE (implemented inside of PlaylistMain)
-
-//Defining all the information stored in DB for reference
-
+//  startup (implemented here and should be refactored out)
+//  playlist selection (implemented here but can move to sidebar now, not sure if fesable due to state changes needing to re-render this component)
+//  adding songs (needs to be re-implemented due to bug that caused re-rendering after every click inside of was inside of PlaylistMain)
 
 interface PlaylistObject {
   currentPlaylistId: string; // Define the prop
 }
 
-const initialContextMenu = {
-  show: false,
-  x: 0,
-  y: 0,
-};
-
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
-  // FOR EDITOR MODAL: https://www.youtube.com/watch?v=-yIsQPp31L0
   //Local states
   const { songs, setSongs } = useContext(SongsContext);
 
   //Coordinate States
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [contextMenu, setContextMenu] = useState(initialContextMenu);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [filteredSongs, setFilteredSongs] = useState<SongObject[]>([]);
 
   //Check if playlist exists, if so memo the playlist data
   // const fetchedSongs = useMemo(() => {
-
   //   // Memoize the songs to prevent refetching on every render
   //   return songs;
   // }, [currentPlaylistId]);
 
+  // Only fetch playlist data if there is a playlist id in local storage
   useEffect(() => {
     console.log("MUSIC TABLE RENDERED");
     if (currentPlaylistId) {
-      // Only fetch playlist data if currentPlaylistId is not empty
       console.log("Fetching playlist with ID: ", currentPlaylistId);
       fetchPlaylistData(currentPlaylistId);
     } else {
@@ -55,28 +59,41 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     }
   }, [currentPlaylistId]);
 
+  //prettier-ignore
   const fetchPlaylistData = async (playlistId: string) => {
-    // prettier-ignore
     try {
-      console.log('fetching songs for the table: ', `${API_URL}/playlist/${playlistId}/songs`)
+      console.log("fetching songs for the table: ",`${API_URL}/playlist/${playlistId}/songs`);
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-      console.log( "Fetching all songs from playlist:", `${playlistId} `, response.data);
-      setSongs(response.data);
+      console.log("Fetching all songs from playlist:",`${playlistId} `,response.data);
+
+      // Use type assertion to specify the correct type for setSongs
+      setSongs(response.data as SongObject[]);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
   };
-  //prettier-ignore
-  const handleContextMenu = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) =>{
-    e.preventDefault();
-    const {pageX, pageY} = e
-    setContextMenu({show: true, x: pageX, y: pageY})
-  }
-  const contextMenuClose = () => setContextMenu(initialContextMenu);
 
-  // TODO add a selector for the headers and accessors to make display dynamic
-  // TODO display date added 'Month D, YYYY'
-  // TODO display duration of song
+  // If search query is empty, show all songs, otherwise only show songs that match the search query
+  //prettier-ignore
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredSongs(songs);
+    } else {
+      const filtered = songs.filter(
+        (song) =>
+          //Possible queries the search will accept
+          song.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          song.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          song.album.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredSongs(filtered);
+    }
+  }, [songs, searchQuery]);
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   //prettier-ignore
   const columns = useMemo(
     () => [
@@ -100,11 +117,17 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   return (
     // prettier-ignore
     <div className="tableElementContainer">
-      {/* {contextMenu.show && (<ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose}/>)} */}
-      <div className="playlistTable" onContextMenu={(e) => {handleContextMenu(e); }}>
+      <div className="playlistTable">
+      <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
         <table>
+          {/* Verify implementation of sorting inside of here, if not then functionality will work in MusicTable */}
           <MusicTableHeader columns={columns} />
-          <MusicTableContent entries={songs} columns={columns} />
+          <MusicTableContent entries={filteredSongs} columns={columns} />
         </table>
       </div>
     </div>

@@ -9,10 +9,10 @@ import TimeControls from "./time-controls/TimeControls";
 
 // TODO persist active song name and current time in song using local storage to continue listening session
 // TODO Images on song entries
-// TODO Implement playlist functionality, forward and backward through songs w/ autoplay
+// TODO Implement playlist functionality, forward and backward through songs w/ AUTOPLAY
 // TODO Implement shuffle
-// TODO Volume slider and make it persistent 
 // TODO Allow for media buttons
+// TODO Volume slider and make it persistent 
 
 //TODO verify if howl states need to be manipulated or if active song is sufficient to be passed to children components
 

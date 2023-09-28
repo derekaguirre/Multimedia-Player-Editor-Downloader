@@ -8,18 +8,20 @@ import MusicController from "./components/PlaylistPages/music-controller/MusicCo
 import { SongsProvider } from "./components/SongsContext";
 import Sidebar from "./components/side-bar/Sidebar";
 
-
 const App: React.FC = () => {
   console.log("APP LOADED");
-  
-// TODO ENV file for API key
-// TODO verify heierachy of providers
+
+  // TODO ENV file for API key
+  // TODO verify heierachy of providers
+  // TODO Use navbar on sidebar to update/navigate router on page content section
 
   return (
     <div className="App">
-      <PlayerProvider>
-        <PlaylistProvider>
+      <PlaylistProvider>
+        <PlayerProvider>
           <div className="top-page">
+            {/* SIDEBAR */}
+
             <div className="sidebar-container">
               <Sidebar />
             </div>
@@ -31,9 +33,10 @@ const App: React.FC = () => {
               </SongsProvider>
             </div>
           </div>
-        </PlaylistProvider>
-        <MusicController />
-      </PlayerProvider>
+          {/* SONG CONTROLLER */}
+          <MusicController />
+        </PlayerProvider>
+      </PlaylistProvider>
     </div>
   );
 };
