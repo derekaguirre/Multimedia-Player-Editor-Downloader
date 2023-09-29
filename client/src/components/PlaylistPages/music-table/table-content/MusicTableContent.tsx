@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../../../PlayerContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
+import { formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText"; // Import the HighlightedText component
 import "./MusicTableContent.scss";
 
@@ -17,13 +18,7 @@ interface TableContentProps {
   clickedHeader: string | null;
 }
 
-const MusicTableContent: React.FC<TableContentProps> = ({
-  entries,
-  columns,
-  searchQuery,
-  sortingOrder,
-  clickedHeader,
-}) => {
+const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQuery,sortingOrder,clickedHeader}) => {
   // Context hooks
   const { setActiveSong } = useContext(PlayerContext);
   // Local states
@@ -32,18 +27,14 @@ const MusicTableContent: React.FC<TableContentProps> = ({
 
   console.log("TABLE CONTENT ORDER:", sortingOrder);
   // Handle sorting based on sortingOrder
-  //----------------------------------------------------------------------------------------------------------------------------------
-
   const sortedEntries = [...entries];
 
   sortedEntries.sort((a, b) => {
     if (sortingOrder === "asc" && clickedHeader) {
-      // Check if clickedHeader is not null before using it
       if (a[clickedHeader] < b[clickedHeader]) return -1;
       if (a[clickedHeader] > b[clickedHeader]) return 1;
       return 0;
     } else if (sortingOrder === "desc" && clickedHeader) {
-      // Check if clickedHeader is not null before using it
       if (a[clickedHeader] > b[clickedHeader]) return -1;
       if (a[clickedHeader] < b[clickedHeader]) return 1;
       return 0;
@@ -52,7 +43,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({
     // Default return value if sortingOrder is neither "asc" nor "desc" or clickedHeader is null
     return 0;
   });
-  
 
   //  If the row is not currently playing, set the active song to the current row
   const handlePlay = (fileName: string) => {
@@ -85,7 +75,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({
   };
 
   // Loop through each entry in the 'entries' array create a table row with a unique key based on entry ID
-  // prettier-ignore
+  //prettier-ignore
   return (
     <tbody>
       {sortedEntries.map((entry, index) => (
@@ -95,16 +85,14 @@ const MusicTableContent: React.FC<TableContentProps> = ({
           key={entry._id}
           className={getRowClassName(entry.fileNameFormatted, entry._id)}
         >
-          <td id="tableEntryIndex">
-            {index + 1}
-          </td>
+          <td id="tableEntryIndex">{index + 1}</td>
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
-              {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? (
-                <HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />
-              ) : (
-                entry[column.accessor] || "N/A"
-              )}
+              {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? 
+              (<HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />) : 
+              column.accessor === "duration" ? (formatDuration(entry[column.accessor])) : 
+              column.accessor === "dateAdded" ? (formatDateAdded(entry[column.accessor].toString())) :
+              (entry[column.accessor] || "N/A")}
             </td>
           ))}
         </tr>

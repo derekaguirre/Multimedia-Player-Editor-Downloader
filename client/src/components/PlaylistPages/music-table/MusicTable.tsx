@@ -1,12 +1,10 @@
 import axios from "axios";
 //prettier-ignore
-import React, { MouseEvent, useContext, useEffect, useMemo, useState, } from "react";
-import ContextMenu from "../context-menu/ContextMenu";
+import React, { useContext, useEffect, useMemo, useState, } from "react";
 import { SongObject, SongsContext } from "./../../SongsContext";
-import MusicTableHeader from "./table-header/MusicTableHeader";
-// import SearchBar from "../search-bar/SearchBar";
 import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
+import MusicTableHeader from "./table-header/MusicTableHeader";
 import TableSearch from "./table-search/TableSearch";
 const API_URL = "http://localhost:4000";
 
@@ -18,8 +16,6 @@ const API_URL = "http://localhost:4000";
 // FOR EDITOR MODAL: https://www.youtube.com/watch?v=-yIsQPp31L0
 
 // TODO check if memoization is needed. also verify if this approach that's commented out works and why.
-// TODO in table, add 'date added' col, in 'Month D, YYYY' format
-// TODO in table, add 'duration' col, in MM:SS format (**NEED TO ADD THIS FIELD TO DATABASE)
 // TODO in table, add 'liked' col with correct state change and sending updates to the db
 
 // Migrate fetch to own file and invoke at:
@@ -31,8 +27,37 @@ interface PlaylistObject {
   currentPlaylistId: string;
 }
 
+// Methods to help with data formatting---
+//TODO also implemented inside of TimeControls.tsx can refactor into a TableUtils.tsx component and export what's needed maybe?
+export function formatDuration(durationInSeconds: number | undefined) {
+  if (durationInSeconds === undefined) {
+    return "N/A"; // Handle the case where duration is undefined
+  }
+  const minutes = Math.floor(durationInSeconds / 60);
+  const seconds = Math.floor(durationInSeconds % 60);
+
+  const formattedMinutes = minutes > 0 ? minutes.toString() : "0";
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds.toString();
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+}
+
+export function formatDateAdded(isoDate: string) {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  const date = new Date(isoDate);
+  return date.toLocaleDateString("en-US", options);
+}
+//----
+
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const { songs, setSongs } = useContext(SongsContext);
+  // console.log("SONGS", songs);
+  //Extract only the titles
+  //Pass the titles array to
 
   //States for searching
   const [searchQuery, setSearchQuery] = useState("");
@@ -80,16 +105,25 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     }
   };
 
-
   //TODO make a selector for the header/accessor pairs so this doesn't need to be hard coded
   //prettier-ignore
   const columns = useMemo(
     () => [
       // { Header: "File ID", accessor: "_id"},
       // { Header: "File Name", accessor: "fileNameOriginal"},
-      { Header: "Title", accessor: "title"},
-      { Header: "Artist", accessor: "artist"},
-      { Header: "Album", accessor: "album"},
+      { Header: "Title", accessor: "title" },
+      { Header: "Artist", accessor: "artist" },
+      { Header: "Album", accessor: "album" },
+      {
+        Header: "Date Added",
+        accessor: "dateAdded",
+        Cell: ({ value }: { value: string }) => formatDateAdded(value),
+      },
+      {
+        Header: "Duration",
+        accessor: "duration",
+        Cell: ({ value }: { value: number | undefined }) => formatDuration(value),
+      },
     ],
     []
   );

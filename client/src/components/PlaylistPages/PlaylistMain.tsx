@@ -1,12 +1,10 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import { useDropzone } from "react-dropzone";
 import { usePlaylist } from "../PlaylistContext";
 import { useSongs } from "../SongsContext";
 import "./PlaylistMain.scss";
-
+import FileUploader from "./file-uploader/FileUploader";
 import MusicTable from "./music-table/MusicTable";
-// import FileUploader from "./file-uploader/FileUploader";
 
 const API_URL = "http://localhost:4000";
 //TODO Remove honeycore from localstorage
@@ -56,9 +54,7 @@ const PlaylistMain: React.FC = () => {
 
       //Update table state w/ backend
       //TODO fetch takes way too long, find another way to update the state, possible size check for state update
-      const fetchedSongs = await axios.get(
-        `${API_URL}/playlist/${currentPlaylistId}/songs`
-      );
+      const fetchedSongs = await axios.get(`${API_URL}/playlist/${currentPlaylistId}/songs`);
       setSongs(fetchedSongs.data); // Pass the updated songs array
 
       console.log("File metadata stored successfully!");
@@ -82,6 +78,7 @@ const PlaylistMain: React.FC = () => {
     <div className="PlaylistMain">
       {/* prettier-ignore */}
       {/* <div  className={`dropzone ${isDragActive ? "active" : ""}`}> */}
+      {/* <FileUploader/> */}
       <div className="header">
         <h1>
           {currentPlaylistName}: {currentPlaylistId}
