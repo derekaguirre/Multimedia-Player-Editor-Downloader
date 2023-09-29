@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import { IndexContext } from "../../../IndexContext";
 import { PlayerContext } from "../../../PlayerContext";
+import { SortedSongsContext } from "../../../SortedSongsContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
 import { formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText"; // Import the HighlightedText component
@@ -7,8 +9,8 @@ import "./MusicTableContent.scss";
 
 const API_URL = "http://localhost:4000";
 
-//TODO remove currentPlaying state in favor of setActive if possible. May be unnecessary
-//TODO need to set playlist array instead of set active song. Can just send an array of songs PUT IMPLEMENTATION IN THIS COMPONENT
+// TODO remove currentPlaying state in favor of setActive if possible. May be unnecessary
+// TODO need to set playlist array instead of set active song. Can just send an array of songs PUT IMPLEMENTATION IN THIS COMPONENT
 
 interface TableContentProps {
   entries: SongObject[];
@@ -18,14 +20,20 @@ interface TableContentProps {
   clickedHeader: string | null;
 }
 
-const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQuery,sortingOrder,clickedHeader}) => {
+const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, searchQuery, sortingOrder, clickedHeader}) => {
   // Context hooks
-  const { setActiveSong } = useContext(PlayerContext);
+  const { activeSong, setActiveSong } = useContext(PlayerContext);
+  const { songs } = useContext(SongsContext);
+  // const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
+  const {currentSongIndex, setCurrentSongIndex} = useContext(IndexContext);
+
   // Local states
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
-
+  
   console.log("TABLE CONTENT ORDER:", sortingOrder);
+  console.log("STARTING INDEX: ", currentSongIndex);
+
   // Handle sorting based on sortingOrder
   const sortedEntries = [...entries];
 
@@ -45,10 +53,11 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   });
 
   //  If the row is not currently playing, set the active song to the current row
-  const handlePlay = (fileName: string) => {
+  const handlePlay = (fileName: string, index: number) => {
     if (!currentPlaying.includes(fileName)) {
       setActiveSong(`${API_URL}/uploads/${fileName}`);
       setCurrentPlaying([fileName]);
+      setCurrentSongIndex(index);
     } else {
       // TODO reset song when double clicking on the current row
     }
@@ -63,9 +72,11 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   };
 
   const getRowClassName = (fileName: string, songId: string) => {
-    if (currentPlaying.includes(fileName) && selectedRow.includes(songId)) {
+    const activeSongFileName = activeSong && activeSong.replace(`${API_URL}/uploads/`, '');
+    
+    if (activeSongFileName === fileName && selectedRow.includes(songId)) {
       return "playing-selected";
-    } else if (currentPlaying.includes(fileName)) {
+    } else if (activeSongFileName === fileName) {
       return "playing";
     } else if (selectedRow.includes(songId)) {
       return "selected";
@@ -73,14 +84,15 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
       return "";
     }
   };
+  // console.log("Songs in content:", songs);
+  // console.log("SortedSongs in content:", sortedSongs);
 
-  // Loop through each entry in the 'entries' array create a table row with a unique key based on entry ID
-  //prettier-ignore
+  // prettier-ignore
   return (
     <tbody>
       {sortedEntries.map((entry, index) => (
         <tr
-          onDoubleClick={() => handlePlay(entry.fileNameFormatted)}
+          onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
           onClick={() => handleSelect(entry._id)}
           key={entry._id}
           className={getRowClassName(entry.fileNameFormatted, entry._id)}

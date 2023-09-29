@@ -24,8 +24,6 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({child
         const storedPlaylistName = localStorage.getItem("currentPlaylistName");
 
         if (storedPlaylistId && storedPlaylistName) {
-            console.log("Context Playlist ID:", storedPlaylistId);
-            console.log("Context Playlist Name:", storedPlaylistName);
             setCurrentPlaylistId(storedPlaylistId);
             setCurrentPlaylistName(storedPlaylistName);
         }

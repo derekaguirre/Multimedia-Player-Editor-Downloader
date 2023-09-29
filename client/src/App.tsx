@@ -1,16 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
+import { IndexProvider } from "./components/IndexContext";
 import { PlayerProvider } from "./components/PlayerContext";
 import { PlaylistProvider } from "./components/PlaylistContext";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
 import { SongsProvider } from "./components/SongsContext";
+import { SortedSongsProvider } from "./components/SortedSongsContext";
 import MusicController from "./components/music-controller/MusicController";
 import Sidebar from "./components/side-bar/Sidebar";
 
 const App: React.FC = () => {
   console.log("APP LOADED");
-  
+
   // TODO ENV file for API key
   // TODO verify heierachy of providers
   // TODO Use navbar on sidebar to update/navigate router on page content section
@@ -19,22 +21,28 @@ const App: React.FC = () => {
     <div className="App">
       <PlaylistProvider>
         <PlayerProvider>
-        <SongsProvider>
+          <SongsProvider>
+            <SortedSongsProvider>
+              <IndexProvider>
 
-          <div className="top-page">
-            {/* SIDEBAR */}
+              <div className="top-page">
+                {/* SIDEBAR */}
 
-            <div className="sidebar-container">
-              <Sidebar />
-            </div>
+                <div className="sidebar-container">
+                  <Sidebar />
+                </div>
 
-            {/* PAGE CONTENT */}
-            <div className="content-container">
-                <PlaylistMain />
-            </div>
-          </div>
-          {/* SONG CONTROLLER */}
-          <MusicController />
+                {/* PAGE CONTENT */}
+                <div className="content-container">
+                  <PlaylistMain />
+                </div>
+              </div>
+              {/* SONG CONTROLLER */}
+
+              <MusicController />
+              
+              </IndexProvider>
+            </SortedSongsProvider>
           </SongsProvider>
         </PlayerProvider>
       </PlaylistProvider>
