@@ -1,6 +1,5 @@
-import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
-import PlaybackBar from "./PlayBar";
+import SeekBar from "./SeekBar";
 import "./TimeControls.scss";
 
 interface TimeProps {
@@ -50,7 +49,7 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
   return (
     <div className="songTimeElements">
       <div className="currTime">{timeFormatter(currentTime)}</div>
-      <PlaybackBar
+      <SeekBar
         currentHowl={currentHowl}
         currentTime={currentTime}
         fullDuration={fullDuration}

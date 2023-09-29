@@ -15,7 +15,7 @@ interface TimeProps {
   setIsSeeking: (isSeeking: boolean) => void;
 }
 
-const PlaybackBar: React.FC<TimeProps> = ({
+const SeekBar: React.FC<TimeProps> = ({
   currentHowl,
   currentTime,
   fullDuration,
@@ -117,4 +117,4 @@ const PlaybackBar: React.FC<TimeProps> = ({
   );
 };
 
-export default PlaybackBar;
+export default SeekBar;

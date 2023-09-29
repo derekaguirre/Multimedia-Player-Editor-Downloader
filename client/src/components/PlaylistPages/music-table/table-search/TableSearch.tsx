@@ -13,6 +13,7 @@ interface SearchProps {
 const TableSearch: React.FC<SearchProps> = ({ searchQuery, setSearchQuery, setFilteredSongs }) => {
   // Local states
   const { songs } = useContext(SongsContext);
+  console.log("SEARCH SONGS", songs)
 
   // If search query is empty, show all songs, otherwise only show songs that match the search query
   useEffect(() => {

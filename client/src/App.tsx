@@ -4,8 +4,8 @@ import AppRouter from "./Router/AppRouter";
 import { PlayerProvider } from "./components/PlayerContext";
 import { PlaylistProvider } from "./components/PlaylistContext";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
-import MusicController from "./components/PlaylistPages/music-controller/MusicController";
 import { SongsProvider } from "./components/SongsContext";
+import MusicController from "./components/music-controller/MusicController";
 import Sidebar from "./components/side-bar/Sidebar";
 
 const App: React.FC = () => {

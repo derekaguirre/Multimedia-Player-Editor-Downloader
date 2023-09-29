@@ -54,10 +54,8 @@ export function formatDateAdded(isoDate: string) {
 //----
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
+  //TODO pass songs arr to player
   const { songs, setSongs } = useContext(SongsContext);
-  // console.log("SONGS", songs);
-  //Extract only the titles
-  //Pass the titles array to
 
   //States for searching
   const [searchQuery, setSearchQuery] = useState("");
