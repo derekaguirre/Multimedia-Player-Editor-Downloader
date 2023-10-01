@@ -69,8 +69,7 @@ const SeekBar: React.FC<TimeProps> = ({
       const seekBar = seekBarRef.current;
       const progressBar = progressBarRef.current;
       const boundingBox = seekBar.getBoundingClientRect();
-      const newPosition =
-        (event.clientX - boundingBox.left) / boundingBox.width;
+      const newPosition = (event.clientX - boundingBox.left) / boundingBox.width;
       const durationInSeconds = fullDuration || 0;
       const newSeekPosition = newPosition * durationInSeconds;
 
@@ -88,8 +87,7 @@ const SeekBar: React.FC<TimeProps> = ({
     if (!isDragging && currentHowl && seekBarRef.current) {
       const seekBar = seekBarRef.current;
       const boundingBox = seekBar.getBoundingClientRect();
-      const newPosition =
-        (event.clientX - boundingBox.left) / boundingBox.width;
+      const newPosition = (event.clientX - boundingBox.left) / boundingBox.width;
       const durationInSeconds = fullDuration || 0;
       const newSeekPosition = newPosition * durationInSeconds;
 
