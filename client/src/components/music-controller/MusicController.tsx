@@ -13,7 +13,6 @@ const API_URL = "http://localhost:4000";
 
 // TODO persist active song name and current time in song using local storage to continue listening session
 // TODO Images on song entries
-// TODO Implement forward and backward button to navigate through songs
 // TODO Implement shuffle
 // TODO Allow for media buttons
 
@@ -88,8 +87,13 @@ const MusicController: React.FC = () => {
   };
 
   const playNextSong = () => {
-    if (currentSongIndex < songTitles.length - 1) {
-      const nextSongIndex = currentSongIndex + 1;
+    const nextSongIndex = currentSongIndex + 1;
+    
+    if (nextSongIndex >= songTitles.length) {
+      // Reset to the beginning of the array
+      setActiveSong(songTitles[0]);
+      setCurrentSongIndex(0);
+    } else {
       const nextSongUrl = songTitles[nextSongIndex];
       console.log("Autoplaying next song: ", nextSongUrl);
       setActiveSong(nextSongUrl);
@@ -104,6 +108,8 @@ const MusicController: React.FC = () => {
           currentHowl={currentHowl}
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
+          songTitles={songTitles}
+          setActiveSong={setActiveSong}
         />
         <TimeControls currentHowl={currentHowl} fullDuration={fullDuration} />
       </div>
