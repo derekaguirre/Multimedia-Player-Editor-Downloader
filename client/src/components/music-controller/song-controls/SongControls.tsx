@@ -33,8 +33,6 @@ const SongControls: React.FC<SongControlProps> = ({
         setIsPlaying(false);
         currentHowl.pause();
       } else {
-        //Check states, can probably just use setIsPlaying instead of another play instance
-        currentHowl.play();
         setActiveSong(songTitles[currentSongIndex]);
         setIsPlaying(true);
       }

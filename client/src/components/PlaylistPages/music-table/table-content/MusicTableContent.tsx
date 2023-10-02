@@ -12,6 +12,7 @@ const API_URL = "http://localhost:4000";
 
 // TODO remove activeSong in favor of index setting.
 // TODO (Possibly done, but address first.) remove currentPlaying state in favor of setActive if possible. May be unnecessary
+// TODO disable highlighting on talble cells
 // TODO need to set playlist array instead of set active song. Can just send an array of songs PUT IMPLEMENTATION IN THIS COMPONENT
 
 interface TableContentProps {
