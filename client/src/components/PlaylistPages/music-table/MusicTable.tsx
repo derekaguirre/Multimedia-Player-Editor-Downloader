@@ -78,9 +78,8 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
 
   // Only fetch playlist data if there is a playlist id in local storage
   // Playlist is fetched every time the sidebar changes the currentPlaylistId
-  console.log("MUSIC TABLE SORT ORDER:", sortingOrder);
+  // console.log("MUSIC TABLE SORT ORDER:", sortingOrder);
   useEffect(() => {
-    console.log("MUSIC TABLE RENDERED");
     if (currentPlaylistId) {
       console.log("MusicTable fetching playlist with ID: ", currentPlaylistId);
       fetchPlaylistData(currentPlaylistId);

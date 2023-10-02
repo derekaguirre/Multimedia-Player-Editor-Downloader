@@ -3,6 +3,7 @@ import NextIcon from "../../../images/next.svg";
 import PauseIcon from "../../../images/pause.svg";
 import PrevIcon from "../../../images/prev.svg";
 import { IndexContext } from "../../IndexContext";
+import { PlayingContext } from "../../PlayingContext";
 import PlayIcon from "./../../../images/play.svg";
 import "./SongControls.scss";
 
@@ -32,32 +33,27 @@ const SongControls: React.FC<SongControlProps> = ({
         setIsPlaying(false);
         currentHowl.pause();
       } else {
+        //Check states, can probably just use setIsPlaying instead of another play instance
         currentHowl.play();
+        setActiveSong(songTitles[currentSongIndex]);
         setIsPlaying(true);
       }
     }
   };
 
-  const handleNextSong = () => {
-    const nextSongIndex = currentSongIndex + 1;
-    console.log("Next song requested: ", songTitles[nextSongIndex]);
-    //If at the end of the array, reset to the beginning of the array
-    if (nextSongIndex >= songTitles.length) {
-      setCurrentSongIndex(0);
-      setActiveSong(songTitles[0]);
-    } else {
-      setCurrentSongIndex(nextSongIndex);
-      setActiveSong(songTitles[nextSongIndex]);
-    }
-  };
+  // Function to handle next/previous song
+  const handleSongChange = (delta: number) => {
+    const nextSongIndex = currentSongIndex + delta;
 
-  const handlePrevSong = () => {
-    const nextSongIndex = currentSongIndex - 1;
-    console.log("Next song requested: ", songTitles[nextSongIndex]);
-    //If at the end of the array, reset to the beginning of the array
+    // If at the end of the array, reset to the beginning
     if (nextSongIndex >= songTitles.length) {
       setCurrentSongIndex(0);
       setActiveSong(songTitles[0]);
+    } else if (nextSongIndex < 0) {
+      // If at the beginning, go to the end
+      setCurrentSongIndex(songTitles.length - 1);
+      setActiveSong(songTitles[songTitles.length - 1]);
+      // Otherwise, handle the change normally
     } else {
       setCurrentSongIndex(nextSongIndex);
       setActiveSong(songTitles[nextSongIndex]);
@@ -67,13 +63,13 @@ const SongControls: React.FC<SongControlProps> = ({
   //prettier-ignore
   return (
       <div className="songButtonElements">
-        <div className="PrevButton" onClick={()=> handlePrevSong()}>
+        <div className="PrevButton" onClick={()=> handleSongChange(-1)}>
           <img src={PrevIcon} width={30} height={30} />
         </div>
         <div onClick={() => togglePlayPause()} className="PlayButton">
           {isPlaying ? (<img src={PauseIcon} width={30} height={30} />) : (<img src={PlayIcon} width={30} height={30} />)}
         </div>
-        <div className="NextButton" onClick={()=> handleNextSong()}>
+        <div className="NextButton" onClick={()=> handleSongChange(1)}>
           <img src={NextIcon} width={30} height={30} />
         </div>
       </div>

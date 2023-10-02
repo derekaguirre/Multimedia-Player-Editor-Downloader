@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IndexContext } from "../../../IndexContext";
 import { PlayerContext } from "../../../PlayerContext";
+import { PlayingContext } from "../../../PlayingContext";
 import { SortedSongsContext } from "../../../SortedSongsContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
 import { formatDateAdded, formatDuration } from "./../MusicTable";
-import HighlightedText from "./../table-search/HighlightedText"; // Import the HighlightedText component
+import HighlightedText from "./../table-search/HighlightedText";
 import "./MusicTableContent.scss";
 
 const API_URL = "http://localhost:4000";
 
-// TODO remove currentPlaying state in favor of setActive if possible. May be unnecessary
+// TODO remove activeSong in favor of index setting.
+// TODO (Possibly done, but address first.) remove currentPlaying state in favor of setActive if possible. May be unnecessary
 // TODO need to set playlist array instead of set active song. Can just send an array of songs PUT IMPLEMENTATION IN THIS COMPONENT
 
 interface TableContentProps {
@@ -23,16 +25,18 @@ interface TableContentProps {
 const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, searchQuery, sortingOrder, clickedHeader}) => {
   // Context hooks
   const { activeSong, setActiveSong } = useContext(PlayerContext);
-  const { songs } = useContext(SongsContext);
+  // const { songs } = useContext(SongsContext);
   // const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
   const {currentSongIndex, setCurrentSongIndex} = useContext(IndexContext);
+  const { isPlaying, setIsPlaying } = useContext(PlayingContext);
+
 
   // Local states
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
   
-  console.log("TABLE CONTENT ORDER:", sortingOrder);
-  console.log("STARTING INDEX: ", currentSongIndex);
+  // console.log("TABLE CONTENT ORDER:", sortingOrder);
+  // console.log("STARTING INDEX: ", currentSongIndex);
 
   // Handle sorting based on sortingOrder
   const sortedEntries = [...entries];
@@ -55,7 +59,8 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, sear
   //  If the row is not currently playing, set the active song to the current row
   const handlePlay = (fileName: string, index: number) => {
     if (!currentPlaying.includes(fileName)) {
-      setActiveSong(`${API_URL}/uploads/${fileName}`);
+      setActiveSong(`${API_URL}/uploads/${fileName}`); //context but may be removable
+      setIsPlaying(true); //context
       setCurrentPlaying([fileName]);
       setCurrentSongIndex(index);
     } else {

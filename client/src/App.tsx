@@ -3,6 +3,7 @@ import "./App.scss";
 import AppRouter from "./Router/AppRouter";
 import { IndexProvider } from "./components/IndexContext";
 import { PlayerProvider } from "./components/PlayerContext";
+import { PlayingProvider } from "./components/PlayingContext";
 import { PlaylistProvider } from "./components/PlaylistContext";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
 import { SongsProvider } from "./components/SongsContext";
@@ -24,6 +25,7 @@ const App: React.FC = () => {
           <SongsProvider>
             <SortedSongsProvider>
               <IndexProvider>
+                <PlayingProvider>
 
               <div className="top-page">
                 {/* SIDEBAR */}
@@ -41,6 +43,7 @@ const App: React.FC = () => {
 
               <MusicController />
               
+              </PlayingProvider>
               </IndexProvider>
             </SortedSongsProvider>
           </SongsProvider>
