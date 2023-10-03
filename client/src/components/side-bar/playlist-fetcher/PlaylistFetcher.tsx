@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { PlaylistContext } from "../../PlaylistContext";
 
+import { IndexContext } from "../../IndexContext";
+import { PlayingContext } from "../../PlayingContext";
 import "./PlaylistFetcher.scss";
 const API_URL = "http://localhost:4000";
 
@@ -11,6 +13,11 @@ interface PlaylistProps {
 }
 
 const PlaylistFetcher: React.FC = () => {
+  //Context States
+  // const { isPlaying, setIsPlaying } = useContext(PlayingContext);
+  // const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
+  const { setCurrentPlaylistId, setCurrentPlaylistName } = useContext(PlaylistContext);
+
   //Local states
   const [playlists, setPlaylists] = useState<PlaylistProps[]>([]);
 
@@ -30,15 +37,18 @@ const PlaylistFetcher: React.FC = () => {
 
   //Switch playlists utilizing context
   //prettier-ignore
-  const { setCurrentPlaylistId, setCurrentPlaylistName } = useContext(PlaylistContext);
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     localStorage.setItem("currentPlaylistId", playlistId);
     localStorage.setItem("currentPlaylistName", playlistName);
 
     setCurrentPlaylistId(playlistId);
     setCurrentPlaylistName(playlistName);
+    // setIsPlaying(false);
+    // setCurrentSongIndex(0);
   };
 
+
+  //TODO Conditionally render either all playlists or a prompt that lets you create a playlist
   return (
     <div className="playlist-items">
       <ul>

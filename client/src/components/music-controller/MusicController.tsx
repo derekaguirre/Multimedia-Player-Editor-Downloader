@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { IndexContext } from "../IndexContext";
 import { PlayerContext } from "../PlayerContext";
 import { PlayingContext } from "../PlayingContext";
+import { PlaylistContext } from "../PlaylistContext";
 import { SongsContext } from "../SongsContext";
 import "./MusicController.scss";
 import SongControls from "./song-controls/SongControls";
@@ -24,16 +25,19 @@ const MusicController: React.FC = () => {
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
   const { songs } = useContext(SongsContext);
+  const { currentPlaylistId, setCurrentPlaylistId } = useContext(PlaylistContext);
 
   // Local states
   const [currentHowl, setCurrentHowl] = useState<null | typeof Howl>(null);
-  const [fullDuration, setFullDuration] = useState<number | null>(null);
   const storedVolume = localStorage.getItem("volume");
-  const [volume, setVolume] = useState<number>(
-    storedVolume ? parseFloat(storedVolume) : 0.5
-  );
+  const [volume, setVolume] = useState<number>(storedVolume ? parseFloat(storedVolume) : 0.5);
   const [songTitles, setSongTitles] = useState<string[]>([]);
 
+  //TODO can possibly remove
+  const [fullDuration, setFullDuration] = useState<number | null>(null);
+
+
+  
   //Extract the only the urls for the songs
   // `${API_URL}/uploads/${song.fileNameFormatted}`
 
@@ -69,8 +73,8 @@ const MusicController: React.FC = () => {
         const newHowl = new Howl({
           volume: volume,
           src: [matchingTitle],
-          // TODO can remove this since I have an duration inside of the songs object and an index. should look to implement set duration inside of TimeControls
           onload: function () {
+            // TODO can possibly remove this since I have an duration inside of the songs object and an index. should look to implement set duration inside of TimeControls
             setFullDuration(newHowl.duration());
           },
           onend: function () {

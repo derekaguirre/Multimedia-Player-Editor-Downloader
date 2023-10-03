@@ -26,7 +26,6 @@ interface TableContentProps {
 const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, searchQuery, sortingOrder, clickedHeader}) => {
   // Context hooks
   const { activeSong, setActiveSong } = useContext(PlayerContext);
-  // const { songs } = useContext(SongsContext);
   // const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
   const {currentSongIndex, setCurrentSongIndex} = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);

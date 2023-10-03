@@ -1,4 +1,5 @@
 import React from "react";
+import "./HighlightedText.scss";
 
 interface HighlightedTextProps {
   text: string;

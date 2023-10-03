@@ -95,7 +95,6 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
       console.log("Fetching all songs from playlist:",`${playlistId} `,response.data);
 
-      // Use type assertion to specify the correct type for setSongs
       setSongs(response.data as SongObject[]);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
@@ -133,6 +132,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     <div className="tableElementContainer">
       <div className="playlistTable">
         <TableSearch
+          songs = {songs}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           setFilteredSongs={setFilteredSongs}
