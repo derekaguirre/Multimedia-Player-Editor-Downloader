@@ -3,6 +3,7 @@ import { IndexContext } from "../../../IndexContext";
 import { PlayerContext } from "../../../PlayerContext";
 import { PlayingContext } from "../../../PlayingContext";
 import { SortedSongsContext } from "../../../SortedSongsContext";
+import { SortingLockContext } from "../../../SortingLockContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
 import { formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText";
@@ -23,18 +24,18 @@ interface TableContentProps {
   clickedHeader: string | null;
 }
 
-const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, searchQuery, sortingOrder, clickedHeader}) => {
+const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQuery,sortingOrder,clickedHeader,}) => {
   // Context hooks
   const { activeSong, setActiveSong } = useContext(PlayerContext);
-  // const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
-  const {currentSongIndex, setCurrentSongIndex} = useContext(IndexContext);
+  const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
+  const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
-
+  const { sortingLock, setSortingLock } = useContext(SortingLockContext);
 
   // Local states
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
-  
+
   // console.log("TABLE CONTENT ORDER:", sortingOrder);
   // console.log("STARTING INDEX: ", currentSongIndex);
 
@@ -56,11 +57,24 @@ const MusicTableContent: React.FC<TableContentProps> = ({ entries, columns, sear
     return 0;
   });
 
+  //TODO implement way to populate upon playlist switching since this does work currently
+  //if the sorting is changed while in a new playlist.
+  useEffect(() => {
+    console.log("TABLE CURRENTLY SORTED AS:", sortingOrder);
+    if (sortingOrder === "asc" || sortingOrder === "desc") {
+      setSortedSongs(sortedEntries);
+    } else {
+      setSortedSongs([...entries]);
+    }
+  }, [sortingOrder,]);
+
   //  If the row is not currently playing, set the active song to the current row
   const handlePlay = (fileName: string, index: number) => {
+    // console.log("Playing", fileName, "with index:", index);
     if (!currentPlaying.includes(fileName)) {
       setActiveSong(`${API_URL}/uploads/${fileName}`); //context but may be removable
       setIsPlaying(true); //context
+      setSortingLock(sortingOrder);
       setCurrentPlaying([fileName]);
       setCurrentSongIndex(index);
     } else {

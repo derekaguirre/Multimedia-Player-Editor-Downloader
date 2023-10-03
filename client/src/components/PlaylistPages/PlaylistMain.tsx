@@ -71,7 +71,7 @@ const PlaylistMain: React.FC = () => {
   //     "video/*": [],
   //   },
   // });
-  console.log("PLAYLISTMAIN RENDERED");
+  // console.log("PLAYLISTMAIN RENDERED");
 
   return (
     // {...getRootProps()}

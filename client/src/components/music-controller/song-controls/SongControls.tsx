@@ -3,7 +3,6 @@ import NextIcon from "../../../images/next.svg";
 import PauseIcon from "../../../images/pause.svg";
 import PrevIcon from "../../../images/prev.svg";
 import { IndexContext } from "../../IndexContext";
-import { PlayingContext } from "../../PlayingContext";
 import PlayIcon from "./../../../images/play.svg";
 import "./SongControls.scss";
 
@@ -16,13 +15,7 @@ interface SongControlProps {
   setActiveSong: (activeSong: string) => void;
 }
 
-const SongControls: React.FC<SongControlProps> = ({
-  currentHowl,
-  isPlaying,
-  setIsPlaying,
-  songTitles,
-  setActiveSong,
-}) => {
+const SongControls: React.FC<SongControlProps> = ({ currentHowl, isPlaying, setIsPlaying, songTitles, setActiveSong }) => {
   //Context States
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
 

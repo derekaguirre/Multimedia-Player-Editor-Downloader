@@ -125,7 +125,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   );
 
   // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
-  console.log("MUSIC TABLE RENDERED");
+  // console.log("MUSIC TABLE RENDERED");
 
   //TODO remove tableElementContainer
   return (

@@ -19,7 +19,6 @@ export const PlaylistProvider: React.FC<{ children: React.ReactNode }> = ({child
     const [currentPlaylistName, setCurrentPlaylistName] = useState<string>("");
 
     useEffect(() => {
-        console.log("PLAYLIST CONTEXT LOADED");
         const storedPlaylistId = localStorage.getItem("currentPlaylistId");
         const storedPlaylistName = localStorage.getItem("currentPlaylistName");
 

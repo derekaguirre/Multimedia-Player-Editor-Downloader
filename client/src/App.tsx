@@ -8,6 +8,7 @@ import { PlaylistProvider } from "./components/PlaylistContext";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
 import { SongsProvider } from "./components/SongsContext";
 import { SortedSongsProvider } from "./components/SortedSongsContext";
+import { SortingLockProvider } from "./components/SortingLockContext";
 import MusicController from "./components/music-controller/MusicController";
 import Sidebar from "./components/side-bar/Sidebar";
 
@@ -26,24 +27,25 @@ const App: React.FC = () => {
             <SortedSongsProvider>
               <IndexProvider>
                 <PlayingProvider>
+                  <SortingLockProvider>
 
-              <div className="top-page">
-                {/* SIDEBAR */}
+                  <div className="top-page">
+                    {/* SIDEBAR */}
 
-                <div className="sidebar-container">
-                  <Sidebar />
-                </div>
+                    <div className="sidebar-container">
+                      <Sidebar />
+                    </div>
 
-                {/* PAGE CONTENT */}
-                <div className="content-container">
-                  <PlaylistMain />
-                </div>
-              </div>
-              {/* SONG CONTROLLER */}
+                    {/* PAGE CONTENT */}
+                    <div className="content-container">
+                      <PlaylistMain />
+                    </div>
+                  </div>
+                  {/* SONG CONTROLLER */}
 
-              <MusicController />
-              
-              </PlayingProvider>
+                  <MusicController />
+                  </SortingLockProvider>
+                </PlayingProvider>
               </IndexProvider>
             </SortedSongsProvider>
           </SongsProvider>
