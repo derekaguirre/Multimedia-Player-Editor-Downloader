@@ -1,8 +1,8 @@
 tbody {
     width: 100%;
-    background: linear-gradient(180deg, #3d4749 0%, #121212 2%);
+    background: #121212;
     tr {
-        // padding: 1px;
+        height: 45px;
         &:hover {
             background-color: #2a2a2a;
         }
@@ -10,14 +10,14 @@ tbody {
         &.playing-selected {
             background-color: #5a5a5a;
             td {
-                color: #1db956; // Green text color
+                color: #1db956;
             }
         }
         &.selected {
-            background-color: #5a5a5a; // Only highlighted background
+            background-color: #5a5a5a;
         }
         &.playing td {
-            color: #1db956; // Only green text color
+            color: #1db956;
         }
         td {
             height: 25px;

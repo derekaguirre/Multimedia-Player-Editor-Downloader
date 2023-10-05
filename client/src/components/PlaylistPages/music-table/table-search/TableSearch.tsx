@@ -1,6 +1,7 @@
 //prettier-ignore
-import React, { useContext, useEffect } from "react";
-import { SongObject, SongsContext } from "./../../../SongsContext";
+import React, { useEffect } from "react";
+import SearchIcon from "./../../../../images/search.svg";
+import { SongObject } from "./../../../SongsContext";
 import "./TableSearch.scss";
 
 // TODO Add search to a div that will include sort functionality
@@ -11,8 +12,12 @@ interface SearchProps {
   setFilteredSongs: (filteredSongs: SongObject[]) => void;
 }
 
-const TableSearch: React.FC<SearchProps> = ({songs, searchQuery, setSearchQuery, setFilteredSongs }) => {
-
+const TableSearch: React.FC<SearchProps> = ({
+  songs,
+  searchQuery,
+  setSearchQuery,
+  setFilteredSongs,
+}) => {
   // Local states
   // console.log("SEARCH SONGS", songs)
 
@@ -35,14 +40,20 @@ const TableSearch: React.FC<SearchProps> = ({songs, searchQuery, setSearchQuery,
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
+  // Move search bar text a little more right
   return (
-    <input
-      type="text"
-      placeholder="Search..."
-      value={searchQuery}
-      onChange={handleSearchInputChange}
-    />
+    <div className="searchContainer">
+      <div className="searchIcon">
+        <img src={SearchIcon} width={30} height={30} />
+      </div>
+      <input
+        className="searchBar"
+        type="text"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={handleSearchInputChange}
+      />
+    </div>
   );
 };
 

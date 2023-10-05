@@ -1,22 +1,26 @@
 .sidebar-container {
+    //TODO doesn't fill up the entirety of the top page
+    height: 100vh;
     background: #000000;
-
     .sidebar {
+        border-right: 2px solid #707070;
         transition: width 0.2s ease;
-        width: 400px;
+        height: 100%;
         // Prevents page from loading in top half of page first then stretching to the rest of the screen
-        height: 100vh;
+        width: 300px;
+        
         &.open {
             // border: 4px solid #b73da9;
             flex-grow: 0;
             user-select: none;
             background: #000000;
             transform: translatX(0);
-            max-width: 400px;
+            max-width: 300px;
         }
         &.closed {
             width: 0px;
             transform: translateX(-100%);
+            background: #000000;
         }
 
         .header {
@@ -37,7 +41,7 @@
                 border-radius: 10px;
                 background-color: #d3d3d3;
                 border-color: #000000;
-    
+
                 &:hover {
                     cursor: pointer;
                     background-color: #a4a4a4;

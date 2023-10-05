@@ -79,7 +79,7 @@ const PlaylistMain: React.FC = () => {
       {/* prettier-ignore */}
       {/* <div  className={`dropzone ${isDragActive ? "active" : ""}`}> */}
       {/* <FileUploader/> */}
-      <div className="header">
+      <div className="playlistHeader">
         <h1>
           {currentPlaylistName}: {currentPlaylistId}
         </h1>
