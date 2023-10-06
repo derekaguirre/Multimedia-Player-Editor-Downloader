@@ -43,16 +43,18 @@ const TableSearch: React.FC<SearchProps> = ({
   // Move search bar text a little more right
   return (
     <div className="searchContainer">
-      <div className="searchIcon">
-        <img src={SearchIcon} width={30} height={30} />
+      <div className="searchInner">
+        <div className="searchIcon">
+          <img src={SearchIcon} width={30} height={30} />
+        </div>
+        <input
+          className="searchBar"
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+        />
       </div>
-      <input
-        className="searchBar"
-        type="text"
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={handleSearchInputChange}
-      />
     </div>
   );
 };
