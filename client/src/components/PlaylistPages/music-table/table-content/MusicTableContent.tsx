@@ -30,7 +30,38 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
-  const { sortingLock, setSortingLock } = useContext(SortingLockContext);
+  const { sortingLock, setSortingLock } = useContext(SortingLockContext);const [imageData, setImageData] = useState(null); // State to store image data
+  const [songImages, setSongImages] = useState({});
+//-------------
+useEffect(() => {
+  // Define a function to fetch song images by song ID
+  const fetchSongImage = async () => {
+    try {
+      const response = await fetch(`http://localhost:4000/songs/65156d314a13dcbc8b16cf63/image`);
+      console.log("FETCHING IMAGE");
+
+      if (response.ok) {
+        // Get the image data as a blob
+        const imageBlob = await response.blob();
+
+        // Create a URL for the blob
+        const imageUrl = URL.createObjectURL(imageBlob);
+
+        // Display the image on the page
+        const imgElement = document.createElement('img');
+        imgElement.src = imageUrl;
+        document.body.appendChild(imgElement);
+      } else {
+        console.error(`Error fetching image for song ID 65156d314a13dcbc8b16cf63`);
+      }
+    } catch (error) {
+      console.error("API request failed for image:", error);
+    }
+  };
+
+  fetchSongImage();
+}, []);
+//--------------
 
   // Local states
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
@@ -117,6 +148,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
           className={getRowClassName(entry.fileNameFormatted, entry._id)}
         >
           <td id="tableEntryIndex">{index + 1}</td>
+
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
               {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? 

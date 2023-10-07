@@ -132,6 +132,31 @@ app.get("/playlist/names", async (req, res) => {
   }
 });
 
+// Route to fetch the image buffer for a song by its ID
+app.get("/songs/:id/image", async (req, res) => {
+  try {
+    const songId = req.params.id;
+    // Validate that the provided songId is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(songId)) {
+      return res.status(400).json({ error: "Invalid song ID" });
+    }
+
+    // Find the song by its ID
+    const song = await PlaylistModel.findOne({ "songs._id": songId }, { "songs.$": 1 });
+    // console.log("SONG", song)
+    if (!song) {
+      return res.status(404).json({ error: "Song not found" });
+    }
+
+    // Respond with the 'image' field of the song document
+    const imageBuffer = song.songs[0].image.imageBuffer;
+    res.send(imageBuffer);
+  } catch (error) {
+    console.error("Error fetching song image:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //Stores file metadata using mongodb
 // app.post("/files/new-metadata", async (req, res) => {
 //   const { metadataArray } = req.body;
@@ -206,7 +231,6 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
       const filePath = `${uploadDirectory}\\${metadata.fileNameOriginal}`;
 
       const tags = NodeID3.read(filePath);
-
 
       // console.log("IMAGE BEFORE PROCESSING", tags.image.type.name);
       const imageDataArr = {

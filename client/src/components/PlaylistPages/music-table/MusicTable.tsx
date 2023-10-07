@@ -105,7 +105,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //prettier-ignore
   const columns = useMemo(
     () => [
-      // { Header: "File ID", accessor: "_id"},
+      { Header: "File ID", accessor: "_id"},
       // { Header: "File Name", accessor: "fileNameOriginal"},
       { Header: "Title", accessor: "title" },
       { Header: "Artist", accessor: "artist" },
