@@ -6,7 +6,7 @@ import { PlayingContext } from "../../../PlayingContext";
 import { SortedSongsContext } from "../../../SortedSongsContext";
 import { SortingLockContext } from "../../../SortingLockContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
-import { formatBuffer, formatDateAdded, formatDuration } from "./../MusicTable";
+import { formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText";
 import "./MusicTableContent.scss";
 
@@ -39,21 +39,21 @@ const MusicTableContent: React.FC<TableContentProps> = ({
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
   const { sortingLock, setSortingLock } = useContext(SortingLockContext);
   //-------------
-  useEffect(() => {
-    // Define a function to fetch song images by song ID
-    const fetchSongImage = async () => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/songs/65156d314a13dcbc8b16cf60/image`
-        );
-        // console.log("MUSIC TABLE IMAGE DATA", response.data, "ENDOFDATA");
-      } catch (error) {
-        console.error("API request failed for image:", error);
-      }
-    };
-    // console.log("ENTRIES", entries);
-    fetchSongImage();
-  }, []);
+  // useEffect(() => {
+  //   // Define a function to fetch song images by song ID
+  //   const fetchSongImage = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${API_URL}/songs/65156d314a13dcbc8b16cf60/image`
+  //       );
+  //       // console.log("MUSIC TABLE IMAGE DATA", response.data, "ENDOFDATA");
+  //     } catch (error) {
+  //       console.error("API request failed for image:", error);
+  //     }
+  //   };
+  //   // console.log("ENTRIES", entries);
+  //   fetchSongImage();
+  // }, []);
   //--------------
 
   // Local states
@@ -145,26 +145,26 @@ const MusicTableContent: React.FC<TableContentProps> = ({
           className={getRowClassName(entry.fileNameFormatted, entry._id)}
         >
           <td id="tableEntryIndex">{index + 1}</td>
-            {/* <td className="table-cell">
-            {entry.image && entry.image[0].mime && entry.image[0].imageBuffer && (
-              <img
-              src={`data:${entry.image[0].mime};base64,${formatBuffer(entry.image[0].imageBuffer)}`}
-              alt="Song Image"
-              width="50"
-              height="50"
-            />
-            )}
-          </td> */}
+            <td className="table-cell">
+              {entry.image && entry.image[0].mime && entry.image[0].imageBuffer && (
+                <img
+                src={`data:${entry.image[0].mime};base64,${entry.image[0].imageBuffer}`}
+                alt="Song Image"
+                width="50"
+                height="50"
+              />
+              )}
+            </td>
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
               {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? 
               (<HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />) : 
               column.accessor === "duration" ? (formatDuration(entry[column.accessor])) : 
-              column.accessor === "image[0].imageBuffer" ? (formatBuffer(entry.image[0].imageBuffer)) : 
+              column.accessor === "image[0].imageBuffer" ? (console.log("ENTRY", entry.image[0].imageBuffer)) : 
               column.accessor === "dateAdded" ? (formatDateAdded(entry[column.accessor].toString())) :
               (entry[column.accessor] || "N/A")}
             </td>
-          ))}
+        ))}
         </tr>
       );
     })}

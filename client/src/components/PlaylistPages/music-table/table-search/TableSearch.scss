@@ -4,6 +4,7 @@
     // align-items: center;
     padding: 10px;
     // background-color: #000000;
+    user-select: none; 
     .searchInner{
         display: flex;
         flex-direction: row;

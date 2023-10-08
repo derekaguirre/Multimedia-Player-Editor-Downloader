@@ -142,7 +142,10 @@ app.get("/songs/:id/image", async (req, res) => {
     }
 
     // Find the song by its ID
-    const song = await PlaylistModel.findOne({ "songs._id": songId }, { "songs.$": 1 });
+    const song = await PlaylistModel.findOne(
+      { "songs._id": songId },
+      { "songs.$": 1 }
+    );
     // console.log("SONG", song)
     if (!song) {
       return res.status(404).json({ error: "Song not found" });
@@ -205,7 +208,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
     const metadataArray = req.body.metadataArray;
 
     // console.log("PLAYLIST ID", playlistId);
-    // console.log("SERVER BODY", metadataArray);
+    // console.log("BODY FROM CLIENT", metadataArray);
 
     // Find the playlist by ID
     const playlist = await PlaylistModel.findById(playlistId);
@@ -216,10 +219,8 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
     // Extract the file paths from metadataArray
     for (const metadata of metadataArray) {
       // Check if the song already exists in the playlist
-      const isDuplicate = playlist.songs.some(
-        (song) => song.fileNameOriginal === metadata.fileNameOriginal
-      );
-
+      //prettier-ignore
+      const isDuplicate = playlist.songs.some((song) => song.fileNameOriginal === metadata.fileNameOriginal);
       if (isDuplicate) {
         //prettier-ignore
         console.log("Duplicate song found, skipping:",metadata.fileNameOriginal);
@@ -240,7 +241,9 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
           imageName: tags.image.type.name || " ",
         },
         imageDescription: tags.image.description || " ",
-        imageBuffer: tags.image.imageBuffer || Buffer.alloc(0),
+        imageBuffer: tags.image.imageBuffer
+          ? tags.image.imageBuffer.toString("base64")
+          : "",
       };
       //Create the song object with extracted metadata
       //'metadata' comes from the front end

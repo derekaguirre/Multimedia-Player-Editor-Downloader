@@ -68,7 +68,7 @@ const playListSchema = new mongoose.Schema({
             type: String,
           },
           imageBuffer: {
-            type: Buffer,
+            type: String,
           },
           _id: {
             type: mongoose.Schema.Types.ObjectId,

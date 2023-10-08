@@ -53,19 +53,25 @@ export function formatDateAdded(isoDate: string) {
 }
 // console.log()
 //prettier-ignore
-export function formatBuffer(buffer:number[]) {
-  console.log("ARRAYBUFFER", buffer);
+// export function formatBuffer(buffer: number[]) {
+//   console.log("ARRAYBUFFER", buffer);
 
-  // Access the data property of the buffer object
-  const uint8Array = new Uint8Array(buffer);
-  console.log("UintArray", uint8Array);
+//   // Access the data property of the buffer object
+//   const uint8Array = new Uint8Array(buffer); // Access the data property
 
-  // Convert the Uint8Array to a base64 string
-  const base64String = btoa(String.fromCharCode(...uint8Array));
-  console.log("BASE64STRING", base64String);
-  
-  return base64String;
-}
+//   // Convert the Uint8Array to a base64 string in smaller chunks
+//   const chunkSize = 1024; // You can adjust the chunk size as needed
+//   let base64String = '';
+
+//   for (let i = 0; i < uint8Array.length; i += chunkSize) {
+//     const chunk = uint8Array.subarray(i, i + chunkSize);
+//     base64String += btoa(String.fromCharCode(...chunk));
+//   }
+
+//   console.log("BASE64STRING", base64String);
+
+//   return base64String;
+// }
 
 //----
 
@@ -125,9 +131,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
       {
         Header: "Image",
         accessor: "image[0].imageBuffer",
-        Cell: ({ value }: { value: number[] }) => formatBuffer(value),
       },
-      // { Header: "File Name", accessor: "fileNameOriginal"},
       { Header: "Title", accessor: "title" },
       { Header: "Artist", accessor: "artist" },
       { Header: "Album", accessor: "album" },

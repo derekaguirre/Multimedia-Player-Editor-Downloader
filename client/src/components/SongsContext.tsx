@@ -39,7 +39,7 @@ export interface SongObject {
       _id: string;
     }[];
     imageDescription: string;
-    imageBuffer: number[];
+    imageBuffer: string;
     _id: string;
   }[];
   _id: string;

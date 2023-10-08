@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { PlaylistContext } from "../../PlaylistContext";
 import "./FileUploader.scss";
 
 // TODO: Remove use of playlist ID
@@ -9,7 +10,6 @@ import "./FileUploader.scss";
 // TODO: If possible, wrap functionality around MusicTable
 
 const API_URL = "http://localhost:4000";
-const playlistId = "64e57f4ca023540bb2cad9de";
 
 // DATA FORMATTING METHODS--------------------------------------------
 // Formatting names to be read by the music player
@@ -35,6 +35,10 @@ const getAudioDuration = async (file: File) => {
 };
 
 const FileUploader: React.FC = () => {
+  //Context States
+  const { currentPlaylistId} = useContext(PlaylistContext);
+
+
   const [metadataArray, setMetadataArray] = useState<
     Array<{
       fileNameOriginal: string;
@@ -77,7 +81,7 @@ const FileUploader: React.FC = () => {
 
       // Post the metadata to mongo
       console.log("METADATA FROM FRONT END", updatedMetadataArray);
-      await axios.post(`${API_URL}/playlist/${playlistId}/add-songs`, { metadataArray: updatedMetadataArray });
+      await axios.post(`${API_URL}/playlist/${currentPlaylistId}/add-songs`, { metadataArray: updatedMetadataArray });
       console.log("File metadata stored successfully!");
     } catch (error) {
       console.error("Error uploading files:", error);
@@ -85,7 +89,7 @@ const FileUploader: React.FC = () => {
   };
 
   // IMPORTING--------------------------------------------
-  
+  console.log("Rendered FileUploader")
   //Properties for file importing
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -96,12 +100,12 @@ const FileUploader: React.FC = () => {
   });
 
   return (
-    <div>
+    <div className = "uploadArea">
       {/* prettier-ignore */}
       <div {...getRootProps()} className={`dropzone ${isDragActive ? "active" : ""}`}>
         {/* prettier-ignore */}
         <input type="file" name="uploadedFiles" multiple id="file" {...getInputProps()} />
-        <h2>Drag and drop files here or click to select files</h2>
+        <h2>Upload Files</h2>
       </div>
     </div>
   );
