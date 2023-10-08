@@ -35,7 +35,8 @@ const MusicTableHeader: React.FC<HeaderProps> = ({columns,sortingOrder,setSortin
   return (
     <thead>
       <tr>
-        <th></th>
+        {/* TODO remove text highlight on hover for #  */}
+        <th>#</th> 
         {columns.map((column) => (
           <th
             key={column.accessor}

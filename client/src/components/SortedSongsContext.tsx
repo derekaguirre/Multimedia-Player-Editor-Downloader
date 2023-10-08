@@ -1,34 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-
+import { SongObject } from "./SongsContext";
 // Create a context and provider for sorted songs
-export interface SongObject {
-  fileNameOriginal: string;
-  fileNameFormatted: string;
-  fileSize: number;
-  fileType: string;
-  filePath: string;
-  dateAdded: Date;
-  isVisible: boolean;
-  isLiked: boolean;
-  title: string;
-  duration: number;
-  artist: string;
-  album: string;
-  genre: string;
-  image: {
-    mime: string;
-    imageType: {
-      imageId: number;
-      imageName: string;
-      _id: string;
-    };
-    imageDescription: string;
-    imageBuffer: Buffer;
-    _id: string;
-  };
-  _id: string;
-  [key: string]: any;
-}
+
 
 export const SortedSongsContext = createContext<{
   sortedSongs: SongObject[];

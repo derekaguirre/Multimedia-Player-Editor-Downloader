@@ -7,13 +7,16 @@ import React, { createContext, useContext, useState } from "react";
 //   imageName: string;
 //   _id: string;
 // }
-// interface ImageObject {
-//   mime: string;
-//   imageType: ImageTypeObject;
-//   imageDescription: string;
-//   imageBuffer: Buffer;
-//   _id: string;
+// export interface ImageObject {
+//   image: {
+//     mime: string;
+//     imageType: ImageTypeObject;
+//     imageDescription: string;
+//     imageBuffer: Buffer;
+//     _id: string;
+//   }[];
 // }
+
 export interface SongObject {
   fileNameOriginal: string;
   fileNameFormatted: string;
@@ -34,15 +37,14 @@ export interface SongObject {
       imageId: number;
       imageName: string;
       _id: string;
-    }
+    }[];
     imageDescription: string;
-    imageBuffer: Buffer;
+    imageBuffer: number[];
     _id: string;
-  }
+  }[];
   _id: string;
   [key: string]: any;
 }
-
 
 export const SongsContext = createContext<{
   songs: SongObject[];
@@ -52,9 +54,10 @@ export const SongsContext = createContext<{
   setSongs: () => {}, // Provide a default setter function
 });
 
-
 // Create a SongsProvider component
-export const SongsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SongsProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [songs, setSongs] = useState<SongObject[]>([]);
 
   return (
@@ -65,4 +68,3 @@ export const SongsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 };
 
 export const useSongs = () => useContext(SongsContext);
-

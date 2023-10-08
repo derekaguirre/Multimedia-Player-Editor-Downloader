@@ -51,6 +51,22 @@ export function formatDateAdded(isoDate: string) {
   const date = new Date(isoDate);
   return date.toLocaleDateString("en-US", options);
 }
+// console.log()
+//prettier-ignore
+export function formatBuffer(buffer:number[]) {
+  console.log("ARRAYBUFFER", buffer);
+
+  // Access the data property of the buffer object
+  const uint8Array = new Uint8Array(buffer);
+  console.log("UintArray", uint8Array);
+
+  // Convert the Uint8Array to a base64 string
+  const base64String = btoa(String.fromCharCode(...uint8Array));
+  console.log("BASE64STRING", base64String);
+  
+  return base64String;
+}
+
 //----
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
@@ -105,7 +121,12 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   //prettier-ignore
   const columns = useMemo(
     () => [
-      { Header: "File ID", accessor: "_id"},
+      // { Header: "File ID", accessor: "_id"},
+      {
+        Header: "Image",
+        accessor: "image[0].imageBuffer",
+        Cell: ({ value }: { value: number[] }) => formatBuffer(value),
+      },
       // { Header: "File Name", accessor: "fileNameOriginal"},
       { Header: "Title", accessor: "title" },
       { Header: "Artist", accessor: "artist" },
@@ -128,11 +149,12 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   // console.log("MUSIC TABLE RENDERED");
 
   //TODO remove tableElementContainer
+
   return (
     <div className="tableElementContainer">
       <div className="playlistTable">
         <TableSearch
-          songs = {songs}
+          songs={songs}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           setFilteredSongs={setFilteredSongs}

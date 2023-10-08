@@ -149,7 +149,7 @@ app.get("/songs/:id/image", async (req, res) => {
     }
 
     // Respond with the 'image' field of the song document
-    const imageBuffer = song.songs[0].image.imageBuffer;
+    const imageBuffer = song.songs[0].image[0].imageBuffer;
     res.send(imageBuffer);
   } catch (error) {
     console.error("Error fetching song image:", error);

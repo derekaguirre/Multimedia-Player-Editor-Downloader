@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { IndexContext } from "../../../IndexContext";
 import { PlayerContext } from "../../../PlayerContext";
@@ -5,7 +6,7 @@ import { PlayingContext } from "../../../PlayingContext";
 import { SortedSongsContext } from "../../../SortedSongsContext";
 import { SortingLockContext } from "../../../SortingLockContext";
 import { SongObject, SongsContext } from "./../../../SongsContext";
-import { formatDateAdded, formatDuration } from "./../MusicTable";
+import { formatBuffer, formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText";
 import "./MusicTableContent.scss";
 
@@ -24,44 +25,36 @@ interface TableContentProps {
   clickedHeader: string | null;
 }
 
-const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQuery,sortingOrder,clickedHeader,}) => {
+const MusicTableContent: React.FC<TableContentProps> = ({
+  entries,
+  columns,
+  searchQuery,
+  sortingOrder,
+  clickedHeader,
+}) => {
   // Context hooks
   const { activeSong, setActiveSong } = useContext(PlayerContext);
   const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
-  const { sortingLock, setSortingLock } = useContext(SortingLockContext);const [imageData, setImageData] = useState(null); // State to store image data
-  const [songImages, setSongImages] = useState({});
-//-------------
-useEffect(() => {
-  // Define a function to fetch song images by song ID
-  const fetchSongImage = async () => {
-    try {
-      const response = await fetch(`http://localhost:4000/songs/65156d314a13dcbc8b16cf63/image`);
-      console.log("FETCHING IMAGE");
-
-      if (response.ok) {
-        // Get the image data as a blob
-        const imageBlob = await response.blob();
-
-        // Create a URL for the blob
-        const imageUrl = URL.createObjectURL(imageBlob);
-
-        // Display the image on the page
-        const imgElement = document.createElement('img');
-        imgElement.src = imageUrl;
-        document.body.appendChild(imgElement);
-      } else {
-        console.error(`Error fetching image for song ID 65156d314a13dcbc8b16cf63`);
+  const { sortingLock, setSortingLock } = useContext(SortingLockContext);
+  //-------------
+  useEffect(() => {
+    // Define a function to fetch song images by song ID
+    const fetchSongImage = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/songs/65156d314a13dcbc8b16cf60/image`
+        );
+        // console.log("MUSIC TABLE IMAGE DATA", response.data, "ENDOFDATA");
+      } catch (error) {
+        console.error("API request failed for image:", error);
       }
-    } catch (error) {
-      console.error("API request failed for image:", error);
-    }
-  };
-
-  fetchSongImage();
-}, []);
-//--------------
+    };
+    // console.log("ENTRIES", entries);
+    fetchSongImage();
+  }, []);
+  //--------------
 
   // Local states
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
@@ -97,7 +90,7 @@ useEffect(() => {
     } else {
       setSortedSongs([...entries]);
     }
-  }, [sortingOrder,]);
+  }, [sortingOrder]);
 
   //  If the row is not currently playing, set the active song to the current row
   const handlePlay = (fileName: string, index: number) => {
@@ -122,8 +115,9 @@ useEffect(() => {
   };
 
   const getRowClassName = (fileName: string, songId: string) => {
-    const activeSongFileName = activeSong && activeSong.replace(`${API_URL}/uploads/`, '');
-    
+    const activeSongFileName =
+      activeSong && activeSong.replace(`${API_URL}/uploads/`, "");
+
     if (activeSongFileName === fileName && selectedRow.includes(songId)) {
       return "playing-selected";
     } else if (activeSongFileName === fileName) {
@@ -140,7 +134,10 @@ useEffect(() => {
   // prettier-ignore
   return (
     <tbody>
-      {sortedEntries.map((entry, index) => (
+    {sortedEntries.map((entry, index) => {
+      // console.log("IMAGEBUFFER", entry.image[0].imageBuffer);
+      // console.log("FORMATTEDBUFFER", entry.image[0].imageBuffer);
+      return (
         <tr
           onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
           onClick={() => handleSelect(entry._id)}
@@ -148,19 +145,30 @@ useEffect(() => {
           className={getRowClassName(entry.fileNameFormatted, entry._id)}
         >
           <td id="tableEntryIndex">{index + 1}</td>
-
+            {/* <td className="table-cell">
+            {entry.image && entry.image[0].mime && entry.image[0].imageBuffer && (
+              <img
+              src={`data:${entry.image[0].mime};base64,${formatBuffer(entry.image[0].imageBuffer)}`}
+              alt="Song Image"
+              width="50"
+              height="50"
+            />
+            )}
+          </td> */}
           {columns.map((column) => (
             <td key={column.accessor} className="table-cell">
               {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? 
               (<HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />) : 
               column.accessor === "duration" ? (formatDuration(entry[column.accessor])) : 
+              column.accessor === "image[0].imageBuffer" ? (formatBuffer(entry.image[0].imageBuffer)) : 
               column.accessor === "dateAdded" ? (formatDateAdded(entry[column.accessor].toString())) :
               (entry[column.accessor] || "N/A")}
             </td>
           ))}
         </tr>
-      ))}
-    </tbody>
+      );
+    })}
+  </tbody>
   );
 };
 
