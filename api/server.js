@@ -265,6 +265,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
       };
 
       //Add the song to the playlist's songs array
+      console.log("UPLOADING: ", fullSongMetadata)
       playlist.songs.push(fullSongMetadata);
     }
     // Save the updated playlist

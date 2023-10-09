@@ -20,6 +20,7 @@ const API_URL = "http://localhost:4000";
 // TODO Images on song entries
 // TODO Implement shuffle
 // TODO Allow for media buttons
+// TODO autoplay or prev/next buttons do not work if only one song is in the playlist
 
 const MusicController: React.FC = () => {
   // Context states
@@ -52,7 +53,8 @@ const MusicController: React.FC = () => {
   //Extract the only the urls for the songs
   // `${API_URL}/uploads/${song.fileNameFormatted}`
 
-  //If the song is manually selected in the table, it will repopulate the player with a new array of songs depending on the sorting order
+  // TODO look into changing this snippet when playlists get updated and clicked on
+  // When sorting order is changed, it reloads player with new array of songs. Will not play until user manually triggers the playing state
   useEffect(() => {
     if (sortedSongs.length > 0) {
       console.log("POPULATING SORTED songs", playingSongs);
@@ -63,6 +65,10 @@ const MusicController: React.FC = () => {
     }
   }, [sortingLock]);
 
+
+  // useEffect(() => {
+  //   console.log("SORTED SONGS UPDATE", setPlayingSongs(sortedSongs))
+  // }, [sortedSongs]);
   //Once the new playlist is populated all of the titles will be extracted and put in their own array
   useEffect(() => {
     const extractedTitles = playingSongs.map(

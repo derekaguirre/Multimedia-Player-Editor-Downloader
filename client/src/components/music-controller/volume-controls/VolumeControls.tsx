@@ -6,6 +6,7 @@ import "./VolumeControls.scss";
 //TODO disable highlighting of other components while dragging the bar
 //TODO Allow for progress bar to be dragged even if the cursor leaves the component
 //TODO handleSeekDrag fires off every pixel traveled while hovering the seek bar
+//TODO there's styling (border-top) on the music controller that gets cut off where the volume bar is located
 
 interface VolumeControlsProps {
   currentHowl: Howl | null;

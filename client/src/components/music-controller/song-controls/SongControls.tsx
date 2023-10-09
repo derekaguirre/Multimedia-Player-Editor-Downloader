@@ -7,6 +7,7 @@ import PlayIcon from "./../../../images/play.svg";
 import "./SongControls.scss";
 
 // TODO persist active song name and current time in song using local storage to continue listening session
+
 interface SongControlProps {
   currentHowl: Howl;
   isPlaying: boolean;

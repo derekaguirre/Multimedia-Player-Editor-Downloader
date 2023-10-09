@@ -1,6 +1,7 @@
 import axios from "axios";
 //prettier-ignore
 import React, { useContext, useEffect, useMemo, useState, } from "react";
+import { SortedSongsContext } from "../../SortedSongsContext";
 import { SongObject, SongsContext } from "./../../SongsContext";
 import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
@@ -76,8 +77,9 @@ export function formatDateAdded(isoDate: string) {
 //----
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
-  //TODO pass songs arr to player
   const { songs, setSongs } = useContext(SongsContext);
+  const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
+
 
   //States for searching
   const [searchQuery, setSearchQuery] = useState("");
@@ -116,8 +118,10 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
       console.log("fetching songs for the table: ",`${API_URL}/playlist/${playlistId}/songs`);
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
       console.log("Fetching all songs from playlist:",`${playlistId} `,response.data);
-
+      //TODO remove 'as SongObject[]'
+      setSortedSongs(response.data as SongObject[]);
       setSongs(response.data as SongObject[]);
+      
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }

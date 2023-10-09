@@ -16,6 +16,7 @@ const API_URL = "http://localhost:4000";
 // TODO (Possibly done, but address first.) remove currentPlaying state in favor of setActive if possible. May be unnecessary
 // TODO disable highlighting on talble cells
 // TODO need to set playlist array instead of set active song. Can just send an array of songs PUT IMPLEMENTATION IN THIS COMPONENT
+// TODO Instead of hierarchical storage of database, songs can be in their own documents with a reference to the playlist to save on space
 
 interface TableContentProps {
   entries: SongObject[];
@@ -145,26 +146,27 @@ const MusicTableContent: React.FC<TableContentProps> = ({
           className={getRowClassName(entry.fileNameFormatted, entry._id)}
         >
           <td id="tableEntryIndex">{index + 1}</td>
-            <td className="table-cell">
-              {entry.image && entry.image[0].mime && entry.image[0].imageBuffer && (
-                <img
-                src={`data:${entry.image[0].mime};base64,${entry.image[0].imageBuffer}`}
-                alt="Song Image"
-                width="50"
-                height="50"
-              />
-              )}
-            </td>
-          {columns.map((column) => (
-            <td key={column.accessor} className="table-cell">
-              {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? 
-              (<HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />) : 
-              column.accessor === "duration" ? (formatDuration(entry[column.accessor])) : 
-              column.accessor === "image[0].imageBuffer" ? (console.log("ENTRY", entry.image[0].imageBuffer)) : 
-              column.accessor === "dateAdded" ? (formatDateAdded(entry[column.accessor].toString())) :
-              (entry[column.accessor] || "N/A")}
-            </td>
-        ))}
+
+            {columns.map((column) => (
+              <td key={column.accessor} className="table-cell">
+                {column.accessor === "title" || column.accessor === "artist" || column.accessor === "album" ? 
+                  (<HighlightedText text={entry[column.accessor] || ""} query={searchQuery} />) : 
+                  column.accessor === "duration" ? (formatDuration(entry[column.accessor])) : 
+                  column.accessor === "image[0].imageBuffer" ? (
+                    entry.image[0] && entry.image[0].imageBuffer ? (
+                      <img
+                        src={`data:${entry.image[0].mime};base64,${entry.image[0].imageBuffer}`}
+                        alt="Song Image"
+                        width="50"
+                        height="50"
+                      />
+                    ) : (
+                      "No Image"
+                    )
+                  ) : 
+                  column.accessor === "dateAdded" ? (formatDateAdded(entry[column.accessor].toString())) :
+                  (entry[column.accessor] || "N/A")}
+            </td>))}
         </tr>
       );
     })}
