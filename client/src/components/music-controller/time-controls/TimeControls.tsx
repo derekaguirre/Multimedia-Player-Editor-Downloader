@@ -17,7 +17,7 @@ function timeFormatter(timeInSeconds: number): string {
 const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
   // Local states
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [isSeeking, setIsSeeking] = useState<boolean>(false); // Track seeking state
+  const [isSeeking, setIsSeeking] = useState<boolean>(false);
 
   // This useEffect runs once when the component is mounted and clears the interval when the component unmounts
   useEffect(() => {
@@ -54,7 +54,7 @@ const TimeControls: React.FC<TimeProps> = ({ currentHowl, fullDuration }) => {
         currentTime={currentTime}
         fullDuration={fullDuration}
         setCurrentTime={setCurrentTime}
-        setIsSeeking={setIsSeeking} // Pass setIsSeeking to PlaybackBar
+        setIsSeeking={setIsSeeking}
       />
       <div className="endTime">
         {fullDuration !== null ? timeFormatter(fullDuration) : "0:00"}

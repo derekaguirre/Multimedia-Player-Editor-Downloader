@@ -1,7 +1,6 @@
 import axios from "axios";
 //prettier-ignore
 import React, { useContext, useEffect, useMemo, useState, } from "react";
-import { SortedSongsContext } from "../../SortedSongsContext";
 import { SongObject, SongsContext } from "./../../SongsContext";
 import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
@@ -19,6 +18,7 @@ const API_URL = "http://localhost:4000";
 // TODO check if memoization is needed. also verify if this approach that's commented out works and why.
 // TODO in table, add 'liked' col with correct state change and sending updates to the db
 
+// TODO VERIFY IMPLEMENTATIONS OF FETCHING
 // Migrate fetch to own file and invoke at:
 //  startup (implemented here and should be refactored out)
 //  playlist selection (implemented here but can move to sidebar now, not sure if fesable due to state changes needing to re-render this component)
@@ -78,7 +78,7 @@ export function formatDateAdded(isoDate: string) {
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const { songs, setSongs } = useContext(SongsContext);
-  const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
+  
 
 
   //States for searching
@@ -86,42 +86,25 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const [filteredSongs, setFilteredSongs] = useState<SongObject[]>([]);
 
   //States for sorting
-  const [sortingOrder, setSortingOrder] = useState<string | null>(null);
+  //TODO update sorting order to use local storage
+  const [sortingOrder, setSortingOrder] = useState<string>(""); 
   const [clickedHeader, setClickedHeader] = useState<string | null>(null);
 
-  const handleHeaderClick = () => {
-    // Toggle between "asc" and "desc" on header click
-    setSortingOrder(sortingOrder === "asc" ? "desc" : "asc");
-  };
-
-  //Check if playlist exists, if so memo the playlist data
-  // const fetchedSongs = useMemo(() => {
-  //   // Memoize the songs to prevent refetching on every render
-  //   return songs;
-  // }, [currentPlaylistId]);
-
-  // Only fetch playlist data if there is a playlist id in local storage
-  // Playlist is fetched every time the sidebar changes the currentPlaylistId
-  // console.log("MUSIC TABLE SORT ORDER:", sortingOrder);
+  // Only fetch playlist data if there is a playlist id in local storage, triggered every time playlist id changes
   useEffect(() => {
     if (currentPlaylistId) {
-      console.log("MusicTable fetching playlist with ID: ", currentPlaylistId);
       fetchPlaylistData(currentPlaylistId);
     } else {
-      console.log("Current playlist ID is empty. No playlist data fetched.");
+      console.log("Current playlist ID does not exist. No playlist data fetched.");
     }
   }, [currentPlaylistId]);
 
   //prettier-ignore
   const fetchPlaylistData = async (playlistId: string) => {
     try {
-      console.log("fetching songs for the table: ",`${API_URL}/playlist/${playlistId}/songs`);
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-      console.log("Fetching all songs from playlist:",`${playlistId} `,response.data);
-      //TODO remove 'as SongObject[]'
-      setSortedSongs(response.data as SongObject[]);
-      setSongs(response.data as SongObject[]);
-      
+      console.log("MusicTable fetching songs for the table: ",`${API_URL}/playlist/${playlistId}/songs`, response.data);
+      setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
@@ -153,11 +136,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     []
   );
 
-  // dropzone on table WAS CAUSING THE REFRESHING ON EVERY CLICK OF AN ELEMENT specifically rootprops
-  // console.log("MUSIC TABLE RENDERED");
-
   //TODO remove tableElementContainer
-
   return (
     <div className="tableElementContainer">
       <div className="playlistTable">
@@ -170,7 +149,6 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
         <table>
           <MusicTableHeader
             columns={columns}
-            sortingOrder={sortingOrder}
             setSortingOrder={setSortingOrder}
             setClickedHeader={setClickedHeader}
           />

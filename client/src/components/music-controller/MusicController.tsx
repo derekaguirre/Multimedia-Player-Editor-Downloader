@@ -12,64 +12,46 @@ import TimeControls from "./time-controls/TimeControls";
 import VolumeControls from "./volume-controls/VolumeControls";
 const { Howl } = require("howler");
 const API_URL = "http://localhost:4000";
-// TODO Songs not being updated if selecting new playlist song. It currently plays the last populated array until sorting is executed
-// again. Upon sorting it populates with the new songs.
 
-// TODO clean up usage of howl for example can pull duration from db or even from the songs obj if mapped just like songTitles
+// TODO when there's a search query, consider only making that query playable. so essentially populating with filteredSongs
 // TODO persist active song name and current time in song using local storage to continue listening session
-// TODO Images on song entries
+// TODO Image on song control bar (bottom left of page)
 // TODO Implement shuffle
 // TODO Allow for media buttons
-// TODO autoplay or prev/next buttons do not work if only one song is in the playlist
+// TODO prev/next buttons do not work if only one song is in the playlist
 
 const MusicController: React.FC = () => {
   // Context states
   const { activeSong, setActiveSong } = useContext(PlayerContext);
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
-  const { songs, setSongs } = useContext(SongsContext); 
-  const { currentPlaylistId, setCurrentPlaylistId } = useContext(PlaylistContext);
-  const { sortingLock} = useContext(SortingLockContext);
+  const { songs, setSongs } = useContext(SongsContext);
+  const { sortingLock } = useContext(SortingLockContext); //Not using currently
   const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
-
-  // useEffect(() => {
-  //   // console.log("PLAYER Sorted Songs:", sortedSongs);
-  //   // console.log("PLAYER REGULAR songs:", songs);
-  // }, [sortedSongs]);
-
-  // Local states
   const [playingSongs, setPlayingSongs] = useState<SongObject[]>([]);
 
+  // Local states
   const [currentHowl, setCurrentHowl] = useState<null | typeof Howl>(null);
   const storedVolume = localStorage.getItem("volume");
+  const [songTitles, setSongTitles] = useState<string[]>([]);
   const [volume, setVolume] = useState<number>(
     storedVolume ? parseFloat(storedVolume) : 0.5
   );
-  const [songTitles, setSongTitles] = useState<string[]>([]);
-
-  //TODO can possibly remove
+  
+  //TODO can possibly remove since I have a field in the database now
   const [fullDuration, setFullDuration] = useState<number | null>(null);
 
-  //Extract the only the urls for the songs
-  // `${API_URL}/uploads/${song.fileNameFormatted}`
-
-  // TODO look into changing this snippet when playlists get updated and clicked on
-  // When sorting order is changed, it reloads player with new array of songs. Will not play until user manually triggers the playing state
+  // This can be considered the hidden array that the system uses to play its music
+  // Will check if the current song index and song name are different before updating playingSongs with new array
   useEffect(() => {
-    if (sortedSongs.length > 0) {
-      console.log("POPULATING SORTED songs", playingSongs);
+    if (currentSongIndex !== playingSongs.length || songs !== playingSongs) {
       setPlayingSongs(sortedSongs);
-    } else {
-      setPlayingSongs(songs);
-      console.log("POPULATING UNSORTED songs", playingSongs);
     }
-  }, [sortingLock]);
+  }, [currentSongIndex, activeSong]);
 
 
-  // useEffect(() => {
-  //   console.log("SORTED SONGS UPDATE", setPlayingSongs(sortedSongs))
-  // }, [sortedSongs]);
-  //Once the new playlist is populated all of the titles will be extracted and put in their own array
+  //TODO clean up extra space usage, most likely do not need just an array of titles
+  //Once the playingSongs state is populated, all of the titles will be extracted and put in their own array for easier usage.
   useEffect(() => {
     const extractedTitles = playingSongs.map(
       (song) => `${API_URL}/uploads/${song.fileNameFormatted}`
@@ -77,31 +59,27 @@ const MusicController: React.FC = () => {
     setSongTitles(extractedTitles);
   }, [playingSongs]);
 
-  //If the active song or entire playlist changes, use that song to play
+  // Calls the logic for playing songs. Will execute every playlist or song change
   useEffect(() => {
     handleSongPlayback(songTitles[currentSongIndex]);
   }, [songTitles, currentSongIndex]);
 
-  //Listening for manual song change from MusicTableContent
+  //Listening for manual song change from MusicTableContent, handles the playing state for the howl
   useEffect(() => {
     if (isPlaying && currentHowl) {
       currentHowl.play();
     }
   }, [isPlaying, currentHowl]);
 
-
   //Gets rid of the current howl to load a new one
   const handleSongPlayback = (songUrl: string | null) => {
     if (songUrl) {
+      //Reset howl if one exists.
       if (currentHowl) currentHowl.unload();
 
-      //TODO: Don't think I need since I have an index in the array.
-      const matchingTitle = songTitles.find((title) => title === songUrl);
-
-      if (matchingTitle) {
         const newHowl = new Howl({
           volume: volume,
-          src: [matchingTitle],
+          src: [songTitles[currentSongIndex]],
           onload: function () {
             // TODO can possibly remove this since I have an duration inside of the songs object and an index. should look to implement set duration inside of TimeControls
             setFullDuration(newHowl.duration());
@@ -112,21 +90,25 @@ const MusicController: React.FC = () => {
         });
 
         setCurrentHowl(newHowl);
-      }
     }
   };
-  console.log("Player loaded");
 
+  //Autoplays unless there is only one song in the playlist, in which case, it will reset states if true
   const handleAutoPlay = () => {
     const nextSongIndex = currentSongIndex + 1;
 
-    if (nextSongIndex >= songTitles.length) {
+    if (songTitles.length === 1) {
+      setCurrentSongIndex(-1);
+      //Delay the state change to ensure it updates correctly
+      setTimeout(() => {
+        setCurrentSongIndex(0);
+      }, 20);
+    } else if (nextSongIndex >= songTitles.length) {
       // Reset to the beginning of the array
       setActiveSong(songTitles[0]);
       setCurrentSongIndex(0);
     } else {
       const nextSongUrl = songTitles[nextSongIndex];
-      console.log("Autoplaying next song: ", nextSongUrl);
       setActiveSong(nextSongUrl);
       setCurrentSongIndex(nextSongIndex);
     }

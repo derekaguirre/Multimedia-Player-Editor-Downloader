@@ -3,25 +3,26 @@ import "./MusicTableHeader.scss";
 
 interface HeaderProps {
   columns: { Header: string; accessor: string }[];
-  sortingOrder: string | null;
-  setSortingOrder: (sortingOrder: string | null) => void;
+  setSortingOrder: (sortingOrder: string) => void;
   setClickedHeader: (clickedHeader: string | null) => void;
 }
-//prettier-ignore
-const MusicTableHeader: React.FC<HeaderProps> = ({columns,sortingOrder,setSortingOrder, setClickedHeader}) => {
-  const [sortConfig, setSortConfig] = useState<{key: string | null;direction: "asc" | "desc" | null}>({key: null,direction: "asc"});
 
-  // Toggle sorting direction if clicking on the same column
+//prettier-ignore
+const MusicTableHeader: React.FC<HeaderProps> = ({ columns, setSortingOrder, setClickedHeader}) => {
+  const [sortConfig, setSortConfig] = useState<{key: string;direction: "asc" | "desc" | "unsorted"}>({ key: "", direction: "asc" });
+
+  // Toggle sorting direction when clicking on the same column
   const handleSort = (key: string) => {
     if (sortConfig.key === key) {
-      let newDirection: "asc" | "desc" | null = "asc"; // Initialize with a default value
+      let newDirection: "asc" | "desc" | "unsorted" = "asc"; // Initialized with a default value
+
       if (sortConfig.direction === "asc") {
         newDirection = "desc";
       } else if (sortConfig.direction === "desc") {
-        // Reset the sorting when cycling through all directional states
-        newDirection = null;
+        newDirection = "unsorted";
       }
       setSortConfig({ key, direction: newDirection });
+      localStorage.setItem("sortOrder", newDirection);
       // Pass the sorting order to the parent component
       setSortingOrder(newDirection);
     } else {
@@ -36,7 +37,7 @@ const MusicTableHeader: React.FC<HeaderProps> = ({columns,sortingOrder,setSortin
     <thead>
       <tr>
         {/* TODO remove text highlight on hover for #  */}
-        <th>#</th> 
+        <th>#</th>
         {columns.map((column) => (
           <th
             key={column.accessor}

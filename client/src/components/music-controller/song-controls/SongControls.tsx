@@ -36,7 +36,13 @@ const SongControls: React.FC<SongControlProps> = ({ currentHowl, isPlaying, setI
   // Function to handle next/previous song
   const handleSongChange = (delta: number) => {
     const nextSongIndex = currentSongIndex + delta;
-
+    if (songTitles.length === 1) {
+      setCurrentSongIndex(-1);
+      //Delay the state change to ensure it updates correctly
+      setTimeout(() => {
+        setCurrentSongIndex(0);
+      }, 20);
+    }
     // If at the end of the array, reset to the beginning
     if (nextSongIndex >= songTitles.length) {
       setCurrentSongIndex(0);
