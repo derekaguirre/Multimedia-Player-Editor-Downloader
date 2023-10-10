@@ -49,7 +49,6 @@ const MusicController: React.FC = () => {
     }
   }, [currentSongIndex, activeSong]);
 
-
   //TODO clean up extra space usage, most likely do not need just an array of titles
   //Once the playingSongs state is populated, all of the titles will be extracted and put in their own array for easier usage.
   useEffect(() => {

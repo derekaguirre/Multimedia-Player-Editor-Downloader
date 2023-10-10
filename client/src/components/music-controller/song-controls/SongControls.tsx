@@ -16,48 +16,67 @@ interface SongControlProps {
   setActiveSong: (activeSong: string) => void;
 }
 
-const SongControls: React.FC<SongControlProps> = ({
-  currentHowl,
-  isPlaying,
-  setIsPlaying,
-  songTitles,
-  setActiveSong,
-}) => {
+//prettier-ignore
+const SongControls: React.FC<SongControlProps> = ({currentHowl,isPlaying,setIsPlaying,songTitles,setActiveSong}) => {
   //Context States
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
-
-  //Toggles between play and pause
-  const togglePlayPause = () => {
-    if (currentHowl) {
-      if (isPlaying) {
-        setIsPlaying(false);
-        currentHowl.pause();
-      } else {
-        setActiveSong(songTitles[currentSongIndex]);
-        setIsPlaying(true);
-      }
-    }
-  };
-
+  
   // Function to handle next/previous song
   const handleSongChange = (delta: number) => {
     if (songTitles.length === 1) currentHowl.seek(0);
     const nextSongIndex = currentSongIndex + delta;
 
-    // If at the end of the array, reset to the beginning
-    if (nextSongIndex >= songTitles.length) {
-      setCurrentSongIndex(0);
-      setActiveSong(songTitles[0]);
-    } else if (nextSongIndex < 0) {
-      // If at the beginning, go to the end
-      setCurrentSongIndex(songTitles.length - 1);
-      setActiveSong(songTitles[songTitles.length - 1]);
-      // Otherwise, handle the change normally
-    } else {
-      setCurrentSongIndex(nextSongIndex);
-      setActiveSong(songTitles[nextSongIndex]);
+  // If at the end of the array, reset to the beginning
+  if (nextSongIndex >= songTitles.length) {
+    setCurrentSongIndex(0);
+    setActiveSong(songTitles[0]);
+  } else if (nextSongIndex < 0) {
+    // If at the beginning, go to the end
+    setCurrentSongIndex(songTitles.length - 1);
+    setActiveSong(songTitles[songTitles.length - 1]);
+    // Otherwise, handle the change normally
+  } else {
+    setCurrentSongIndex(nextSongIndex);
+    setActiveSong(songTitles[nextSongIndex]);
+  }
+};
+
+  //Toggles between play and pause
+  const togglePlayPause = () => {
+    if (currentHowl && currentHowl.playing()) {
+        currentHowl.pause();
+        setIsPlaying(false);
+      } else {
+        setActiveSong(songTitles[currentSongIndex]);
+        setIsPlaying(true);
+      }
+  };
+
+  // Keyboard media control event listener
+  // DOCS FOR VALID KEY EVENTS: https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "MediaPlayPause" || event.key ===" ") {
+      event.preventDefault(); 
+      console.log("key pressed");
+      togglePlayPause();
+    } else if (event.key === "MediaTrackNext") {
+      handleSongChange(1);
+    } else if (event.key === "MediaFastForward") {
+      handleSongChange(-1);
     }
   };
+
+
+  useEffect(() => {
+    // Check if currentHowl is not null before adding the event listener
+    if (currentHowl) {
+      window.addEventListener("keydown", handleKeyPress);
+      //Remove listner when component unmounts
+      return () => {
+        window.removeEventListener("keydown", handleKeyPress);
+      };
+    }
+  }, [currentHowl]);
 
   //prettier-ignore
   return (

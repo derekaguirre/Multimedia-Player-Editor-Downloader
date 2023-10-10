@@ -9,6 +9,7 @@
   width: 100%;
   // height:678px; //table size scrolling
   // height: 100%; // page scrolling
+  user-select: none;
 
   overflow:auto; //removing makes the header move with scrolling
 

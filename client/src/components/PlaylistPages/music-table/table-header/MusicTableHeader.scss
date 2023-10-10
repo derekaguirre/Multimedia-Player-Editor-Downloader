@@ -7,10 +7,10 @@ thead {
     //TODO does not stick when overflow is set to auto on tableElementContainer inside of MusicTable.scss
     position: sticky;
     top: 0;
-    
+
     // background-color: #5a5a5a;
     border-bottom: 2px solid #707070;
-    
+
     th {
         padding: 14px;
         padding-left: 30px;
@@ -19,6 +19,15 @@ thead {
         cursor: pointer;
         &:hover {
             color: #f5f3f3;
+        }
+
+        &:nth-child(1) {
+            /* Add your custom styles here */
+            /* For example, to make it non-highlightable */
+            &:hover {
+                color: #aba5a5;
+                cursor: default;
+            }
         }
     }
 }
