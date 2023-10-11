@@ -7,6 +7,7 @@ import { SongObject, SongsContext } from "../SongsContext";
 import { SortedSongsContext } from "../SortedSongsContext";
 import { SortingLockContext } from "../SortingLockContext";
 import "./MusicController.scss";
+import GlobalMediaController from "./global-media-controls/GlobalMediaController";
 import SongControls from "./song-controls/SongControls";
 import TimeControls from "./time-controls/TimeControls";
 import VolumeControls from "./volume-controls/VolumeControls";
@@ -41,40 +42,7 @@ const MusicController: React.FC = () => {
   //TODO can possibly remove since I have a field in the database now
   const [fullDuration, setFullDuration] = useState<number | null>(null);
 
-  //--------------------GLOBAL MEDIA CONTROLS----------------------------
-  useEffect(() => {
-    if (currentHowl) {
-      console.log("MEDIA CONTROLLER TITLE", songTitles[currentSongIndex]);
-      // Define media metadata
-      const mediaMetadata = new MediaMetadata({
-        title: `${sortedSongs[0].title}`,
-        artist: `${sortedSongs[0].artist}`,
-        album: `${sortedSongs[0].album}`,
-        artwork: [
-          { src: "https://dummyimage.com/96x96", sizes: '96x96',   type: 'image/png' },
-          { src: "https://dummyimage.com/128x128", sizes: '128x128', type: 'image/png' },
-          { src: "https://dummyimage.com/192x192", sizes: '192x192', type: 'image/png' },
-          { src: "https://dummyimage.com/256x256", sizes: '256x256', type: 'image/png' },
-          { src: "https://dummyimage.com/384x384", sizes: '384x384', type: 'image/png' },
-          { src: "https://dummyimage.com/512x512", sizes: '512x512', type: 'image/png' },
-        ]
-      });
-
-      navigator.mediaSession.metadata = mediaMetadata;
-      console.log("MEDIA SESSION: ", navigator.mediaSession.metadata);
-
-      navigator.mediaSession.setActionHandler("previoustrack", function () {
-      });
-
-      navigator.mediaSession.setActionHandler("nexttrack", function () {
-      });
-
-      // Clean up by removing the event listener when the component unmounts
-      return () => {
-      };
-    }},[currentHowl]);
-
-  //---------------------------------------------------------------------
+  
 
   // This can be considered the hidden array that the system uses to play its music
   // Will check if the current song index and song name are different before updating playingSongs with new array
@@ -106,12 +74,16 @@ const MusicController: React.FC = () => {
   }, [isPlaying, currentHowl]);
 
   //Gets rid of the current howl to load a new one
-  const handleSongPlayback = (songUrl: string | null) => {
+  const handleSongPlayback = (songUrl: string | null) => { 
+
     if (songUrl) {
       //Reset howl if one exists.
       if (currentHowl) currentHowl.unload();
-
+      
+      // TODO move the global media controller into here?
+      // TODO revisit howler api to use ids that the howls generate, might be better than resetting the howl.
       const newHowl = new Howl({
+
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         usingWebAudio: true,
         volume: volume,
@@ -153,6 +125,14 @@ const MusicController: React.FC = () => {
   return (
     <div className="music-controller-container">
       <div className="song-controls-container">
+      <GlobalMediaController
+          currentHowl={currentHowl}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          songTitles={songTitles}
+          setActiveSong={setActiveSong}
+      />
+
         <SongControls
           currentHowl={currentHowl}
           isPlaying={isPlaying}

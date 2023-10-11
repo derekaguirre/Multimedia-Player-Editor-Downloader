@@ -4,17 +4,16 @@ import { useDropzone } from "react-dropzone";
 import { PlaylistContext } from "../../PlaylistContext";
 import "./FileUploader.scss";
 
-// TODO: Remove use of playlist ID
 // TODO: Make env file with API URL
 // TODO: Use component in settings
 // TODO: If possible, wrap functionality around MusicTable
 
 const API_URL = "http://localhost:4000";
 
-// DATA FORMATTING METHODS--------------------------------------------
+// -------------------------------DATA FORMATTING METHODS-------------------------------
 // Formatting names to be read by the music player
 const nameFormatter = (str: string) => {
-  return str.replace(/ /g, "%20").replace(",", "%2C");
+  return encodeURIComponent(str);
 };
 
 // Formatting for song titles
@@ -38,18 +37,6 @@ const FileUploader: React.FC = () => {
   //Context States
   const { currentPlaylistId} = useContext(PlaylistContext);
 
-
-  const [metadataArray, setMetadataArray] = useState<
-    Array<{
-      fileNameOriginal: string;
-      fileNameFormatted: string;
-      fileSize: number;
-      fileType: string;
-      duration: number | undefined;
-      title: string;
-    }>
-  >([]);
-
   const onDrop = async (acceptedFiles: File[]) => {
     try {
       // Retrieve the actual file
@@ -72,9 +59,6 @@ const FileUploader: React.FC = () => {
         };
       }));
       
-      // Update the state with the new metadataArray
-      setMetadataArray(updatedMetadataArray);
-
       // Post the file (make a copy) to the uploads folder in the api
       await axios.post(`${API_URL}/playlist/new-file`, fileObj);
       console.log("File(s) uploaded successfully!");

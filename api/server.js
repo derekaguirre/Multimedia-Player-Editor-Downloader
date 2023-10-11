@@ -224,13 +224,11 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
       if (isDuplicate) {
         //prettier-ignore
         console.log("Duplicate song found, skipping:",metadata.fileNameOriginal);
-
         continue;
       }
 
       //Set the file path and read the tags
       const filePath = `${uploadDirectory}\\${metadata.fileNameOriginal}`;
-
       const tags = NodeID3.read(filePath);
 
       // console.log("IMAGE BEFORE PROCESSING", tags.image.type.name);
@@ -245,6 +243,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
           ? tags.image.imageBuffer.toString("base64")
           : "",
       };
+
       //Create the song object with extracted metadata
       //'metadata' comes from the front end
       const fullSongMetadata = {
@@ -256,7 +255,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         dateAdded: new Date(),
         isVisible: true,
         isLiked: false,
-        title: metadata.title,
+        title: tags.title === undefined ? metadata.title : tags.title,
         duration: metadata.duration || "",
         artist: tags.artist || "",
         album: tags.album || "",
@@ -265,7 +264,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
       };
 
       //Add the song to the playlist's songs array
-      console.log("UPLOADING: ", fullSongMetadata)
+      // console.log("UPLOADING: ", fullSongMetadata)
       playlist.songs.push(fullSongMetadata);
     }
     // Save the updated playlist

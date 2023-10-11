@@ -45,26 +45,7 @@ const SongControls: React.FC<SongControlProps> = ({
       setActiveSong(songTitles[nextSongIndex]);
     }
   };
-  //------ GLOBAL MEDIA CONTROLLER FUNCTIONS
-  navigator.mediaSession.setActionHandler("nexttrack", function () {
-    handleSongChange(1);
-  });
-  navigator.mediaSession.setActionHandler("previoustrack", function () {
-    handleSongChange(-1);
-  });
 
-  navigator.mediaSession.setActionHandler("play", function () {
-    navigator.mediaSession.playbackState = "playing";
-    setActiveSong(songTitles[currentSongIndex]);
-    setIsPlaying(true);
-  });
-
-  navigator.mediaSession.setActionHandler("pause", function () {
-    navigator.mediaSession.playbackState = "paused";
-    setIsPlaying(false);
-    currentHowl.pause();
-  });
-  //------
   
   //Toggles between play and pause
   const togglePlayPause = () => {
