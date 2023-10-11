@@ -37,9 +37,44 @@ const MusicController: React.FC = () => {
   const [volume, setVolume] = useState<number>(
     storedVolume ? parseFloat(storedVolume) : 0.5
   );
-  
+
   //TODO can possibly remove since I have a field in the database now
   const [fullDuration, setFullDuration] = useState<number | null>(null);
+
+  //--------------------GLOBAL MEDIA CONTROLS----------------------------
+  useEffect(() => {
+    if (currentHowl) {
+      console.log("MEDIA CONTROLLER TITLE", songTitles[currentSongIndex]);
+      // Define media metadata
+      const mediaMetadata = new MediaMetadata({
+        title: `${sortedSongs[0].title}`,
+        artist: `${sortedSongs[0].artist}`,
+        album: `${sortedSongs[0].album}`,
+        artwork: [
+          { src: "https://dummyimage.com/96x96", sizes: '96x96',   type: 'image/png' },
+          { src: "https://dummyimage.com/128x128", sizes: '128x128', type: 'image/png' },
+          { src: "https://dummyimage.com/192x192", sizes: '192x192', type: 'image/png' },
+          { src: "https://dummyimage.com/256x256", sizes: '256x256', type: 'image/png' },
+          { src: "https://dummyimage.com/384x384", sizes: '384x384', type: 'image/png' },
+          { src: "https://dummyimage.com/512x512", sizes: '512x512', type: 'image/png' },
+        ]
+      });
+
+      navigator.mediaSession.metadata = mediaMetadata;
+      console.log("MEDIA SESSION: ", navigator.mediaSession.metadata);
+
+      navigator.mediaSession.setActionHandler("previoustrack", function () {
+      });
+
+      navigator.mediaSession.setActionHandler("nexttrack", function () {
+      });
+
+      // Clean up by removing the event listener when the component unmounts
+      return () => {
+      };
+    }},[currentHowl]);
+
+  //---------------------------------------------------------------------
 
   // This can be considered the hidden array that the system uses to play its music
   // Will check if the current song index and song name are different before updating playingSongs with new array
@@ -76,19 +111,21 @@ const MusicController: React.FC = () => {
       //Reset howl if one exists.
       if (currentHowl) currentHowl.unload();
 
-        const newHowl = new Howl({
-          volume: volume,
-          src: [songTitles[currentSongIndex]],
-          onload: function () {
-            // TODO can possibly remove this since I have an duration inside of the songs object and an index. should look to implement set duration inside of TimeControls
-            setFullDuration(newHowl.duration());
-          },
-          onend: function () {
-            handleAutoPlay();
-          },
-        });
+      const newHowl = new Howl({
+        html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
+        usingWebAudio: true,
+        volume: volume,
+        src: [songTitles[currentSongIndex]],
+        onload: function () {
+          // TODO can possibly remove this since I have an duration inside of the songs object and an index. should look to implement set duration inside of TimeControls
+          setFullDuration(newHowl.duration());
+        },
+        onend: function () {
+          handleAutoPlay();
+        },
+      });
 
-        setCurrentHowl(newHowl);
+      setCurrentHowl(newHowl);
     }
   };
 
