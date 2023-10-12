@@ -5,7 +5,7 @@ import { SortedSongsContext } from "../../SortedSongsContext";
 
 
 // TODO Global Media Controls refresh every time the howl changes
-// TODO When moving to next song while paused, the player disappears, most likely will be solved when the components refresh correctly.
+// TODO Look into populating the media metadata in the TableContent component since that's where the most up-to-date data is.
 
 interface GlobalMediaProps {
   currentHowl: Howl;

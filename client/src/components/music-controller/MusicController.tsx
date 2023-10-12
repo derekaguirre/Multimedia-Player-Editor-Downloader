@@ -10,6 +10,7 @@ import "./MusicController.scss";
 import GlobalMediaController from "./global-media-controls/GlobalMediaController";
 import SongControls from "./song-controls/SongControls";
 import TimeControls from "./time-controls/TimeControls";
+
 import VolumeControls from "./volume-controls/VolumeControls";
 const { Howl } = require("howler");
 const API_URL = "http://localhost:4000";
@@ -42,8 +43,6 @@ const MusicController: React.FC = () => {
   //TODO can possibly remove since I have a field in the database now
   const [fullDuration, setFullDuration] = useState<number | null>(null);
 
-  
-
   // This can be considered the hidden array that the system uses to play its music
   // Will check if the current song index and song name are different before updating playingSongs with new array
   useEffect(() => {
@@ -54,16 +53,18 @@ const MusicController: React.FC = () => {
 
   //TODO clean up extra space usage, most likely do not need just an array of titles
   //Once the playingSongs state is populated, all of the titles will be extracted and put in their own array for easier usage.
+  //prettier-ignore
   useEffect(() => {
-    const extractedTitles = playingSongs.map(
-      (song) => `${API_URL}/uploads/${song.fileNameFormatted}`
-    );
+    const extractedTitles = playingSongs.map((song) => `${API_URL}/uploads/${song.fileNameFormatted}`);
     setSongTitles(extractedTitles);
   }, [playingSongs]);
 
   // Calls the logic for playing songs. Will execute every playlist or song change
   useEffect(() => {
-    handleSongPlayback(songTitles[currentSongIndex]);
+    if (songTitles) {
+      setCurrentSongIndex(currentSongIndex);
+      handleSongPlayback(currentSongIndex);
+    }
   }, [songTitles, currentSongIndex]);
 
   //Listening for manual song change from MusicTableContent, handles the playing state for the howl
@@ -74,20 +75,20 @@ const MusicController: React.FC = () => {
   }, [isPlaying, currentHowl]);
 
   //Gets rid of the current howl to load a new one
-  const handleSongPlayback = (songUrl: string | null) => { 
-
-    if (songUrl) {
+  const handleSongPlayback = (index: number) => {
+    if (songTitles[index]) {
+      
       //Reset howl if one exists.
       if (currentHowl) currentHowl.unload();
       
       // TODO move the global media controller into here?
       // TODO revisit howler api to use ids that the howls generate, might be better than resetting the howl.
       const newHowl = new Howl({
-
-        html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
+        autoplay: true, // Fixes the howl disappearing when switching to another song in paused state
+        html5: true,
         usingWebAudio: true,
         volume: volume,
-        src: [songTitles[currentSongIndex]],
+        src: songTitles[index], // Play the song by index
         onload: function () {
           // TODO can possibly remove this since I have an duration inside of the songs object and an index. should look to implement set duration inside of TimeControls
           setFullDuration(newHowl.duration());
@@ -125,13 +126,13 @@ const MusicController: React.FC = () => {
   return (
     <div className="music-controller-container">
       <div className="song-controls-container">
-      <GlobalMediaController
+        <GlobalMediaController
           currentHowl={currentHowl}
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
           songTitles={songTitles}
           setActiveSong={setActiveSong}
-      />
+        />
 
         <SongControls
           currentHowl={currentHowl}
