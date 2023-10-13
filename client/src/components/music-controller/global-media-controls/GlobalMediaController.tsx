@@ -55,6 +55,7 @@ const GlobalMediaController: React.FC<GlobalMediaProps> = ({
     if (currentHowl) {
       // Define media metadata
       const mediaMetadata = new MediaMetadata({
+        //TODO play songs like this in the MusicController
         title: `${sortedSongs[currentSongIndex].title}`,
         artist: `${sortedSongs[currentSongIndex].artist}`,
         album: `${sortedSongs[currentSongIndex].album}`,
