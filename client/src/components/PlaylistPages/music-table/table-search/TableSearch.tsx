@@ -1,7 +1,7 @@
 //prettier-ignore
 import React, { useEffect } from "react";
+import { SongObject } from "../../../Contexts/SongsContext";
 import SearchIcon from "./../../../../images/search.svg";
-import { SongObject } from "./../../../SongsContext";
 import "./TableSearch.scss";
 
 // TODO Add search to a div that will include sort functionality

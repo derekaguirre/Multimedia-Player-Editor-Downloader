@@ -1,9 +1,9 @@
 // TODO Picture element in left corner
 
 .music-controller-container {
-    display: flex; /* Use flexbox to align components horizontally */
-    justify-content: space-between; /* Distribute components evenly */
-    align-items: center; /* Vertically center components */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-top: 1px solid #282828;
     height: 9vh;
     width: 100%;

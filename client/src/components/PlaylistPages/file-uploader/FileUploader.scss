@@ -1,33 +1,23 @@
-
 //TODO fix the way dropzone fills up the upload area. they are not consistent
 //TODO make sure the positioning css is conistent with TableSearch.scss
 .uploadArea {
-    width: 200px;
-    height: 100px;
     position: absolute;
-    right: 20px; /* Move to the right edge of the page */
-    top: 15px; /* Align with the top of the page */
-    user-select: none; 
-    .dropzone {
+    right: 9vw; //TODO the settings button will be 3 less vw than this button
+    top: 1vh;
+    width: 40px;
+    height: 40px;
+    border: black solid 2px;
+    border-radius: 10px;
+    background-color: #bababa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
         cursor: pointer;
-        background-color: #5a5a5a;
-        text-align: center;
-        border-radius: 6px;
-        display: table-cell;
+        background-color: #ffffff;
+    }
+    .dropzone {
         width: 100%;
         height: 100%;
-        color: #c6c6c6;
-        box-shadow: inset 0 0 5px black;
-
-        &:focus {
-            // box-shadow: 0 0 10px 1000px rgba(0, 0, 0, 0.5);
-            // border: 1px solid #52b3a5;
-            background-color: #3e3e3e;
-            outline: none;
-            
-        }
-        &:hover {
-            background-color: #3e3e3e;
-        }
     }
 }

@@ -1,14 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
-import { IndexProvider } from "./components/IndexContext";
-import { PlayerProvider } from "./components/PlayerContext";
-import { PlayingProvider } from "./components/PlayingContext";
-import { PlaylistProvider } from "./components/PlaylistContext";
+import { IndexProvider } from "./components/Contexts/IndexContext";
+import { PlayerProvider } from "./components/Contexts/PlayerContext";
+import { PlayingProvider } from "./components/Contexts/PlayingContext";
+import { PlaylistProvider } from "./components/Contexts/PlaylistContext";
+import { SongsProvider } from "./components/Contexts/SongsContext";
+import { SortedSongsProvider } from "./components/Contexts/SortedSongsContext";
+import { SortingLockProvider } from "./components/Contexts/SortingLockContext";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
-import { SongsProvider } from "./components/SongsContext";
-import { SortedSongsProvider } from "./components/SortedSongsContext";
-import { SortingLockProvider } from "./components/SortingLockContext";
 import MusicController from "./components/music-controller/MusicController";
 import Sidebar from "./components/side-bar/Sidebar";
 

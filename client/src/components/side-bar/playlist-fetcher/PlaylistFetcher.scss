@@ -1,4 +1,7 @@
 .playlist-items {
+    position: fixed; /* Make it sticky */
+    top: 7vh;
+
     ul li {
         font-size: 20px;
         font-weight: 500;
@@ -13,10 +16,9 @@
     }
     & li:hover {
         cursor: pointer;
-        background-color: #5d5d5d;
+        color: #d3d3d3;
     }
     ul {
-        background-color: #000000;
         //need to center
         padding: 30px 10px;
         list-style: none;

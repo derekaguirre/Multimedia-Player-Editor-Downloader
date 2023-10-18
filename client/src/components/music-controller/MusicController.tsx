@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IndexContext } from "../IndexContext";
-import { PlayerContext } from "../PlayerContext";
-import { PlayingContext } from "../PlayingContext";
-import { PlaylistContext } from "../PlaylistContext";
-import { SongObject, SongsContext } from "../SongsContext";
-import { SortedSongsContext } from "../SortedSongsContext";
-import { SortingLockContext } from "../SortingLockContext";
+import { IndexContext } from "../Contexts/IndexContext";
+import { PlayerContext } from "../Contexts/PlayerContext";
+import { PlayingContext } from "../Contexts/PlayingContext";
+import { PlaylistContext } from "../Contexts/PlaylistContext";
+import { SongObject, SongsContext } from "../Contexts/SongsContext";
+import { SortedSongsContext } from "../Contexts/SortedSongsContext";
+import { SortingLockContext } from "../Contexts/SortingLockContext";
 import "./MusicController.scss";
 import GlobalMediaController from "./global-media-controls/GlobalMediaController";
 import SongControls from "./song-controls/SongControls";

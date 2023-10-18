@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { PlaylistContext } from "../../PlaylistContext";
+import { PlaylistContext } from "../../Contexts/PlaylistContext";
+import SidebarIcon from "./../../../images/upload.svg";
+
 import "./FileUploader.scss";
 
 // TODO: Make env file with API URL
@@ -89,7 +91,7 @@ const FileUploader: React.FC = () => {
       <div {...getRootProps()} className={`dropzone ${isDragActive ? "active" : ""}`}>
         {/* prettier-ignore */}
         <input type="file" name="uploadedFiles" multiple id="file" {...getInputProps()} />
-        <h2>Upload Files</h2>
+          <img src={SidebarIcon} width={40} height={40} />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import NextIcon from "../../../images/next.svg";
 import PauseIcon from "../../../images/pause.svg";
 import PrevIcon from "../../../images/prev.svg";
-import { IndexContext } from "../../IndexContext";
+import { IndexContext } from "../../Contexts/IndexContext";
 import PlayIcon from "./../../../images/play.svg";
 import "./SongControls.scss";
 
