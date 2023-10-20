@@ -29,7 +29,8 @@ interface PlaylistObject {
 }
 
 // Methods to help with data formatting---
-//TODO also implemented inside of TimeControls.tsx can refactor into a TableUtils.tsx component and export what's needed maybe?
+//TODO also implemented inside of TimeControls.tsx. Can refactor into a TableUtils.tsx component and export what's needed maybe?
+
 export function formatDuration(durationInSeconds: number | undefined) {
   if (durationInSeconds === undefined) {
     return "N/A"; // Handle the case where duration is undefined
@@ -52,27 +53,6 @@ export function formatDateAdded(isoDate: string) {
   const date = new Date(isoDate);
   return date.toLocaleDateString("en-US", options);
 }
-// console.log()
-//prettier-ignore
-// export function formatBuffer(buffer: number[]) {
-//   console.log("ARRAYBUFFER", buffer);
-
-//   // Access the data property of the buffer object
-//   const uint8Array = new Uint8Array(buffer); // Access the data property
-
-//   // Convert the Uint8Array to a base64 string in smaller chunks
-//   const chunkSize = 1024; // You can adjust the chunk size as needed
-//   let base64String = '';
-
-//   for (let i = 0; i < uint8Array.length; i += chunkSize) {
-//     const chunk = uint8Array.subarray(i, i + chunkSize);
-//     base64String += btoa(String.fromCharCode(...chunk));
-//   }
-
-//   console.log("BASE64STRING", base64String);
-
-//   return base64String;
-// }
 
 //----
 

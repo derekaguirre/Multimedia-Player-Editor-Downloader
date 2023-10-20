@@ -4,7 +4,6 @@ import { SongObject } from "../../../Contexts/SongsContext";
 import SearchIcon from "./../../../../images/search.svg";
 import "./TableSearch.scss";
 
-// TODO Add search to a div that will include sort functionality
 interface SearchProps {
   songs: SongObject[];
   searchQuery: string;
