@@ -91,6 +91,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   };
 
   //TODO make a selector for the header/accessor pairs so this doesn't need to be hard coded
+  
   //prettier-ignore
   const columns = useMemo(
     () => [
