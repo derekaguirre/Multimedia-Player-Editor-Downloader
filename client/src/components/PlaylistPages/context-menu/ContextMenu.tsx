@@ -25,6 +25,7 @@ const ContextMenu: FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
       <div className="item">Like</div>
       <div className="item">Edit</div>
+      <div className="item">Add to playlist</div>
       <div className="item">Hide</div>
       <div className="item">Delete</div>
     </div>

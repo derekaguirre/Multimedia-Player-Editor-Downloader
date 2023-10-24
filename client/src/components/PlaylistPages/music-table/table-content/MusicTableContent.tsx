@@ -7,6 +7,7 @@ import { PlaylistContext } from "../../../Contexts/PlaylistContext";
 import { SongObject, SongsContext } from "../../../Contexts/SongsContext";
 import { SortedSongsContext } from "../../../Contexts/SortedSongsContext";
 import { SortingLockContext } from "../../../Contexts/SortingLockContext";
+import ContextMenu from "../../context-menu/ContextMenu";
 import { formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText";
 import "./MusicTableContent.scss";
@@ -35,6 +36,20 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
   const { sortingLock, setSortingLock } = useContext(SortingLockContext);
+  const [contextMenuPosition, setContextMenuPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  // Define a function to open the context menu at a specific position
+  const openContextMenu = (x: number, y: number) => {
+    setContextMenuPosition({ x, y });
+  };
+
+  // Define a function to close the context menu
+  const closeContextMenu = () => {
+    setContextMenuPosition(null);
+  };
   //-------------
 
   // Use useEffect to load sortingLock from localStorage
@@ -68,7 +83,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
     // Default return value if sortingOrder is neither "asc" nor "desc" or clickedHeader is "unsorted"
     return 0;
   });
-
 
   //TODO go through and see which states are not needed
   // Sets various states when selecting a song to play. The states are used in MusicController.
@@ -122,6 +136,10 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
           <tr
             onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
             onClick={() => handleSelect(entry._id)}
+            onContextMenu={(event) => {
+              event.preventDefault();
+              openContextMenu(event.clientX, event.clientY);
+            }}
             key={entry._id}
             className={getRowClassName(entry.fileNameFormatted, entry._id)}
           >
@@ -158,6 +176,14 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
           </tr>
         );
       })}
+
+      {contextMenuPosition && (
+        <ContextMenu
+          x={contextMenuPosition.x}
+          y={contextMenuPosition.y}
+          closeContextMenu={closeContextMenu}
+        />
+      )}
     </tbody>
   );
 };
