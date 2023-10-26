@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IndexContext } from "../../../Contexts/IndexContext";
 import { PlayerContext } from "../../../Contexts/PlayerContext";
 import { PlayingContext } from "../../../Contexts/PlayingContext";
@@ -30,8 +29,13 @@ interface TableContentProps {
 }
 
 const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQuery,sortingOrder,clickedHeader}) => {
+  //Local States
+  const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
+  const [selectedRow, setSelectedRow] = useState<string[]>([]);
+  // console.log("TABLE CONTENT ORDER:", sortingOrder);
+
   // Context hooks
-  const { activeSong, setActiveSong } = useContext(PlayerContext);
+  const { activeSong, setActiveSong, setActiveSongId } = useContext(PlayerContext);
   const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
   const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
   const { isPlaying, setIsPlaying } = useContext(PlayingContext);
@@ -41,10 +45,19 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
     y: number;
   } | null>(null);
 
-  // Define a function to open the context menu at a specific position
-  const openContextMenu = (x: number, y: number) => {
+  // Memoized function which handles the opening of the the context menu at a specified position
+  const openContextMenu = useCallback((x: number, y: number, songId: string) => {
     setContextMenuPosition({ x, y });
-  };
+    setActiveSongId(songId);
+  }, []);
+
+  //TODO Verify if callback is optimal for opening context menu and setting the songId
+  //prettier-ignore
+  const handleContextMenu = useCallback((event: React.MouseEvent, songId: string) => {
+      openContextMenu(event.clientX, event.clientY, songId);
+    },
+    [openContextMenu]
+  );
 
   // Define a function to close the context menu
   const closeContextMenu = () => {
@@ -52,6 +65,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   };
   //-------------
 
+  //TODO Update frontend to use the sort order from local storage. (Persist the sorting)
   // Use useEffect to load sortingLock from localStorage
   useEffect(() => {
     const savedSortOrder = localStorage.getItem("sortOrder");
@@ -61,10 +75,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
     }
   }, []);
   //--------------
-
-  // Local states
-  const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
-  const [selectedRow, setSelectedRow] = useState<string[]>([]); // console.log("TABLE CONTENT ORDER:", sortingOrder);
 
   // Handle sorting based on sortingOrder
   const sortedEntries = [...entries];
@@ -84,7 +94,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
     return 0;
   });
 
-  //TODO go through and see which states are not needed
+  //TODO verify which states are needed
   // Sets various states when selecting a song to play. The states are used in MusicController.
   const handlePlay = (fileName: string, index: number) => {
     if (!currentPlaying.includes(fileName)) {
@@ -136,10 +146,8 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
           <tr
             onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
             onClick={() => handleSelect(entry._id)}
-            onContextMenu={(event) => {
-              event.preventDefault();
-              openContextMenu(event.clientX, event.clientY);
-            }}
+            onContextMenu={(event) => handleContextMenu(event, entry._id)}
+
             key={entry._id}
             className={getRowClassName(entry.fileNameFormatted, entry._id)}
           >

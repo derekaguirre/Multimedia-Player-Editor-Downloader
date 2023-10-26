@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
 import { IndexProvider } from "./components/Contexts/IndexContext";
@@ -14,10 +14,19 @@ import Sidebar from "./components/side-bar/Sidebar";
 
 const App: React.FC = () => {
   console.log("APP LOADED");
-
+  useEffect(() => {
+    function preventContextMenu(event: MouseEvent) {
+      event.preventDefault();
+    }
+  
+    document.addEventListener("contextmenu", preventContextMenu);
+    return () => {
+      document.removeEventListener("contextmenu", preventContextMenu);
+    };
+  }, []);
   // TODO ENV file for API key
   // TODO verify heierachy of providers
-  // TODO Use navbar on sidebar to update/navigate router on page content section
+  // TODO Use navbar/router on sidebar to update/navigate pages
 
   return (
     <div className="App">
