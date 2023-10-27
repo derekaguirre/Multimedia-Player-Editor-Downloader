@@ -3,6 +3,8 @@ GET http://localhost:4000/playlist/649d7447e7a0d197e0bb6d3c/songs
 ### Get all playlists
 GET http://localhost:4000/playlist/all
 
+
+//New song
 ###
 POST http://localhost:4000/files/new-metadata
 Content-Type: application/json
@@ -20,9 +22,9 @@ POST http://localhost:4000/files/new-playlist
 Content-Type: application/json
 
 {
-  "name": "New Playlist",
-  "songs": [
-  ]
+    "name": "New Playlist",
+    "songs": [
+    ]
 }
 
 ### New songs in a playlist
@@ -35,6 +37,20 @@ Content-Type: application/json
     "filePath": "path1",
     "fileSize": 1,
     "fileType": "type1"
+}
+
+### Update song metadata
+PUT http://localhost:4000/songs/6537520047e34a8b805169f8/edit
+Content-Type: application/json
+
+{
+    "updatedData": {
+        "fileNameOriginal": "Updated File 7.mp3",
+        "fileNameFormatted": "Updated%20File%207.mp3",
+        "title": "Updated Title 7",
+        "artist": "Updated Artist 7",
+        "album": "Updated Album 7"
+    }
 }
 
 ###

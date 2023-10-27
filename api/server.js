@@ -198,81 +198,6 @@ app.post("/files/new-playlist", async (req, res) => {
   }
 });
 
-// Update song metadata by song ID
-app.put("/song/:id/update-metadata", async (req, res) => {
-  try {
-    const songId = req.params.id;
-    const updatedMetadata = req.body.updatedMetadata; // Assuming you send updated metadata in the request body
-
-    // Validate that the provided songId is a valid MongoDB ObjectId
-    if (!mongoose.Types.ObjectId.isValid(songId)) {
-      return res.status(400).json({ error: "Invalid song ID" });
-    }
-
-    // Find the song by its ID
-    const song = await PlaylistModel.findOne(
-      { "songs._id": songId },
-      { "songs.$": 1 }
-    );
-
-    if (!song) {
-      return res.status(404).json({ error: "Song not found" });
-    }
-
-    // Update the song's metadata with the provided data
-    const songToUpdate = song.songs[0];
-    songToUpdate.title = updatedMetadata.title || songToUpdate.title;
-    songToUpdate.artist = updatedMetadata.artist || songToUpdate.artist;
-    songToUpdate.album = updatedMetadata.album || songToUpdate.album;
-    songToUpdate.genre = updatedMetadata.genre || songToUpdate.genre;
-
-    // Save the updated song
-    await song.save();
-
-    res.status(200).json(song);
-  } catch (error) {
-    console.error("Error updating song metadata:", error);
-    res.status(500).json({ error: "Failed to update song metadata" });
-  }
-});
-
-// Update a song by its ID
-app.put("/songs/:id", async (req, res) => {
-  try {
-    const songId = req.params.id;
-    const updatedData = req.body; // The new content for the song
-
-    // Validate that the provided songId is a valid MongoDB ObjectId
-    if (!mongoose.Types.ObjectId.isValid(songId)) {
-      return res.status(400).json({ error: "Invalid song ID" });
-    }
-
-    // Find the song by its ID
-    const song = await PlaylistModel.findOne({ "songs._id": songId });
-    if (!song) {
-      return res.status(404).json({ error: "Song not found" });
-    }
-
-    // Find and update the specific song within the playlist
-    const updatedSong = song.songs.find((s) => s._id.toString() === songId);
-    if (!updatedSong) {
-      return res.status(404).json({ error: "Song not found within the playlist" });
-    }
-
-    // Update the song's content
-    Object.assign(updatedSong, updatedData);
-
-    // Save the changes
-    await song.save();
-
-    res.status(200).json(updatedSong);
-  } catch (error) {
-    console.error("Error updating song:", error);
-    res.status(500).json({ error: "Failed to update song" });
-  }
-});
-
-
 // ---------------------node-id3--------------------------------
 const NodeID3 = require("node-id3"); //Library for parsing songs
 
@@ -352,6 +277,78 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
   }
 });
 
+// Update a song by its ID
+app.put("/songs/:id/edit", upload.none(), async (req, res) => {
+  try {
+    const songId = req.params.id;
+    const updatedData = req.body.updatedData;
+    console.log("SONG ID", songId);
+    console.log("BODY FROM CLIENT", updatedData);
+
+    // Validate that the provided songId is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(songId)) {
+      return res.status(400).json({ error: "Invalid song ID" });
+    }
+
+    // Find the song by its ID
+    const song = await PlaylistModel.findOne({ "songs._id": songId });
+    if (!song) {
+      return res.status(404).json({ error: "Song not found" });
+    }
+    console.log("ENTIRE SONG", updatedData);
+
+    // Find and update the specific song within the playlist
+    const updatedSong = song.songs.find((s) => s._id.toString() === songId);
+    if (!updatedSong) {
+      return res
+        .status(404)
+        .json({ error: "Song not found within the playlist" });
+    }
+
+    // Save the old and new names
+    const oldFileName = updatedSong.fileNameOriginal;
+    const newFileName = updatedData.fileNameOriginal;
+    // Instantiate path variables
+    const oldFilePath = path.join(uploadDirectory, oldFileName);
+    const newFilePath = path.join(uploadDirectory, newFileName);
+    // Rename the file
+    fs.rename(oldFilePath, newFilePath, (error) => {
+      if (error) {
+        console.error("Error renaming file:", error);
+      } else {
+        console.log("File has been successfully renamed.");
+        updatedSong.fileNameOriginal = updatedData.fileNameOriginal; // Update the song's file name
+      }
+    });
+    // Update the entire song's content with new info
+    Object.assign(updatedSong, updatedData);
+
+    // Update ID3 tags in the actual file
+    const audioFilePath = `./uploads/${updatedSong.fileNameOriginal}`; // Use the new file path
+    const id3Tags = {
+      filePath: audioFilePath,
+      title: updatedSong.title,
+      artist: updatedSong.artist,
+      album: updatedSong.album,
+    };
+    NodeID3.write(id3Tags, audioFilePath, function (error, buffer) {
+      if (error) {
+        console.error("Error writing ID3 tags:", error);
+      } else {
+        console.log("ID3 tags have been successfully written to the file.");
+      }
+    });
+
+    // Save the changes to the song
+    await song.save();
+
+    res.status(200).json(updatedSong);
+  } catch (error) {
+    console.error("Error updating song:", error);
+    res.status(500).json({ error: "Failed to update song" });
+  }
+});
+
 //Delete specific playlist by id
 app.delete("/files/delete/:id", async (req, res) => {
   const result = await SongModel.findByIdAndDelete(req.params.id);
@@ -365,12 +362,10 @@ app.delete("/files/delete/:id", async (req, res) => {
 
 //Like a song
 //Hide a song
-//Delete a song in a playlist
+//Delete a song in a playlist (along with file)
 //Adding an image to a playlist
-//Playlist description changing
+//Add/Edit description of playlists
 //Change playlist name
 //Update/set song metadata
 //Update file name
-//Get a picture MAYBE
 //Update picture
-//GET by song id and/or song name
