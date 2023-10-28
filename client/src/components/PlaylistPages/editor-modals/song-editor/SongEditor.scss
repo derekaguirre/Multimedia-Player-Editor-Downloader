@@ -1,0 +1,53 @@
+.edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 20px;
+    color: white;
+    background-color: rgb(73, 73, 73);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    border-radius: 5px;
+
+    h2 {
+        margin: 0 0 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        .form-group {
+            margin: 10px 0;
+
+            label {
+                font-weight: bold;
+            }
+
+            input {
+                width: 100%;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                outline: none;
+            }
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+}

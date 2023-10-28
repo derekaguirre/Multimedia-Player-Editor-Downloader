@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { PlayerContext } from "../../Contexts/PlayerContext";
+import SongEditor from "./../editor-modals/song-editor/SongEditor";
 import "./ContextMenu.scss";
 import { useOnClickOutside } from "./useOnClickOutside";
-
 
 interface ContextMenuProps {
   x: number;
@@ -12,6 +12,10 @@ interface ContextMenuProps {
 
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
+//Local States:
+const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
+
+
   const { activeSongId } = useContext(PlayerContext);
   useEffect(() => {
     console.log("ContextMenu songId:", activeSongId);
@@ -22,8 +26,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => 
 
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     position: "fixed",
-    top: y + "px", // Start at the initial click position
-    left: x + "px", // Start at the initial click position
+    top: y + "px",
+    left: x + "px",
     zIndex: 1,
   });
 
@@ -57,12 +61,13 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => 
 
   return (
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
-      <div className="item">Edit</div>
+      <div className="item" onClick={() => setIsSongEditorOpen(true)}>Edit</div>
       {/* TODO Extend below option to allow for selecting correct playlist */}
       <div className="item">Add to playlist</div>
       <div className="item">Like</div>
       <div className="item">Hide</div>
       <div className="item">Delete</div>
+      {isSongEditorOpen && <SongEditor songId={activeSongId} />}
     </div>
   );
 };

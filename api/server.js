@@ -308,20 +308,29 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
     // Save the old and new names
     const oldFileName = updatedSong.fileNameOriginal;
     const newFileName = updatedData.fileNameOriginal;
-    // Instantiate path variables
-    const oldFilePath = path.join(uploadDirectory, oldFileName);
-    const newFilePath = path.join(uploadDirectory, newFileName);
-    // Rename the file
-    fs.rename(oldFilePath, newFilePath, (error) => {
-      if (error) {
-        console.error("Error renaming file:", error);
-      } else {
-        console.log("File has been successfully renamed.");
-        updatedSong.fileNameOriginal = updatedData.fileNameOriginal; // Update the song's file name
-      }
-    });
-    // Update the entire song's content with new info
-    Object.assign(updatedSong, updatedData);
+    if (newFileName && newFileName !== "") {
+      // Instantiate path variables
+      const oldFilePath = path.join(uploadDirectory, oldFileName);
+      const newFilePath = path.join(uploadDirectory, newFileName);
+      // Rename the file
+
+      fs.rename(oldFilePath, newFilePath, (error) => {
+        if (error) {
+          console.error("Error renaming file:", error);
+        } else {
+          console.log("File has been successfully renamed.");
+          updatedSong.fileNameOriginal = updatedData.fileNameOriginal; // Update the song's file name
+        }
+      });
+    }
+    // Update the entire song's content with new info, but only if the fields in updatedData are not empty
+    for (const key in updatedData)
+      if (
+        updatedData[key] !== undefined &&
+        updatedData[key] !== null &&
+        updatedData[key] !== ""
+      )
+        updatedSong[key] = updatedData[key];
 
     // Update ID3 tags in the actual file
     const audioFilePath = `./uploads/${updatedSong.fileNameOriginal}`; // Use the new file path
