@@ -6,9 +6,10 @@ const API_URL = "http://localhost:4000";
 
 interface SongEditorProps {
   songId: string;
+  onClose: () => void; // Add the onClose prop
 }
 
-const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
+const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
   const [formData, setFormData] = useState({
     fileNameOriginal: "",
     fileNameFormatted: "",
@@ -29,6 +30,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
 
   const editSong = async () => {
     if (!hasChanges) {
+      onClose(); // Close the editor if there are no changes
       return; // Prevent api call if all fields are empty
     }
 
@@ -48,6 +50,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
       if (response.status === 200) {
         console.log("Song:", songId, "updated successfully");
         setHasChanges(false);
+        onClose(); // Close the editor after successful update
       } else {
         console.error("Error updating song:", response.data.error);
       }
@@ -56,12 +59,18 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
     }
   };
 
+  // File names may have to be stored as "Song - Artist" to avoid collisions
+  // or they can be ids until you export them, which will populate the file's name/metadata with the database info.
+  //Upon editing, can achieve following functionality:
+  //Update table with new information
+  //Store changes into local storage and wait until a 'songs' refresh to populate with new changes
+  //That way the song path doesn't get updated and the currentSongs list doesn't have an outdated song path.
   return (
     <div className="edit-modal">
       <h2>Edit Song</h2>
       <form>
         <div className="form-group">
-          <label>File Name Original:</label>
+          <label>File Name Original</label>
           <input
             type="text"
             name="fileNameOriginal"
@@ -70,7 +79,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
           />
         </div>
         <div className="form-group">
-          <label>File Name Formatted:</label>
+          <label>File Name Formatted</label>
           <input
             type="text"
             name="fileNameFormatted"
@@ -79,7 +88,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
           />
         </div>
         <div className="form-group">
-          <label>Title:</label>
+          <label>Title</label>
           <input
             type="text"
             name="title"
@@ -88,7 +97,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
           />
         </div>
         <div className="form-group">
-          <label>Artist:</label>
+          <label>Artist</label>
           <input
             type="text"
             name="artist"
@@ -97,7 +106,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
           />
         </div>
         <div className="form-group">
-          <label>Album:</label>
+          <label>Album</label>
           <input
             type="text"
             name="album"
@@ -105,9 +114,14 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId }) => {
             onChange={handleFormChange}
           />
         </div>
-        <button type="button" onClick={editSong}>
-          Save
-        </button>
+        <div className="footer-buttons">
+          <button type="button" onClick={editSong}>
+            Save
+          </button>
+          <button type="button" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

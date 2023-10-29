@@ -10,17 +10,15 @@ interface ContextMenuProps {
   closeContextMenu: () => void;
 }
 
-
 const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
-//Local States:
-const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
-
+  //Local States:
+  const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
 
   const { activeSongId } = useContext(PlayerContext);
   useEffect(() => {
     console.log("ContextMenu songId:", activeSongId);
   }, []);
-  
+
   const contextMenuRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(contextMenuRef, closeContextMenu);
 
@@ -61,13 +59,20 @@ const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
 
   return (
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
-      <div className="item" onClick={() => setIsSongEditorOpen(true)}>Edit</div>
+      <div className="item" onClick={() => setIsSongEditorOpen(true)}>
+        Edit
+      </div>
       {/* TODO Extend below option to allow for selecting correct playlist */}
       <div className="item">Add to playlist</div>
       <div className="item">Like</div>
       <div className="item">Hide</div>
       <div className="item">Delete</div>
-      {isSongEditorOpen && <SongEditor songId={activeSongId} />}
+      {isSongEditorOpen && (
+        <SongEditor
+          songId={activeSongId}
+          onClose={() => setIsSongEditorOpen(false)}
+        />
+      )}
     </div>
   );
 };

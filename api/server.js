@@ -282,8 +282,8 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
   try {
     const songId = req.params.id;
     const updatedData = req.body.updatedData;
-    console.log("SONG ID", songId);
-    console.log("BODY FROM CLIENT", updatedData);
+    // console.log("SONG ID", songId);
+    // console.log("BODY FROM CLIENT", updatedData);
 
     // Validate that the provided songId is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(songId)) {
