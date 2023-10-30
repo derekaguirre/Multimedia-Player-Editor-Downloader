@@ -1,6 +1,7 @@
 import axios from "axios";
 //prettier-ignore
 import React, { useContext, useEffect, useMemo, useState, } from "react";
+import { EditContext } from "../../Contexts/EditContext";
 import { SongObject, SongsContext } from "../../Contexts/SongsContext";
 import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
@@ -58,8 +59,7 @@ export function formatDateAdded(isoDate: string) {
 
 const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const { songs, setSongs } = useContext(SongsContext);
-  
-
+  const { isEdited, setIsEdited } = useContext(EditContext);
 
   //States for searching
   const [searchQuery, setSearchQuery] = useState("");
@@ -77,7 +77,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     } else {
       console.log("Current playlist ID does not exist. No playlist data fetched.");
     }
-  }, [currentPlaylistId]);
+  }, [currentPlaylistId, isEdited]);
 
   //prettier-ignore
   const fetchPlaylistData = async (playlistId: string) => {

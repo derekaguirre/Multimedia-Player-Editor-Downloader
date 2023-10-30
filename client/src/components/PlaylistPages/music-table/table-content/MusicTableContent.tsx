@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IndexContext } from "../../../Contexts/IndexContext";
 import { PlayerContext } from "../../../Contexts/PlayerContext";
 import { PlayingContext } from "../../../Contexts/PlayingContext";
-import { PlaylistContext } from "../../../Contexts/PlaylistContext";
 import { SongObject, SongsContext } from "../../../Contexts/SongsContext";
 import { SortedSongsContext } from "../../../Contexts/SortedSongsContext";
 import { SortingLockContext } from "../../../Contexts/SortingLockContext";
@@ -13,11 +12,8 @@ import "./MusicTableContent.scss";
 
 const API_URL = "http://localhost:4000";
 
-//TODO SWITCH FROM SORTED TO FILTERED SONGS FOR PLAYING
 // TODO remove activeSong in favor of index setting.
 // TODO (Possibly done, but address first.) remove currentPlaying state in favor of setActive if possible. May be unnecessary
-// TODO disable highlighting on table cells
-// TODO need to set playlist array instead of set active song. Can just send an array of songs PUT IMPLEMENTATION IN THIS COMPONENT
 // TODO Instead of hierarchical storage of the database, songs can be in their own documents with a reference to the playlist to save on space
 
 interface TableContentProps {
@@ -51,7 +47,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
     setActiveSongId(songId);
   }, []);
 
-  //TODO Verify if callback is optimal for opening context menu and setting the songId
   //prettier-ignore
   const handleContextMenu = useCallback((event: React.MouseEvent, songId: string) => {
       openContextMenu(event.clientX, event.clientY, songId);
@@ -147,7 +142,6 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
             onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
             onClick={() => handleSelect(entry._id)}
             onContextMenu={(event) => handleContextMenu(event, entry._id)}
-
             key={entry._id}
             className={getRowClassName(entry.fileNameFormatted, entry._id)}
           >

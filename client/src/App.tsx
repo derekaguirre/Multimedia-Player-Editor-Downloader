@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
+
+import { EditProvider } from "./components/Contexts/EditContext";
 import { IndexProvider } from "./components/Contexts/IndexContext";
 import { PlayerProvider } from "./components/Contexts/PlayerContext";
 import { PlayingProvider } from "./components/Contexts/PlayingContext";
@@ -31,6 +33,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <PlaylistProvider>
+        <EditProvider>
         <PlayerProvider>
           <SongsProvider>
             <SortedSongsProvider>
@@ -59,6 +62,7 @@ const App: React.FC = () => {
             </SortedSongsProvider>
           </SongsProvider>
         </PlayerProvider>
+        </EditProvider>
       </PlaylistProvider>
     </div>
   );

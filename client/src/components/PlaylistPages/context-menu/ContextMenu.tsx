@@ -11,7 +11,7 @@ interface ContextMenuProps {
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
-  //Local States:
+  // Local States:
   const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
 
   const { activeSongId } = useContext(PlayerContext);
@@ -57,22 +57,27 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => 
     });
   }, [x, y]);
 
+
+  //Refactor to send states to subcomponents that conditionally render them
+  //Then drop the components in on the bottom of this return
   return (
     <div className="context-menu" ref={contextMenuRef} style={menuStyle}>
       <div className="item" onClick={() => setIsSongEditorOpen(true)}>
         Edit
       </div>
-      {/* TODO Extend below option to allow for selecting correct playlist */}
+      {isSongEditorOpen && (
+        <SongEditor
+          songId={activeSongId}
+          onClose={() => {
+            setIsSongEditorOpen(false);
+            closeContextMenu(); 
+          }}
+        />
+      )}
       <div className="item">Add to playlist</div>
       <div className="item">Like</div>
       <div className="item">Hide</div>
       <div className="item">Delete</div>
-      {isSongEditorOpen && (
-        <SongEditor
-          songId={activeSongId}
-          onClose={() => setIsSongEditorOpen(false)}
-        />
-      )}
     </div>
   );
 };

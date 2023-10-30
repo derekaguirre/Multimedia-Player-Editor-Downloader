@@ -1,15 +1,20 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { EditContext } from "../../../Contexts/EditContext";
 import "./SongEditor.scss";
 
 const API_URL = "http://localhost:4000";
 
 interface SongEditorProps {
   songId: string;
-  onClose: () => void; // Add the onClose prop
+  onClose: () => void;
 }
 
 const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
+  console.log("EDITOR OPEN");
+  const { isEdited, setIsEdited } = useContext(EditContext);
+
+  
   const [formData, setFormData] = useState({
     fileNameOriginal: "",
     fileNameFormatted: "",
@@ -50,6 +55,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
       if (response.status === 200) {
         console.log("Song:", songId, "updated successfully");
         setHasChanges(false);
+        setIsEdited(!isEdited);
         onClose(); // Close the editor after successful update
       } else {
         console.error("Error updating song:", response.data.error);
