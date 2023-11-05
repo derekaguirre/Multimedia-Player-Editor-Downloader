@@ -11,13 +11,12 @@ interface SongEditorProps {
 }
 
 const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   console.log("EDITOR OPEN");
   const { isEdited, setIsEdited } = useContext(EditContext);
 
-  
   const [formData, setFormData] = useState({
-    fileNameOriginal: "",
-    fileNameFormatted: "",
     title: "",
     artist: "",
     album: "",
@@ -40,59 +39,33 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
     }
 
     try {
-      const updatedData = {
-        fileNameOriginal: formData.fileNameOriginal,
-        fileNameFormatted: formData.fileNameFormatted,
+      const frontData = {
         title: formData.title,
         artist: formData.artist,
         album: formData.album,
       };
 
       const response = await axios.put(`${API_URL}/songs/${songId}/edit`, {
-        updatedData,
+        frontData,
       });
 
-      if (response.status === 200) {
-        console.log("Song:", songId, "updated successfully");
-        setHasChanges(false);
-        setIsEdited(!isEdited);
-        onClose(); // Close the editor after successful update
-      } else {
-        console.error("Error updating song:", response.data.error);
-      }
+      console.error("Error updating song:", response.data.message);
+      
+      setHasChanges(false);
+      setIsEdited(!isEdited);
+      onClose(); // Close the editor after successful update
     } catch (error) {
-      console.error("Error updating song:", error);
+      // Handle the network or other errors and set the error message
+      setErrorMessage("Error: " + error.response.data.error);
     }
   };
 
-  // File names may have to be stored as "Song - Artist" to avoid collisions
-  // or they can be ids until you export them, which will populate the file's name/metadata with the database info.
   //Upon editing, can achieve following functionality:
-  //Update table with new information
   //Store changes into local storage and wait until a 'songs' refresh to populate with new changes
-  //That way the song path doesn't get updated and the currentSongs list doesn't have an outdated song path.
   return (
     <div className="edit-modal">
       <h2>Edit Song</h2>
       <form>
-        <div className="form-group">
-          <label>File Name Original</label>
-          <input
-            type="text"
-            name="fileNameOriginal"
-            value={formData.fileNameOriginal}
-            onChange={handleFormChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>File Name Formatted</label>
-          <input
-            type="text"
-            name="fileNameFormatted"
-            value={formData.fileNameFormatted}
-            onChange={handleFormChange}
-          />
-        </div>
         <div className="form-group">
           <label>Title</label>
           <input
@@ -120,6 +93,10 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
             onChange={handleFormChange}
           />
         </div>
+
+        {/* Display the error message */}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+
         <div className="footer-buttons">
           <button type="button" onClick={editSong}>
             Save

@@ -132,7 +132,7 @@ app.get("/playlist/names", async (req, res) => {
   }
 });
 
-// Route to fetch the image buffer for a song by its ID
+// Fetch song image buffer from song ID
 app.get("/songs/:id/image", async (req, res) => {
   try {
     const songId = req.params.id;
@@ -159,32 +159,6 @@ app.get("/songs/:id/image", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-//Stores file metadata using mongodb
-// app.post("/files/new-metadata", async (req, res) => {
-//   const { metadataArray } = req.body;
-//   console.log("SERVER BODY", metadataArray);
-
-//   try {
-//     // Create an array of file metadata documents
-//     const fileMetadataArray = metadataArray.map((metadata) => ({
-//       fileNameOriginal: metadata.fileNameOriginal,
-//       fileNameFormatted: metadata.fileNameFormatted,
-//       fileSize: metadata.fileSize,
-//       fileType: metadata.fileType,
-//       filePath: uploadDirectory + "\\" + metadata.fileNameOriginal,
-//     }));
-
-//     // Insert the file metadata documents into the database
-//     await SongModel.insertMany(fileMetadataArray);
-
-//     // Send a response
-//     res.status(200).send("File names stored successfully");
-//   } catch (error) {
-//     console.error("Error storing file names:", error);
-//     res.status(500).send("Error storing file names");
-//   }
-// });
 
 //Create a new empty playlist
 app.post("/files/new-playlist", async (req, res) => {
@@ -281,9 +255,7 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
 app.put("/songs/:id/edit", upload.none(), async (req, res) => {
   try {
     const songId = req.params.id;
-    const updatedData = req.body.updatedData;
-    // console.log("SONG ID", songId);
-    // console.log("BODY FROM CLIENT", updatedData);
+    const frontData = req.body.frontData;
 
     // Validate that the provided songId is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(songId)) {
@@ -295,7 +267,6 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
     if (!song) {
       return res.status(404).json({ error: "Song not found" });
     }
-    console.log("ENTIRE SONG", updatedData);
 
     // Find and update the specific song within the playlist
     const updatedSong = song.songs.find((s) => s._id.toString() === songId);
@@ -307,35 +278,46 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
 
     // Save the old and new names
     const oldFileName = updatedSong.fileNameOriginal;
-    const newFileName = updatedData.fileNameOriginal;
+    const newFileName = frontData.title;
+
+    // If the new title is not empty, then update the titles
     if (newFileName && newFileName !== "") {
       // Instantiate path variables
       const oldFilePath = path.join(uploadDirectory, oldFileName);
-      const newFilePath = path.join(uploadDirectory, newFileName);
-      // Rename the file
+      const newFilePath = path.join(uploadDirectory, newFileName + ".mp3");
 
+      // Verify file name does not exist already
+      if (fs.existsSync(newFilePath))
+        return res
+          .status(400)
+          .json({ error: "Song already exists, please input a unique name." });
+
+      // Use old name to find the file to rename with the new name
       fs.rename(oldFilePath, newFilePath, (error) => {
         if (error) {
           console.error("Error renaming file:", error);
-        } else {
-          console.log("File has been successfully renamed.");
-          updatedSong.fileNameOriginal = updatedData.fileNameOriginal; // Update the song's file name
         }
       });
+      //Update mongo metadata entries
+      updatedSong.title = frontData.title;
+      updatedSong.fileNameOriginal = `${frontData.title}.mp3`;
+      //TODO URI format
+      updatedSong.fileNameFormatted = `${frontData.title}.mp3`;
+      updatedSong.filePath = `${uploadDirectory}\\${frontData.title}.mp3`;
     }
-    // Update the entire song's content with new info, but only if the fields in updatedData are not empty
-    for (const key in updatedData)
+
+    // Update the entire song's content with new info, but only if the fields in frontData are not empty
+    for (const key in frontData)
       if (
-        updatedData[key] !== undefined &&
-        updatedData[key] !== null &&
-        updatedData[key] !== ""
+        frontData[key] !== undefined &&
+        frontData[key] !== null &&
+        frontData[key] !== ""
       )
-        updatedSong[key] = updatedData[key];
+        updatedSong[key] = frontData[key];
 
     // Update ID3 tags in the actual file
-    const audioFilePath = `./uploads/${updatedSong.fileNameOriginal}`; // Use the new file path
+    const audioFilePath = `${uploadDirectory}\\${frontData.title}.mp3`; // Using the new title in path
     const id3Tags = {
-      filePath: audioFilePath,
       title: updatedSong.title,
       artist: updatedSong.artist,
       album: updatedSong.album,
@@ -358,7 +340,39 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
   }
 });
 
-//Delete specific playlist by id
+// Delete SONG by ID
+app.delete("/songs/:id/delete", async (req, res) => {
+  try {
+    const songId = req.params.id;
+    console.log("SONG ID", songId);
+
+    // Validate that the provided songId is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(songId))
+      return res.status(400).json({ error: "Invalid song ID" });
+
+    // Find the song by its ID
+    const song = await PlaylistModel.findOne({ "songs._id": songId });
+    if (!song) {
+      return res.status(404).json({ error: "Song not found" });
+    }
+
+
+    // Remove the song from the array of songs
+    song.songs = song.songs.filter((s) => s._id.toString() !== songId);
+
+    // Save the changes to the playlist
+    await song.save();
+
+    console.log("Song deleted successfully");
+    res.status(200).json({ message: "Song deleted successfully" });
+  } catch (error) {
+    console.log("Error deleting song:", error);
+    console.error("Error deleting song:", error);
+    res.status(500).json({ error: "Failed to delete song" });
+  }
+});
+
+// Delete PLAYLIST by ID
 app.delete("/files/delete/:id", async (req, res) => {
   const result = await SongModel.findByIdAndDelete(req.params.id);
   res.json({ result });

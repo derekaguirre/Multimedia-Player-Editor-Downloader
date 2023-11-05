@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { PlaylistContext } from "../../Contexts/PlaylistContext";
 import SidebarIcon from "./../../../images/upload.svg";
 
+import { EditContext } from "../../Contexts/EditContext";
 import "./FileUploader.scss";
 
 // TODO: Make env file with API URL
@@ -38,6 +39,8 @@ const getAudioDuration = async (file: File) => {
 const FileUploader: React.FC = () => {
   //Context States
   const { currentPlaylistId} = useContext(PlaylistContext);
+  const { isEdited, setIsEdited } = useContext(EditContext);
+
 
   const onDrop = async (acceptedFiles: File[]) => {
     try {
@@ -66,8 +69,8 @@ const FileUploader: React.FC = () => {
       console.log("File(s) uploaded successfully!");
 
       // Post the metadata to mongo
-      console.log("METADATA FROM FRONT END", updatedMetadataArray);
       await axios.post(`${API_URL}/playlist/${currentPlaylistId}/add-songs`, { metadataArray: updatedMetadataArray });
+      setIsEdited(!isEdited);
       console.log("File metadata stored successfully!");
     } catch (error) {
       console.error("Error uploading files:", error);

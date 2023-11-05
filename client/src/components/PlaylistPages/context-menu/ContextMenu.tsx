@@ -1,8 +1,12 @@
+import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { PlayerContext } from "../../Contexts/PlayerContext";
+
+import { EditContext } from "../../Contexts/EditContext";
 import SongEditor from "./../editor-modals/song-editor/SongEditor";
 import "./ContextMenu.scss";
 import { useOnClickOutside } from "./useOnClickOutside";
+const API_URL = "http://localhost:4000";
 
 interface ContextMenuProps {
   x: number;
@@ -10,18 +14,10 @@ interface ContextMenuProps {
   closeContextMenu: () => void;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu,}) => {
   // Local States:
   const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
-
   const { activeSongId } = useContext(PlayerContext);
-  useEffect(() => {
-    console.log("ContextMenu songId:", activeSongId);
-  }, []);
-
-  const contextMenuRef = useRef<HTMLDivElement>(null);
-  useOnClickOutside(contextMenuRef, closeContextMenu);
-
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({
     position: "fixed",
     top: y + "px",
@@ -29,8 +25,11 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => 
     zIndex: 1,
   });
 
+  //Context States
+  const { isEdited, setIsEdited } = useContext(EditContext);
+
+  // Calculate the dimensions of the context menu
   useEffect(() => {
-    // Calculate the dimensions of the context menu
     const menuWidth = contextMenuRef.current?.offsetWidth || 0;
     const menuHeight = contextMenuRef.current?.offsetHeight || 0;
 
@@ -56,7 +55,21 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => 
       left: `${adjustedX}px`,
     });
   }, [x, y]);
+  
+  const contextMenuRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(contextMenuRef, closeContextMenu);
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${API_URL}/songs/${activeSongId}/delete`);
+      setIsEdited(!isEdited);
+      console.log("Deleted", activeSongId);
+    } catch (error) {
+      console.error("Error deleting song:", error);
+      // Handle the error, such as showing an error message to the user
+    }
+    closeContextMenu();
+  };
 
   //Refactor to send states to subcomponents that conditionally render them
   //Then drop the components in on the bottom of this return
@@ -70,14 +83,16 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu }) => 
           songId={activeSongId}
           onClose={() => {
             setIsSongEditorOpen(false);
-            closeContextMenu(); 
+            closeContextMenu();
           }}
         />
       )}
       <div className="item">Add to playlist</div>
       <div className="item">Like</div>
       <div className="item">Hide</div>
-      <div className="item">Delete</div>
+      <div className="item" onClick={handleDelete}>
+        Delete
+      </div>
     </div>
   );
 };

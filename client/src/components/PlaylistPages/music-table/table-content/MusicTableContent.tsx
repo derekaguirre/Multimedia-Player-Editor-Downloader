@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IndexContext } from "../../../Contexts/IndexContext";
 import { PlayerContext } from "../../../Contexts/PlayerContext";
 import { PlayingContext } from "../../../Contexts/PlayingContext";
-import { SongObject, SongsContext } from "../../../Contexts/SongsContext";
+import { SongObject } from "../../../Contexts/SongsContext";
 import { SortedSongsContext } from "../../../Contexts/SortedSongsContext";
 import { SortingLockContext } from "../../../Contexts/SortingLockContext";
 import ContextMenu from "../../context-menu/ContextMenu";
