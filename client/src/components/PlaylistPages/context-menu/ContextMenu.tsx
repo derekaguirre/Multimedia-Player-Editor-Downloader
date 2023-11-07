@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { PlayerContext } from "../../Contexts/PlayerContext";
 
 import { EditContext } from "../../Contexts/EditContext";
+import { SongObject } from "../../Contexts/SongsContext";
 import SongEditor from "./../editor-modals/song-editor/SongEditor";
 import "./ContextMenu.scss";
 import { useOnClickOutside } from "./useOnClickOutside";
@@ -12,9 +13,11 @@ interface ContextMenuProps {
   x: number;
   y: number;
   closeContextMenu: () => void;
+  songData: SongObject;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu,}) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu, songData}) => {
+  
   // Local States:
   const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
   const { activeSongId } = useContext(PlayerContext);
@@ -81,6 +84,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, closeContextMenu,}) => 
       {isSongEditorOpen && (
         <SongEditor
           songId={activeSongId}
+          songData={songData}
           onClose={() => {
             setIsSongEditorOpen(false);
             closeContextMenu();

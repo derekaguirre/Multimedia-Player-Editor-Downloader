@@ -28,6 +28,8 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   //Local States
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
+  const [songData, setSongData] = useState<SongObject>();
+
   // console.log("TABLE CONTENT ORDER:", sortingOrder);
 
   // Context hooks
@@ -42,14 +44,15 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   } | null>(null);
 
   // Memoized function which handles the opening of the the context menu at a specified position
-  const openContextMenu = useCallback((x: number, y: number, songId: string) => {
+  const openContextMenu = useCallback((x: number, y: number, songId: string, songData:SongObject) => {
     setContextMenuPosition({ x, y });
     setActiveSongId(songId);
+    setSongData(songData)
   }, []);
 
   //prettier-ignore
-  const handleContextMenu = useCallback((event: React.MouseEvent, songId: string) => {
-      openContextMenu(event.clientX, event.clientY, songId);
+  const handleContextMenu = useCallback((event: React.MouseEvent, songId: string, songData:  SongObject) => {
+      openContextMenu(event.clientX, event.clientY, songId, songData);
     },
     [openContextMenu]
   );
@@ -141,7 +144,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
           <tr
             onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
             onClick={() => handleSelect(entry._id)}
-            onContextMenu={(event) => handleContextMenu(event, entry._id)}
+            onContextMenu={(event) => handleContextMenu(event, entry._id, entry)}
             key={entry._id}
             className={getRowClassName(entry.fileNameFormatted, entry._id)}
           >
@@ -179,11 +182,12 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
         );
       })}
 
-      {contextMenuPosition && (
+      {contextMenuPosition && songData && (
         <ContextMenu
           x={contextMenuPosition.x}
           y={contextMenuPosition.y}
           closeContextMenu={closeContextMenu}
+          songData={songData}
         />
       )}
     </tbody>

@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { EditContext } from "../../../Contexts/EditContext";
+import { SongObject } from "../../../Contexts/SongsContext";
 import "./SongEditor.scss";
 
 const API_URL = "http://localhost:4000";
@@ -8,18 +9,21 @@ const API_URL = "http://localhost:4000";
 interface SongEditorProps {
   songId: string;
   onClose: () => void;
+  songData: SongObject;
 }
+const nameFormatter = (str: string) => {
+  return encodeURIComponent(str);
+};
 
-const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
+const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  console.log("EDITOR OPEN");
   const { isEdited, setIsEdited } = useContext(EditContext);
 
   const [formData, setFormData] = useState({
-    title: "",
-    artist: "",
-    album: "",
+    title: songData.title,
+    artist: songData.artist,
+    album: songData.album,
   });
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -32,6 +36,14 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
     setHasChanges(true);
   };
 
+  useEffect(() => {
+    setFormData({
+      title: songData.title,
+      artist: songData.artist,
+      album: songData.album,
+    });
+  }, [songData]);
+
   const editSong = async () => {
     if (!hasChanges) {
       onClose(); // Close the editor if there are no changes
@@ -42,6 +54,8 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
       const frontData = {
         title: formData.title,
         artist: formData.artist,
+        _id: songId,
+        fileNameFormatted: nameFormatter(formData.title),
         album: formData.album,
       };
 
@@ -65,6 +79,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose }) => {
   return (
     <div className="edit-modal">
       <h2>Edit Song</h2>
+      {/* PUT SONG INFO HERE */}
       <form>
         <div className="form-group">
           <label>Title</label>

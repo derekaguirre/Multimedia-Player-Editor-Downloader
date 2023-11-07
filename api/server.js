@@ -269,58 +269,45 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
     }
 
     // Find and update the specific song within the playlist
-    const updatedSong = song.songs.find((s) => s._id.toString() === songId);
-    if (!updatedSong) {
-      return res
-        .status(404)
-        .json({ error: "Song not found within the playlist" });
+    const currSong = song.songs.find((s) => s._id.toString() === songId);
+    if (!currSong) {
+      return res.status(404).json({ error: "Song not found in playlist" });
     }
 
-    // Save the old and new names
-    const oldFileName = updatedSong.fileNameOriginal;
-    const newFileName = frontData.title;
+    //TODO consolidate verification inside of one check, or handle in front end
+    // Verify that title is not empty
+    if (!frontData.title) {
+      return res.status(400).json({ error: '"Title" is required' });
+    }
+    // Verify that all fields are not empty
+    //prettier-ignore
+    for (const key in frontData) {
+      if (frontData[key] == undefined ||frontData[key] == null ||frontData[key] == "") {
+        return res.status(400).json({ error: "Please fill out all fields" });
+      }
+    }
+    // Instantiate path variables
+    const newFilePath = path.join(uploadDirectory, `${frontData.title}.mp3`);
 
-    // If the new title is not empty, then update the titles
-    if (newFileName && newFileName !== "") {
-      // Instantiate path variables
-      const oldFilePath = path.join(uploadDirectory, oldFileName);
-      const newFilePath = path.join(uploadDirectory, newFileName + ".mp3");
-
-      // Verify file name does not exist already
-      if (fs.existsSync(newFilePath))
-        return res
-          .status(400)
-          .json({ error: "Song already exists, please input a unique name." });
-
-      // Use old name to find the file to rename with the new name
-      fs.rename(oldFilePath, newFilePath, (error) => {
-        if (error) {
-          console.error("Error renaming file:", error);
-        }
-      });
-      //Update mongo metadata entries
-      updatedSong.title = frontData.title;
-      updatedSong.fileNameOriginal = `${frontData.title}.mp3`;
-      //TODO URI format
-      updatedSong.fileNameFormatted = `${frontData.title}.mp3`;
-      updatedSong.filePath = `${uploadDirectory}\\${frontData.title}.mp3`;
+    // Prevent overwriting of the prev song, unless the song entry was the original holder of the title
+    if (path.basename(currSong.filePath) != `${frontData.title}.mp3` && fs.existsSync(newFilePath)) {
+      return res.status(400).json({ error: "Song already exists, please input a unique name." });
     }
 
-    // Update the entire song's content with new info, but only if the fields in frontData are not empty
-    for (const key in frontData)
-      if (
-        frontData[key] !== undefined &&
-        frontData[key] !== null &&
-        frontData[key] !== ""
-      )
-        updatedSong[key] = frontData[key];
+    // Use old name to find the file to rename with the new name
+    fs.rename(currSong.filePath, newFilePath, (error) => {
+      if (error) {
+        console.error("Error renaming file:", error);
+      }
+    });
 
-    // Update ID3 tags in the actual file
-    const audioFilePath = `${uploadDirectory}\\${frontData.title}.mp3`; // Using the new title in path
+
+    // Update the tags in the actual file
+    const audioFilePath = currSong.filePath; // Using the old file path
     const id3Tags = {
-      title: updatedSong.title,
-      artist: updatedSong.artist,
-      album: updatedSong.album,
+      title: frontData.title,
+      artist: frontData.artist,
+      album: frontData.album,
     };
     NodeID3.write(id3Tags, audioFilePath, function (error, buffer) {
       if (error) {
@@ -330,13 +317,20 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
       }
     });
 
+    // Update mongo metadata entries
+    currSong.title = frontData.title;
+    currSong.artist = frontData.artist;
+    currSong.album = frontData.album;
+    currSong.fileNameOriginal = `${frontData.title}.mp3`;
+    currSong.fileNameFormatted = `${frontData.fileNameFormatted}.mp3`;
+    currSong.filePath = `${uploadDirectory}\\${frontData.title}.mp3`;
+
     // Save the changes to the song
     await song.save();
-
-    res.status(200).json(updatedSong);
+    res.status(200).json(currSong);
   } catch (error) {
-    console.error("Error updating song:", error);
-    res.status(500).json({ error: "Failed to update song" });
+    console.error("Unexpected error encountered when editing the song:", error);
+    return res.status(500).json({ error: "Failed to update song" });
   }
 });
 
@@ -355,7 +349,6 @@ app.delete("/songs/:id/delete", async (req, res) => {
     if (!song) {
       return res.status(404).json({ error: "Song not found" });
     }
-
 
     // Remove the song from the array of songs
     song.songs = song.songs.filter((s) => s._id.toString() !== songId);
