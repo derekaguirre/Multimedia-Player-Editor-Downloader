@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { IndexContext } from "../../../Contexts/IndexContext";
-import { PlayerContext } from "../../../Contexts/PlayerContext";
-import { PlayingContext } from "../../../Contexts/PlayingContext";
-import { SongObject } from "../../../Contexts/SongsContext";
-import { SortedSongsContext } from "../../../Contexts/SortedSongsContext";
-import { SortingLockContext } from "../../../Contexts/SortingLockContext";
-import ContextMenu from "../../context-menu/ContextMenu";
+import ContextMenu from "../../../ContextMenus/song-menu/SongContextMenu";
+import { IndexContext } from "../../../StateContexts/IndexContext";
+import { PlayerContext } from "../../../StateContexts/PlayerContext";
+import { PlayingContext } from "../../../StateContexts/PlayingContext";
+import { SongObject } from "../../../StateContexts/SongsContext";
+import { SortedSongsContext } from "../../../StateContexts/SortedSongsContext";
+import { SortingLockContext } from "../../../StateContexts/SortingLockContext";
 import { formatDateAdded, formatDuration } from "./../MusicTable";
 import HighlightedText from "./../table-search/HighlightedText";
 import "./MusicTableContent.scss";
@@ -138,6 +138,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   };
 
   return (
+    <>
     <tbody>
       {sortedEntries.map((entry, index) => {
         return (
@@ -191,6 +192,7 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
         />
       )}
     </tbody>
+    </>
   );
 };
 

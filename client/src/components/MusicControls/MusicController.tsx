@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IndexContext } from "../Contexts/IndexContext";
-import { PlayerContext } from "../Contexts/PlayerContext";
-import { PlayingContext } from "../Contexts/PlayingContext";
-import { PlaylistContext } from "../Contexts/PlaylistContext";
-import { SongObject, SongsContext } from "../Contexts/SongsContext";
-import { SortedSongsContext } from "../Contexts/SortedSongsContext";
-import { SortingLockContext } from "../Contexts/SortingLockContext";
 import "./MusicController.scss";
 import GlobalMediaController from "./global-media-controls/GlobalMediaController";
 import SongControls from "./song-controls/SongControls";
 import TimeControls from "./time-controls/TimeControls";
 
+import { IndexContext } from "../StateContexts/IndexContext";
+import { PlayerContext } from "../StateContexts/PlayerContext";
+import { PlayingContext } from "../StateContexts/PlayingContext";
+import { SongObject, SongsContext } from "../StateContexts/SongsContext";
+import { SortedSongsContext } from "../StateContexts/SortedSongsContext";
+import { SortingLockContext } from "../StateContexts/SortingLockContext";
 import VolumeControls from "./volume-controls/VolumeControls";
 const { Howl } = require("howler");
 const API_URL = "http://localhost:4000";

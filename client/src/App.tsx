@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import "./App.scss";
 import AppRouter from "./Router/AppRouter";
-
-import { EditProvider } from "./components/Contexts/EditContext";
-import { IndexProvider } from "./components/Contexts/IndexContext";
-import { PlayerProvider } from "./components/Contexts/PlayerContext";
-import { PlayingProvider } from "./components/Contexts/PlayingContext";
-import { PlaylistProvider } from "./components/Contexts/PlaylistContext";
-import { SongsProvider } from "./components/Contexts/SongsContext";
-import { SortedSongsProvider } from "./components/Contexts/SortedSongsContext";
-import { SortingLockProvider } from "./components/Contexts/SortingLockContext";
+import MusicController from "./components/MusicControls/MusicController";
 import PlaylistMain from "./components/PlaylistPages/PlaylistMain";
-import MusicController from "./components/music-controller/MusicController";
-import Sidebar from "./components/side-bar/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar";
+import { EditProvider } from "./components/StateContexts/EditContext";
+import { IndexProvider } from "./components/StateContexts/IndexContext";
+import { PlayerProvider } from "./components/StateContexts/PlayerContext";
+import { PlayingProvider } from "./components/StateContexts/PlayingContext";
+import { PlaylistProvider } from "./components/StateContexts/PlaylistContext";
+import { SongsProvider } from "./components/StateContexts/SongsContext";
+import { SortedSongsProvider } from "./components/StateContexts/SortedSongsContext";
+import { SortingLockProvider } from "./components/StateContexts/SortingLockContext";
+
 
 const App: React.FC = () => {
   console.log("APP LOADED");

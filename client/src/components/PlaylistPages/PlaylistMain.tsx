@@ -1,5 +1,5 @@
 import React from "react";
-import { usePlaylist } from "../Contexts/PlaylistContext";
+import { usePlaylist } from "../StateContexts/PlaylistContext";
 import "./PlaylistMain.scss";
 import FileUploader from "./file-uploader/FileUploader";
 import MusicTable from "./music-table/MusicTable";

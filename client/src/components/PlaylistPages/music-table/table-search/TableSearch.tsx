@@ -1,6 +1,6 @@
 //prettier-ignore
 import React, { useEffect } from "react";
-import { SongObject } from "../../../Contexts/SongsContext";
+import { SongObject } from "../../../StateContexts/SongsContext";
 import SearchIcon from "./../../../../images/search.svg";
 import "./TableSearch.scss";
 

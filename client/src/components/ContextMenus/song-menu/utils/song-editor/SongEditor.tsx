@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { EditContext } from "../../../Contexts/EditContext";
-import { SongObject } from "../../../Contexts/SongsContext";
+import React, { useContext, useState } from "react";
+import { EditContext } from "../../../../StateContexts/EditContext";
+import { SongObject } from "../../../../StateContexts/SongsContext";
 import "./SongEditor.scss";
 
 const API_URL = "http://localhost:4000";
@@ -11,21 +11,19 @@ interface SongEditorProps {
   onClose: () => void;
   songData: SongObject;
 }
-const nameFormatter = (str: string) => {
-  return encodeURIComponent(str);
-};
 
 const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
-
   const { isEdited, setIsEdited } = useContext(EditContext);
-
-  const [formData, setFormData] = useState({
+  const [hasChanges, setHasChanges] = useState(false);
+  
+  // Initialize formData with an index signature
+  const [formData, setFormData] = useState<{ [key: string]: string }>({
     title: songData.title,
     artist: songData.artist,
     album: songData.album,
   });
-  const [hasChanges, setHasChanges] = useState(false);
+
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,18 +34,24 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) =>
     setHasChanges(true);
   };
 
-  useEffect(() => {
-    setFormData({
-      title: songData.title,
-      artist: songData.artist,
-      album: songData.album,
-    });
-  }, [songData]);
+  const validateForm = () => {
+    if (Object.values(formData).some((value) => value.trim() === "")) {
+      setErrorMessage("Please fill out all fields.");
+      return false;
+    }
+    setErrorMessage(""); // Clear the error message if validation passes
+    return true;
+  };
 
-  const editSong = async () => {
+
+  const editSong = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      return; // Do not submit the form if validation fails
+    }
     if (!hasChanges) {
-      onClose(); // Close the editor if there are no changes
-      return; // Prevent api call if all fields are empty
+      onClose();
+      return;
     }
 
     try {
@@ -55,7 +59,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) =>
         title: formData.title,
         artist: formData.artist,
         _id: songId,
-        fileNameFormatted: nameFormatter(formData.title),
+        fileNameFormatted: encodeURIComponent(formData.title),
         album: formData.album,
       };
 
@@ -64,58 +68,37 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) =>
       });
 
       console.error("Error updating song:", response.data.message);
-      
+
       setHasChanges(false);
       setIsEdited(!isEdited);
-      onClose(); // Close the editor after successful update
+      onClose();
     } catch (error) {
-      // Handle the network or other errors and set the error message
       setErrorMessage("Error: " + error.response.data.error);
     }
   };
-
   //Upon editing, can achieve following functionality:
   //Store changes into local storage and wait until a 'songs' refresh to populate with new changes
   return (
     <div className="edit-modal">
       <h2>Edit Song</h2>
       {/* PUT SONG INFO HERE */}
-      <form>
-        <div className="form-group">
-          <label>Title</label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleFormChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Artist</label>
-          <input
-            type="text"
-            name="artist"
-            value={formData.artist}
-            onChange={handleFormChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Album</label>
-          <input
-            type="text"
-            name="album"
-            value={formData.album}
-            onChange={handleFormChange}
-          />
-        </div>
-
-        {/* Display the error message */}
+      <form onSubmit={editSong}>
+        {Object.entries(formData).map(([field, value]) => (
+          <div className="form-group" key={field}>
+            <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+            <input
+              type="text"
+              name={field}
+              value={formData[field]}
+              onChange={handleFormChange}
+              required
+            />
+          </div>
+        ))}
+        {/* Display the error message if form validation falls through */}
         {errorMessage && <div className="error-message">{errorMessage}</div>}
-
         <div className="footer-buttons">
-          <button type="button" onClick={editSong}>
-            Save
-          </button>
+          <button type="submit">Save</button>
           <button type="button" onClick={onClose}>
             Cancel
           </button>

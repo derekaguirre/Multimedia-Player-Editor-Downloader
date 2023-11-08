@@ -1,9 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { PlaylistContext } from "../../Contexts/PlaylistContext";
-
-import { IndexContext } from "../../Contexts/IndexContext";
-import { PlayingContext } from "../../Contexts/PlayingContext";
+import { PlaylistContext } from "../../StateContexts/PlaylistContext";
 import "./PlaylistFetcher.scss";
 const API_URL = "http://localhost:4000";
 

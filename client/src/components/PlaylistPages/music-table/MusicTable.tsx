@@ -1,8 +1,8 @@
 import axios from "axios";
 //prettier-ignore
 import React, { useContext, useEffect, useMemo, useState, } from "react";
-import { EditContext } from "../../Contexts/EditContext";
-import { SongObject, SongsContext } from "../../Contexts/SongsContext";
+import { EditContext } from "../../StateContexts/EditContext";
+import { SongObject, SongsContext } from "../../StateContexts/SongsContext";
 import "./MusicTable.scss";
 import MusicTableContent from "./table-content/MusicTableContent";
 import MusicTableHeader from "./table-header/MusicTableHeader";

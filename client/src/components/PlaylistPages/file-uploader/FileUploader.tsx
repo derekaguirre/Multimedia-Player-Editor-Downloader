@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { PlaylistContext } from "../../Contexts/PlaylistContext";
 import SidebarIcon from "./../../../images/upload.svg";
 
-import { EditContext } from "../../Contexts/EditContext";
+import { EditContext } from "../../StateContexts/EditContext";
+import { PlaylistContext } from "../../StateContexts/PlaylistContext";
 import "./FileUploader.scss";
 
 // TODO: Make env file with API URL

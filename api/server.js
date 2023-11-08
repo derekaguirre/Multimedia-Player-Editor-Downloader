@@ -274,11 +274,6 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
       return res.status(404).json({ error: "Song not found in playlist" });
     }
 
-    //TODO consolidate verification inside of one check, or handle in front end
-    // Verify that title is not empty
-    if (!frontData.title) {
-      return res.status(400).json({ error: '"Title" is required' });
-    }
     // Verify that all fields are not empty
     //prettier-ignore
     for (const key in frontData) {
@@ -303,7 +298,7 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
 
 
     // Update the tags in the actual file
-    const audioFilePath = currSong.filePath; // Using the old file path
+    const audioFilePath = newFilePath; // Using the new file path
     const id3Tags = {
       title: frontData.title,
       artist: frontData.artist,

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IndexContext } from "../../Contexts/IndexContext";
-import { PlaylistContext } from "../../Contexts/PlaylistContext";
-import { SortedSongsContext } from "../../Contexts/SortedSongsContext";
+import { IndexContext } from "../../StateContexts/IndexContext";
+import { PlaylistContext } from "../../StateContexts/PlaylistContext";
+import { SortedSongsContext } from "../../StateContexts/SortedSongsContext";
 
 
 // TODO Global Media Controls refresh every time the howl changes
