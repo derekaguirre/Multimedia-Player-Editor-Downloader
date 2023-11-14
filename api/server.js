@@ -319,6 +319,8 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
     currSong.fileNameOriginal = `${frontData.title}.mp3`;
     currSong.fileNameFormatted = `${frontData.fileNameFormatted}.mp3`;
     currSong.filePath = `${uploadDirectory}\\${frontData.title}.mp3`;
+    currSong.image[0].imageBuffer = frontData.image.imageBuffer;
+    currSong.image[0].mime = frontData.image.mime;
 
     // Save the changes to the song
     await song.save();

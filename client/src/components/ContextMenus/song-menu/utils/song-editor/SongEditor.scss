@@ -4,7 +4,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
-    height: 50%;
     font-size: 15px;
     padding: 20px;
     color: #c6c6c6;
@@ -23,10 +22,21 @@
         flex-direction: row;
         align-items: center;
         padding-bottom: 15px;
+        padding-top: 15px;
         border-bottom: solid rgb(87, 87, 87) 1px;
         // Edit image size from here
         .songImage {
             margin-left: 9%;
+            border-radius: 10px;
+            & img {
+                border-radius: 7px;
+            }
+            & :hover {
+                border-radius: 15px;
+                cursor: pointer;
+                transition: 0.2s ease;
+                background-color: rgba(255, 255, 255, 0.2); /* Adjust the opacity as needed */
+            }
         }
         .editorData {
             display: flex;
@@ -36,18 +46,13 @@
             margin-left: 20px;
             .editorTitle {
                 font-size: 24px;
-                font-weight: bold;
+                font-weight: 500;
+                margin-bottom: 2px;
             }
-            .editorTitle,
-            .editorArtist,
-            .editorAlbum {
-                margin-bottom: 10px;
+            .editorArtist {
+                margin-bottom: 8px;
             }
         }
-    }
-    .editorSeparator{
-        width: 10px;
-        height: 10px;
     }
     form {
         display: flex;
