@@ -7,7 +7,7 @@ interface ResizerProps {
   hideSidebar: () => void; // Include the hideSidebar property
 }
 
-const Resizer: React.FC<ResizerProps> = ({ sidebarRef, isResizing, setIsResizing, hideSidebar }) => {
+const Resizer: React.FC<ResizerProps> = ({ isResizing, setIsResizing }) => {
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsResizing(true);

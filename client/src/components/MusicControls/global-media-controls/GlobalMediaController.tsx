@@ -17,7 +17,6 @@ interface GlobalMediaProps {
 
 const GlobalMediaController: React.FC<GlobalMediaProps> = ({
   currentHowl,
-  isPlaying,
   setIsPlaying,
   songTitles,
   setActiveSong,

@@ -136,8 +136,8 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData, }) =
           <img
             src={`data:${songData.image[0].mime};base64,${songData.image[0].imageBuffer}`}
             alt={`${songData.title} Image`}
-            width="120px"
-            height="120px"
+            width="150px"
+            height="150px"
           />
           <input
             type="file"
