@@ -12,18 +12,21 @@ interface SongEditorProps {
   songData: SongObject;
 }
 
-const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) => {
+const SongEditor: React.FC<SongEditorProps> = ({
+  songId,
+  onClose,
+  songData,
+}) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { isEdited, setIsEdited } = useContext(EditContext);
   const [hasChanges, setHasChanges] = useState(false);
-  
+
   // Initialize formData with an index signature
   const [formData, setFormData] = useState<{ [key: string]: string }>({
     title: songData.title,
     artist: songData.artist,
     album: songData.album,
   });
-
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,7 +45,6 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) =>
     setErrorMessage(""); // Clear the error message if validation passes
     return true;
   };
-
 
   const editSong = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,10 +80,29 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData }) =>
   };
   //Upon editing, can achieve following functionality:
   //Store changes into local storage and wait until a 'songs' refresh to populate with new changes
+  console.log(songData.image[0].imageBuffer);
   return (
     <div className="edit-modal">
       <h2>Edit Song</h2>
-      {/* PUT SONG INFO HERE */}
+
+      {/* SONG INFORMATION */}
+      <div className="songDataContainer">
+        <div className="songImage">
+          <img
+            src={`data:${songData.image[0].mime};base64,${songData.image[0].imageBuffer}`}
+            alt={`${songData.title} Image`}
+            width="120px"
+            height="120px"
+          />
+        </div>
+        <div className="editorData">
+          <div className="editorTitle">{songData.title}</div>
+          <div className="editorArtist">{songData.artist}</div>
+          <div className="editorAlbum">{songData.album}</div>
+        </div>
+      </div>
+      <div className="editorSeparator"></div>
+      {/* SONG EDITOR FORMS */}
       <form onSubmit={editSong}>
         {Object.entries(formData).map(([field, value]) => (
           <div className="form-group" key={field}>

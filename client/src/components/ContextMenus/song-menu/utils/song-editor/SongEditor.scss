@@ -4,6 +4,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
+    height: 50%;
     font-size: 15px;
     padding: 20px;
     color: #c6c6c6;
@@ -12,18 +13,42 @@
     z-index: 1;
     text-align: center;
     border-radius: 5px;
-
-    .error-message{
-        font-size: 15px;
-        font-weight: bold;
-        color: rgb(220, 104, 104);
-    }
     h2 {
         margin: 0 0 20px;
         color: #c6c6c6;
         font-size: 25px;
     }
-
+    .songDataContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-bottom: 15px;
+        border-bottom: solid rgb(87, 87, 87) 1px;
+        // Edit image size from here
+        .songImage {
+            margin-left: 9%;
+        }
+        .editorData {
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            text-align: left;
+            margin-left: 20px;
+            .editorTitle {
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .editorTitle,
+            .editorArtist,
+            .editorAlbum {
+                margin-bottom: 10px;
+            }
+        }
+    }
+    .editorSeparator{
+        width: 10px;
+        height: 10px;
+    }
     form {
         display: flex;
         flex-direction: column;
@@ -89,5 +114,10 @@
                 }
             }
         }
+    }
+    .error-message {
+        font-size: 15px;
+        font-weight: bold;
+        color: rgb(220, 104, 104);
     }
 }
