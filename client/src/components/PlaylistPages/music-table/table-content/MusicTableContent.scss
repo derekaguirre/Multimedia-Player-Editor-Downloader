@@ -1,33 +1,104 @@
 tbody {
     width: 100%;
     background: #121212;
+
     tr {
         height: 45px;
+
         &:hover {
             background-color: #2a2a2a;
+            .songEntryArtist {
+                color: white !important;
+            }
         }
 
         &.playing-selected {
             background-color: #5a5a5a;
             td {
+                .songEntryTitle {
+                    color: #1db956 !important;
+                }
+                .songEntryArtist {
+                    color: white;
+                }
                 color: #1db956;
             }
         }
+
         &.selected {
+            .songEntryTitle {
+                color: white;
+            }
+            .songEntryArtist {
+                color: white;
+            }
             background-color: #5a5a5a;
         }
+
         &.playing td {
+            .songEntryTitle {
+                color: #1db956 !important;
+            }
+            .songEntryArtist {
+                color: #aba5a5;
+            }
             color: #1db956;
         }
+
         td {
+            color: #aba5a5;
             height: 25px;
             padding-left: 30px;
+            &:nth-child(1) {
+                min-width: 1px !important;
+                text-align: right;
+                padding-right: 30px;
+            }
+            &:nth-child(2) {
+                height: 25px;
+                padding-left: 30px;
+                padding-left: 15px;
+            }
+            &:nth-last-child(1) {
+                padding-right: 70px;
+                text-align: right;
+
+            }
             padding-right: 0px;
             padding-top: 7px;
             padding-bottom: 7px;
             text-align: left;
-            color: #aba5a5;
+            max-width: 15vw;
+            min-width: 100px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
             border: none;
+
+            .songEntryPrimaryInfoContainer {
+                display: flex;
+
+                flex-direction: row;
+                .songEntryPic {
+                    margin-right: 10px;
+                }
+
+                .songEntryTitleArtistContainer {
+                    min-width: 30px;
+                    .songEntryTitle {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        color: white;
+                    }
+                    .songEntryArtist {
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        font-size: 13.5px;
+                    }
+                }
+            }
         }
     }
 }

@@ -24,7 +24,13 @@ interface TableContentProps {
   clickedHeader: string | null;
 }
 
-const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQuery,sortingOrder,clickedHeader}) => {
+const MusicTableContent: React.FC<TableContentProps> = ({
+  entries,
+  columns,
+  searchQuery,
+  sortingOrder,
+  clickedHeader,
+}) => {
   //Local States
   const [currentPlaying, setCurrentPlaying] = useState<string[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
@@ -33,22 +39,26 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
   // console.log("TABLE CONTENT ORDER:", sortingOrder);
 
   // Context hooks
-  const { activeSong, setActiveSong, setActiveSongId } = useContext(PlayerContext);
-  const { sortedSongs, setSortedSongs } = useContext(SortedSongsContext);
-  const { currentSongIndex, setCurrentSongIndex } = useContext(IndexContext);
-  const { isPlaying, setIsPlaying } = useContext(PlayingContext);
-  const { sortingLock, setSortingLock } = useContext(SortingLockContext);
+  const { activeSong, setActiveSong, setActiveSongId } =
+    useContext(PlayerContext);
+  const { setSortedSongs } = useContext(SortedSongsContext);
+  const { setCurrentSongIndex } = useContext(IndexContext);
+  const { setIsPlaying } = useContext(PlayingContext);
+  const { setSortingLock } = useContext(SortingLockContext);
   const [contextMenuPosition, setContextMenuPosition] = useState<{
     x: number;
     y: number;
   } | null>(null);
 
   // Memoized function which handles the opening of the the context menu at a specified position
-  const openContextMenu = useCallback((x: number, y: number, songId: string, songData:SongObject) => {
-    setContextMenuPosition({ x, y });
-    setActiveSongId(songId);
-    setSongData(songData)
-  }, []);
+  const openContextMenu = useCallback(
+    (x: number, y: number, songId: string, songData: SongObject) => {
+      setContextMenuPosition({ x, y });
+      setActiveSongId(songId);
+      setSongData(songData);
+    },
+    []
+  );
 
   //prettier-ignore
   const handleContextMenu = useCallback((event: React.MouseEvent, songId: string, songData:  SongObject) => {
@@ -139,59 +149,65 @@ const MusicTableContent: React.FC<TableContentProps> = ({entries,columns,searchQ
 
   return (
     <>
-    <tbody>
-      {sortedEntries.map((entry, index) => {
-        return (
-          <tr
-            onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
-            onClick={() => handleSelect(entry._id)}
-            onContextMenu={(event) => handleContextMenu(event, entry._id, entry)}
-            key={entry._id}
-            className={getRowClassName(entry.fileNameFormatted, entry._id)}
-          >
-            <td id="tableEntryIndex">{index + 1}</td>
-            {columns.map((column) => (
-              <td key={column.accessor} className="table-cell">
-                {column.accessor === "title" ||
-                column.accessor === "artist" ||
-                column.accessor === "album" ? (
-                  <HighlightedText
-                    text={entry[column.accessor] || ""}
-                    query={searchQuery}
-                  />
-                ) : column.accessor === "duration" ? (
-                  formatDuration(entry[column.accessor])
-                ) : column.accessor === "image[0].imageBuffer" ? (
-                  entry.image[0] && entry.image[0].imageBuffer ? (
+      <tbody>
+        {sortedEntries.map((entry, index) => {
+          return (
+            <tr
+              onDoubleClick={() => handlePlay(entry.fileNameFormatted, index)}
+              onClick={() => handleSelect(entry._id)}
+              onContextMenu={(event) =>
+                handleContextMenu(event, entry._id, entry)
+              }
+              key={entry._id}
+              className={getRowClassName(entry.fileNameFormatted, entry._id)}
+            >
+              <td id="tableEntryIndex">{index + 1}</td>
+              <td className="table-cell">
+                <div className="songEntryPrimaryInfoContainer">
+                  <div className="songEntryPic">
                     <img
                       src={`data:${entry.image[0].mime};base64,${entry.image[0].imageBuffer}`}
-                      alt="Song Image"
-                      width="50"
-                      height="50"
+                      alt={`${entry.title} Image`}
+                      width="40"
+                      height="40"
                     />
-                  ) : (
-                    "No Image"
-                  )
-                ) : column.accessor === "dateAdded" ? (
-                  formatDateAdded(entry[column.accessor].toString())
-                ) : (
-                  entry[column.accessor] || "N/A"
-                )}
+                  </div>
+                  <div className="songEntryTitleArtistContainer">
+                    <div className="songEntryTitle">
+                      <HighlightedText
+                        text={entry.title || ""}
+                        query={searchQuery}
+                      />
+                    </div>
+                    <div className="songEntryArtist">
+                      <HighlightedText
+                        text={entry.artist || ""}
+                        query={searchQuery}
+                      />
+                    </div>
+                  </div>
+                </div>
               </td>
-            ))}
-          </tr>
-        );
-      })}
+              <td className="table-cell">
+                <HighlightedText text={entry.album || ""} query={searchQuery} />
+              </td>
+              <td className="table-cell" >
+                {formatDateAdded(entry.dateAdded.toString())}
+              </td>
+              <td className="table-cell">{formatDuration(entry.duration) }</td>
+            </tr>
+          );
+        })}
 
-      {contextMenuPosition && songData && (
-        <ContextMenu
-          x={contextMenuPosition.x}
-          y={contextMenuPosition.y}
-          closeContextMenu={closeContextMenu}
-          songData={songData}
-        />
-      )}
-    </tbody>
+        {contextMenuPosition && songData && (
+          <ContextMenu
+            x={contextMenuPosition.x}
+            y={contextMenuPosition.y}
+            closeContextMenu={closeContextMenu}
+            songData={songData}
+          />
+        )}
+      </tbody>
     </>
   );
 };

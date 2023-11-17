@@ -6,6 +6,9 @@ import "./SongEditor.scss";
 
 const API_URL = "http://localhost:4000";
 
+//TODO listen for esc and enter and handle accordingly
+//TODO enable regular space bar
+
 interface SongEditorProps {
   songId: string;
   onClose: () => void;

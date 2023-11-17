@@ -67,7 +67,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
 
   //States for sorting
   //TODO update sorting order to use local storage
-  const [sortingOrder, setSortingOrder] = useState<string>(""); 
+  const [sortingOrder, setSortingOrder] = useState<string>("");
   const [clickedHeader, setClickedHeader] = useState<string | null>(null);
 
   // Only fetch playlist data if there is a playlist id in local storage, triggered every time playlist id changes
@@ -75,7 +75,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
     if (currentPlaylistId) {
       fetchPlaylistData(currentPlaylistId);
     } else {
-      console.log("Current playlist ID does not exist. No playlist data fetched.");
+      console.log("Playlist ID does not exist in MusicTable.");
     }
   }, [currentPlaylistId, isEdited]);
 
@@ -91,17 +91,18 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   };
 
   //TODO make a selector for the header/accessor pairs so this doesn't need to be hard coded
-  
+  //TODO can make a state switcher for the title field and do titleAsc titleDesc artistAsc artistDesc
+  //so that if they contain the title it displays title header and if it matches asc/desc it triggers that ordering
   //prettier-ignore
   const columns = useMemo(
     () => [
       // { Header: "File ID", accessor: "_id"},
-      {
-        Header: "Image",
-        accessor: "image[0].imageBuffer",
-      },
+      // {
+      //   Header: "Image",
+      //   accessor: "image[0].imageBuffer",
+      // },
       { Header: "Title", accessor: "title" },
-      { Header: "Artist", accessor: "artist" },
+      // { Header: "Artist", accessor: "artist" },
       { Header: "Album", accessor: "album" },
       {
         Header: "Date Added",

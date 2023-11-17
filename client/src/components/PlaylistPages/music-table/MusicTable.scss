@@ -2,6 +2,7 @@
 .tableElementContainer {
   // overflow: auto; //removing makes the header move with scrolling
   // border: 4px solid #52b3a5;
+
   position: relative;
   display: flex;
   justify-content: center;
@@ -14,6 +15,8 @@
     width: 100%;
     table {
       width: 100%;
+  table-layout: auto; /* Distribute columns evenly */
+
       border-collapse: collapse;
     }
   }
