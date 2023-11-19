@@ -83,7 +83,7 @@ const MusicTable: React.FC<PlaylistObject> = ({ currentPlaylistId }) => {
   const fetchPlaylistData = async (playlistId: string) => {
     try {
       const response = await axios.get(`${API_URL}/playlist/${playlistId}/songs`);
-      console.log("MusicTable fetching songs for the table: ",`${API_URL}/playlist/${playlistId}/songs`, response.data);
+      // console.log("MusicTable fetching songs for the table: ",`${API_URL}/playlist/${playlistId}/songs`, response.data);
       setSongs(response.data);
     } catch (error) {
       console.error("Error fetching playlist data:", error);

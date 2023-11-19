@@ -54,8 +54,8 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   {/* SONG CONTROLLER */}
-
                   <MusicController />
+
                   </SortingLockProvider>
                 </PlayingProvider>
               </IndexProvider>

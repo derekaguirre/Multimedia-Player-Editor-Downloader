@@ -15,7 +15,11 @@ interface SongEditorProps {
   songData: SongObject;
 }
 
-const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData, }) => {
+const SongEditor: React.FC<SongEditorProps> = ({
+  songId,
+  onClose,
+  songData,
+}) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const { isEdited, setIsEdited } = useContext(EditContext);
   const [hasChanges, setHasChanges] = useState(false);
@@ -69,7 +73,7 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData, }) =
       }
     }
   };
-  
+
   // Trigger the file input click when the image is clicked
   const handleImageClick = () => {
     if (fileInputRef.current) {
@@ -89,6 +93,9 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData, }) =
 
   // Upload all information to the server to save on database
   const editSong = async (e: React.FormEvent) => {
+    // const defaultImageBuffer = `data:${songData.image[0].mime};base64,${songData.image[0].imageBuffer}`;
+    let frontBuffer = songData.image[0].imageBuffer;
+    let frontMime = songData.image[0].mime;
     e.preventDefault();
     if (!validateForm()) {
       return; // Do not submit the form if validation fails
@@ -99,11 +106,10 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData, }) =
     }
 
     try {
-      let newImageBuffer = "";
-      let newMime = "";
+      //If the selected image exists then use the data from the file
       if (selectedImage) {
-        newMime = selectedImage.type;
-        newImageBuffer = await readImageAsBase64(selectedImage);
+        frontBuffer = await readImageAsBase64(selectedImage);
+        frontMime = selectedImage.type;
       }
 
       const frontData = {
@@ -113,17 +119,13 @@ const SongEditor: React.FC<SongEditorProps> = ({ songId, onClose, songData, }) =
         fileNameFormatted: encodeURIComponent(formData.title),
         album: formData.album,
         image: {
-          mime: newMime,
-          imageBuffer: newImageBuffer,
+          imageBuffer: frontBuffer,
+          mime: frontMime,
         },
       };
-
       const response = await axios.put(`${API_URL}/songs/${songId}/edit`, {
         frontData,
       });
-
-      console.error("Error updating song:", response.data.message);
-
       setHasChanges(false);
       setIsEdited(!isEdited);
       onClose();

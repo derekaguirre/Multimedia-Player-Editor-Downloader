@@ -200,23 +200,33 @@ app.post("/playlist/:id/add-songs", async (req, res) => {
         console.log("Duplicate song found, skipping:",metadata.fileNameOriginal);
         continue;
       }
-
       //Set the file path and read the tags
       const filePath = `${uploadDirectory}\\${metadata.fileNameOriginal}`;
       const tags = NodeID3.read(filePath);
-
-      // console.log("IMAGE BEFORE PROCESSING", tags.image.type.name);
-      const imageDataArr = {
-        mime: tags.image.mime || " ",
+      let imageDataArr = {
+        mime: "",
         imageType: {
-          imageId: tags.image.type.id || 0,
-          imageName: tags.image.type.name || " ",
+          imageId: 0,
+          imageName: "",
         },
-        imageDescription: tags.image.description || " ",
-        imageBuffer: tags.image.imageBuffer
-          ? tags.image.imageBuffer.toString("base64")
-          : "",
+        imageDescription: "",
+        imageBuffer: "",
       };
+
+      if (tags.image) {
+        console.log("IMAGE BEFORE PROCESSING", tags.image.type.name);
+        imageDataArr = {
+          mime: tags.image.mime,
+          imageType: {
+            imageId: tags.image.type.id,
+            imageName: tags.image.type.name,
+          },
+          imageDescription: tags.image.description,
+          imageBuffer: tags.image.imageBuffer
+            ? tags.image.imageBuffer.toString("base64")
+            : "",
+        };
+      }
 
       //Create the song object with extracted metadata
       //'metadata' comes from the front end
@@ -285,6 +295,7 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
     const newFilePath = path.join(uploadDirectory, `${frontData.title}.mp3`);
 
     // Prevent overwriting of the prev song, unless the song entry was the original holder of the title
+    //prettier-ignore
     if (path.basename(currSong.filePath) != `${frontData.title}.mp3` && fs.existsSync(newFilePath)) {
       return res.status(400).json({ error: "Song already exists, please input a unique name." });
     }
@@ -295,7 +306,6 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
         console.error("Error renaming file:", error);
       }
     });
-
 
     // Update the tags in the actual file
     const audioFilePath = newFilePath; // Using the new file path
@@ -319,9 +329,13 @@ app.put("/songs/:id/edit", upload.none(), async (req, res) => {
     currSong.fileNameOriginal = `${frontData.title}.mp3`;
     currSong.fileNameFormatted = `${frontData.fileNameFormatted}.mp3`;
     currSong.filePath = `${uploadDirectory}\\${frontData.title}.mp3`;
-    currSong.image[0].imageBuffer = frontData.image.imageBuffer;
-    currSong.image[0].mime = frontData.image.mime;
 
+    //Verify image is not empty before updating
+    //prettier-ignore
+    if (frontData.image.imageBuffer != "" &&frontData.image.imageBuffer != null &&frontData.image.imageBuffer != undefined) {
+      currSong.image[0].imageBuffer = frontData.image.imageBuffer;
+      currSong.image[0].mime = frontData.image.mime;
+    }
     // Save the changes to the song
     await song.save();
     res.status(200).json(currSong);
