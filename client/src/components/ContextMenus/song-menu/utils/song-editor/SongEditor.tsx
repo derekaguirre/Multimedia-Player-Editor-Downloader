@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { EditContext } from "../../../../StateContexts/EditContext";
 import { SongObject } from "../../../../StateContexts/SongsContext";
 import "./SongEditor.scss";
@@ -8,6 +8,8 @@ const API_URL = "http://localhost:4000";
 
 //TODO listen for esc and enter and handle accordingly
 //TODO enable regular space bar
+//TODO full file path cannot exceed 256 length so ensure title length isn't that long
+//     perhaps truncating the file name in server
 
 interface SongEditorProps {
   songId: string;
@@ -33,6 +35,20 @@ const SongEditor: React.FC<SongEditorProps> = ({
     artist: songData.artist,
     album: songData.album,
   });
+  
+  // Close the modal when escape is pressed
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+  
+    document.addEventListener("keydown", handleKeyDown);
+  
+    // Remove event listener on unmount
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -92,11 +108,10 @@ const SongEditor: React.FC<SongEditorProps> = ({
   };
 
   // Upload all information to the server to save on database
-  const editSong = async (e: React.FormEvent) => {
+  const editSong = async () => {
     // const defaultImageBuffer = `data:${songData.image[0].mime};base64,${songData.image[0].imageBuffer}`;
     let frontBuffer = songData.image[0].imageBuffer;
     let frontMime = songData.image[0].mime;
-    e.preventDefault();
     if (!validateForm()) {
       return; // Do not submit the form if validation fails
     }
@@ -123,6 +138,7 @@ const SongEditor: React.FC<SongEditorProps> = ({
           mime: frontMime,
         },
       };
+      console.log(frontData);
       const response = await axios.put(`${API_URL}/songs/${songId}/edit`, {
         frontData,
       });
@@ -168,8 +184,7 @@ const SongEditor: React.FC<SongEditorProps> = ({
             <input type="text" name={field} value={formData[field]} onChange={handleFormChange} required />
           </div>
         ))}
-        {/* Display the error message if form validation falls through */}
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+
         <div className="form-group">
           <label>Image</label>
           <input
@@ -178,6 +193,8 @@ const SongEditor: React.FC<SongEditorProps> = ({
             accept=".png, .jpeg, .jpg"
           />
         </div>
+        {/* Display the error message if form validation falls through */}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <div className="footer-buttons">
           <button type="submit">Save</button>
           <button type="button" onClick={onClose}>

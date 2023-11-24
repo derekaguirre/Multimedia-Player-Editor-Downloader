@@ -46,7 +46,6 @@ const SongControls: React.FC<SongControlProps> = ({
     }
   };
 
-  
   //Toggles between play and pause
   const togglePlayPause = () => {
     if (currentHowl && currentHowl.playing()) {
@@ -63,9 +62,8 @@ const SongControls: React.FC<SongControlProps> = ({
   // Keyboard media control event listener
   // DOCS FOR VALID KEY EVENTS: https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
   const handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === " ") {
+    if (event.key === " " && document.activeElement === document.body) {
       event.preventDefault();
-      console.log("key pressed");
       togglePlayPause();
     }
   };
