@@ -15,7 +15,7 @@ interface ContextMenuProps {
   songData: SongObject;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({x,y,closeContextMenu,songData,}) => {
+const SongContextMenu: React.FC<ContextMenuProps> = ({x,y,closeContextMenu,songData,}) => {
   // Local States:
   const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
   const { activeSongId } = useContext(PlayerContext);
@@ -87,4 +87,4 @@ const ContextMenu: React.FC<ContextMenuProps> = ({x,y,closeContextMenu,songData,
   );
 };
 
-export default ContextMenu;
+export default SongContextMenu;

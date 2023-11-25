@@ -6,8 +6,6 @@ import "./SongEditor.scss";
 
 const API_URL = "http://localhost:4000";
 
-//TODO listen for esc and enter and handle accordingly
-//TODO enable regular space bar
 //TODO full file path cannot exceed 256 length so ensure title length isn't that long
 //     perhaps truncating the file name in server
 
@@ -35,15 +33,15 @@ const SongEditor: React.FC<SongEditorProps> = ({
     artist: songData.artist,
     album: songData.album,
   });
-  
+
   // Close the modal when escape is pressed
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
-  
+
     document.addEventListener("keydown", handleKeyDown);
-  
+
     // Remove event listener on unmount
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
@@ -108,7 +106,8 @@ const SongEditor: React.FC<SongEditorProps> = ({
   };
 
   // Upload all information to the server to save on database
-  const editSong = async () => {
+  const editSong = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // const defaultImageBuffer = `data:${songData.image[0].mime};base64,${songData.image[0].imageBuffer}`;
     let frontBuffer = songData.image[0].imageBuffer;
     let frontMime = songData.image[0].mime;
